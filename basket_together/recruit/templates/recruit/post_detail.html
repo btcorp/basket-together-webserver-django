@@ -1,0 +1,33 @@
+{% extends 'recruit/index.html' %}
+
+{% block content %}
+<div class="post" >
+    <div class="date" >
+            <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}" role="button" >
+                <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+            <a class="btn btn-default" href="{% url 'post_remove' pk=post.pk %}" role="button" >
+                <span class="glyphicon glyphicon-remove"></span>
+            </a>
+    </div>
+    <h1>{{ post.title }} </h1>
+    <p>{{ post.content|linebreaks }}</p>
+</div>
+<a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}" >Add comment</a>
+{% for comment in post.comments.all %}
+    {% if user.is_authenticated %}
+<div class="comment">
+    <div class="date">
+        created date: {{ comment.created_date }}
+        <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}">
+            <span class="glyphicon glyphicon-remove"></span>
+        </a>
+    </div>
+    <strong>Author: {{ comment.author }}</strong>
+    <p>{{ comment.content|linebreaks }}</p>
+</div>
+{% endif %}
+{% empty %}
+    <p>No comments here yet :( </p>
+{% endfor %}
+{% endblock %}
