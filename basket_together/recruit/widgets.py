@@ -6,8 +6,7 @@ from django.utils.safestring import mark_safe
 
 class GoogleMapWidget(forms.TextInput):
     def render(self, name, value, attrs=None):
-        attrs_for_textarea = attrs.copy()
-        attrs_for_textarea['hidden'] = 'true'
+        self.attrs['type'] = 'hidden'
 
         lat, lng = '37.497921', '127.027636'    # 강남역
 
