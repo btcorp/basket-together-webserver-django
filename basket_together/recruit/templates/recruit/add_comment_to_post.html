@@ -1,11 +1,12 @@
-{% extends 'recruit/index.html' %}
+{% extends 'recruit/base.html' %}
+{% load bootstrap3 %}
 
 {% block content %}
-    <div class="comment">
+    <div class="comment col-sm-4 col-sm-offset-4">
         <h1>New comment</h1>
         <form method="post" class="post-form">{% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="save btn btn-default">Send</button>
+            {% bootstrap_form form %}
+            <button type="submit" class="save btn btn-primary">Send</button>
         </form>
     </div>
 {% endblock %}

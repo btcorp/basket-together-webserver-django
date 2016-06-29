@@ -1,13 +1,8 @@
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render_to_response, render, redirect
+from django.shortcuts import render
+from recruit.models import Post
 
 
 def index(request):
-    return render(request, 'recruit/index.html', {})
+    posts = Post.objects.all()
+    return render(request, 'recruit/index.html', {'posts':posts})
 
-
-def post_list(request):
-    data = [
-        {'id':1, 'title':'title 1'}
-    ]
-    return JsonResponse(data, safe=False)

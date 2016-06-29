@@ -1,18 +1,6 @@
-{% extends 'recruit/index.html' %}      # template 이하 경로로 설정.
+{% extends 'recruit/base.html' %}      # template 이하 경로로 설정.
 
 {% block content %}
-
-    <div class="col-md-12 jumbotron" >
-        <h2>
-            Basket Together!!
-        </h2>
-        <p>
-            This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.
-        </p>
-        <p>
-            <a class="btn btn-primary btn-large" href="#">Learn more</a>
-        </p>
-    </div>
 
     <div class="row" style="margin: 30px 30px;" >
         {% for post in posts %}
@@ -21,10 +9,10 @@
                 {{ post.title }}
             </h2>
             <p>
-                {{ post.content }}
+                {{ post.content | linebreaks }}
             </p>
             <p>
-                <a class="btn" href="{% url 'post_detail' pk=post.pk %}" >View details »</a>
+                <a class="btn" href="{% url 'recruit:post_detail' pk=post.pk %}" >View details »</a>
             </p>
         </div>
         {% endfor %}

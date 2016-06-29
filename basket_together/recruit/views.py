@@ -1,6 +1,9 @@
-from django.shortcuts import render, render_to_response, get_object_or_404, redirect
-from .models import Post, Comment
-from .forms import PostForm, CommentForm
+from django.shortcuts import render, get_object_or_404, redirect
+from recruit.models import Post, Comment
+from recruit.forms import PostForm, CommentForm
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.http.request import QueryDict
 
 
 def post_list(request):
@@ -8,6 +11,7 @@ def post_list(request):
     return render(request, 'recruit/post_list.html', {'posts': posts})
 
 
+@login_required
 def post_new(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -15,10 +19,11 @@ def post_new(request):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            return redirect('recruit.views.post_detail', pk=post.pk)
+            messages.success(request, '포스팅이 등록되었습니다.')
+            return redirect('recruit:post_detail', pk=post.pk)
     else:
         form = PostForm()
-    return render(request, 'recruit/post_edit.html', {'form': form})
+    return render(request, 'recruit/post_new.html', {'form': form})
 
 
 def post_detail(request, pk):
@@ -34,18 +39,19 @@ def post_edit(request, pk):
         post = form.save(commit=False)
         post.author = request.user
         post.save()
-        return redirect('recruit.views.post_detail', pk=pk)
+        return redirect('recruit:post_detail', pk=pk)
     else:
         form = PostForm(instance=post)
-    return render(request, 'recruit/post_edit.html', {'form': form})
+    return render(request, 'recruit/post_new.html', {'form': form})
 
 
 def post_remove(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.delete()
-    return redirect('recruit.views.post_list')
+    return redirect('recruit:post_list')
 
 
+@login_required
 def add_comment_to_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
@@ -54,7 +60,7 @@ def add_comment_to_post(request, pk):
         comment.author = request.user
         comment.post = post
         comment.save()
-        return redirect('recruit.views.post_detail', pk=pk)
+        return redirect('recruit:post_detail', pk=pk)
     else:
         form = CommentForm()
     return render(request, 'recruit/add_comment_to_post.html', {'form': form})
@@ -66,8 +72,9 @@ def post_search(request):
     return render(request, 'recruit/post_list.html', {'posts': posts})
 
 
+@login_required
 def comment_remove(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     post_pk = comment.post.pk
     comment.delete()
-    return redirect('recruit.views.post_detail', pk=post_pk)
+    return redirect('recruit:post_detail', pk=post_pk)
