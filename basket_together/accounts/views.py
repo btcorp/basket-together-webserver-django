@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.core.context_processors import csrf
 from django.core.urlresolvers import reverse
@@ -18,7 +19,8 @@ def user_profile(request):
         if userForm.is_valid() and profileForm.is_valid():
             userForm.save()
             profileForm.save()
-            return render(request, 'loggedin.html')
+            messages.success(request, '{} 님의 정보가 업데이트되었습니다.'.format(request.user))
+            return redirect('index')
     else:
         userForm = UserForm(instance=request.user)
         profileForm = UserProfileForm(instance=request.user.profile)

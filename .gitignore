@@ -6,3 +6,5 @@ myvenv
 *.swp
 .idea
 ngrok
+*.db
+development.db
