@@ -24,3 +24,9 @@
     height: 250px;
     border: 1px solid;
 }
+
+.alert-debug {
+    color: #333;
+    background-color: #eee;
+    border-color: #ccc;
+}
