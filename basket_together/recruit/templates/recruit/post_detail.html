@@ -12,6 +12,7 @@
                 </a>
         </div>
         <h1>{{ post.title }} </h1>
+        <p>모임시간 - {{ post.meeting_date }}</p>
         <p>{{ post.content|safe|linebreaks }}</p>
         <div id="map" style="width: 600px; height: 300px;"></div>
     </div>

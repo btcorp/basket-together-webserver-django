@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     # third apps
     'bootstrap3',
     'crispy_forms',
+    'datetimewidget',
     'debug_toolbar',
     'django_summernote',
 
