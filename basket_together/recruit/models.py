@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from django import forms
+from datetimewidget.widgets import DateTimeWidget
 
 RECRUIT_STATUS = (
     (0, ),
@@ -15,14 +15,13 @@ class Post(models.Model):
     registered_date = models.DateTimeField(default=timezone.now)
     recruit_count = models.IntegerField()
     attend_count = models.IntegerField(default=0)
-    recruit_status = models.CharField(max_length=20, default='ing')
-    gps_x = models.CharField(max_length=20)
-    gps_y = models.CharField(max_length=20)
+    recruit_status = models.CharField(max_length=1, default='0')   # 0:모집중, 1:모집완료
     address1 = models.CharField(max_length=100)
     address2 = models.CharField(max_length=100)
     address3 = models.CharField(max_length=100)
     comment_count = models.IntegerField(default=0)
     latlng = models.CharField(max_length=50, blank=True)
+    meeting_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.title
