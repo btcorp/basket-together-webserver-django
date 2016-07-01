@@ -15,7 +15,7 @@ def user_profile(request):
     """
     if request.method == 'POST':
         userForm = UserForm(request.POST, instance=request.user)
-        profileForm = UserProfileForm(request.POST, instance=request.user.profile)
+        profileForm = UserProfileForm(request.POST, request.FILES, instance=request.user.profile)
         if userForm.is_valid() and profileForm.is_valid():
             userForm.save()
             profileForm.save()

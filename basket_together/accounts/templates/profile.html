@@ -2,9 +2,12 @@
 {% load bootstrap3 %}
 
 {% block content %}
-    <div class="col-sm-4 col-sm-offset-4">
+    <div class="col-sm-6 col-sm-offset-3">
         <h1>Profile</h1>
-        <form action="" method="POST">{% csrf_token %}
+        {% if profileForm.instance.user_image %}
+            <img src="{{ profileForm.instance.user_image.url }}" style="max-width: 300px;" />
+        {% endif %}
+        <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
             {% bootstrap_form userForm %}
             {% bootstrap_form profileForm %}
             <input type="SUBMIT" value="Update" class="btn btn-primary" />

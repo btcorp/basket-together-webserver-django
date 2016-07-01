@@ -14,7 +14,7 @@ class UserProfileForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ('phone_number', 'device_type', )
+        fields = ('phone_number', 'device_type', 'user_image', )
 
 
 class SignupForm(UserCreationForm):

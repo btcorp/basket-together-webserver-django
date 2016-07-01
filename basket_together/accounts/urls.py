@@ -6,7 +6,7 @@ from accounts.forms import LoginForm
 urlpatterns = [
     url(r'^profile/$', views.user_profile, name='user_profile'),
     url(r'^accounts/login/', 'django.contrib.auth.views.login',{
-        'authentication_form': LoginForm
+        'authentication_form': LoginForm,
     }, name='login'),
     url(r'^accounts/logout/', 'django.contrib.auth.views.logout_then_login', name='logout'),
     url(r'^signup/$', views.signup, name='signup'),

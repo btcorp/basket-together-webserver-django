@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 
     # third apps
     'bootstrap3',
+    'crispy_forms',
     'debug_toolbar',
     'django_summernote',
 
@@ -171,6 +172,10 @@ LOGOUT_REDIRECT_URL = '/'
 
 SITE_ID = 2
 
+# change message level: error to danger
 MESSAGE_TAGS = {
     message_constants.ERROR: 'danger',
 }
+
+MEDIA_ROOT = ROOT('media')
+MEDIA_URL = '/media/'

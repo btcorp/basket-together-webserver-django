@@ -29,6 +29,7 @@ class Profile(models.Model):
     join_path = models.CharField(max_length=20, default='general')
     attend_count = models.IntegerField(blank=True, default=0)
     penalty_count = models.IntegerField(blank=True, default=0)
+    user_image = models.ImageField(blank=True, upload_to='%Y/%m/%d')
 
 
 User.profile = property(lambda user: Profile.objects.get_or_create(user=user)[0])
