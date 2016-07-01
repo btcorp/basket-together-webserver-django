@@ -7,4 +7,4 @@ myvenv
 .idea
 ngrok
 *.db
-development.db
+media

@@ -12,12 +12,11 @@
                 </a>
         </div>
         <h1>{{ post.title }} </h1>
-        <p>{{ post.content|linebreaks }}</p>
+        <p>{{ post.content|safe|linebreaks }}</p>
         <div id="map" style="width: 600px; height: 300px;"></div>
     </div>
     <a class="btn btn-default" href="{% url 'recruit:add_comment_to_post' pk=post.pk %}" >Add comment</a>
     {% for comment in post.comments.all %}
-        {% if user.is_authenticated %}
     <div class="comment">
         <div class="date">
             created date: {{ comment.registered_date }}
@@ -28,7 +27,6 @@
         <strong>Author: {{ comment.author }}</strong>
         <p>{{ comment.content|linebreaks }}</p>
     </div>
-    {% endif %}
     {% empty %}
         <p>No comments here yet :( </p>
     {% endfor %}
