@@ -7,7 +7,7 @@ from basket_together import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index, name='index'),
-    url(r'', include('accounts.urls', namespace='accounts')),
+    url(r'^accounts/', include('accounts.urls')),
     url(r'^recruit/', include('recruit.urls', namespace='recruit')),
     # url(r'^rest-auth/', include('rest_auth.urls')),
     # url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),

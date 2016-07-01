@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from accounts.forms import UserProfileForm, UserForm
 from accounts.forms import SignupForm
+from django.conf import settings
 
 
 @login_required
@@ -42,7 +43,7 @@ def signup(request):
         # form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse("accounts:signup_ok"))
+            return redirect(settings.LOGIN_URL)
 
     # form = UserCreationForm()
     form = SignupForm()
