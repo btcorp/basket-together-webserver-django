@@ -11,25 +11,12 @@ class UserForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-
     class Meta:
         model = Profile
         fields = ('phone_number', 'device_type', 'user_image', )
 
 
 class SignupForm(UserCreationForm):
-
-    # email = forms.EmailField(
-    #     required=True,
-    #     widget=forms.EmailInput(
-    #         attrs={
-    #             'class': 'form-control',
-    #             'placeholder': 'Email',
-    #             'required': True,
-    #         }
-    #     )
-    # )
-
     class Meta:
         model = User
         fields = ('username', 'password1', 'password2', 'email')
