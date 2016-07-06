@@ -10,11 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
-import os
 from django.contrib.messages import constants as message_constants
+import os
+from os.path import abspath, dirname
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = dirname(dirname(dirname(abspath(__file__))))
 ROOT = lambda *wargs: os.path.join(BASE_DIR, *wargs)
 
 # Quick-start development settings - unsuitable for production
@@ -51,7 +52,7 @@ INSTALLED_APPS = [
 
     # third apps
     'bootstrap3',
-    'crispy_forms',
+    # 'crispy_forms',
     'datetimewidget',
     'debug_toolbar',
     'django_summernote',
@@ -59,7 +60,6 @@ INSTALLED_APPS = [
     # local apps
     'accounts',
     'recruit',
-    # 'custom_user',
     ]
 
 """
