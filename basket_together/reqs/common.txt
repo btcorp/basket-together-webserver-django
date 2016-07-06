@@ -1,4 +1,6 @@
 django=1.9.7
-pillow
-django-debug-toolbar
 django-bootstrap3
+django-datetime-widget
+django-debug-toolbar
+django-summernote
+pillow
