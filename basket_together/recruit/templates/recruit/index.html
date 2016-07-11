@@ -21,7 +21,7 @@
                 {{ post.title }}
             </h2>
             <p>
-                {{ post.content | linebreaks }}
+                {{ post.content|safe|linebreaks }}
             </p>
             <p>
                     <a class="btn" href="{% url 'recruit:post_detail' pk=post.pk %}" >View details »</a>
