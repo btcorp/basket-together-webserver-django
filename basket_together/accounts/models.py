@@ -25,7 +25,7 @@ class PhoneNumberField(models.CharField):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = PhoneNumberField(max_length=12, blank=True)
-    device_type = models.CharField(max_length=1, choices=DEVICE_TYPE, default='ANDROID')
+    device_type = models.CharField(max_length=10, choices=DEVICE_TYPE, default='ANDROID')
     join_path = models.CharField(max_length=20, default='general')
     attend_count = models.IntegerField(blank=True, default=0)
     penalty_count = models.IntegerField(blank=True, default=0)
