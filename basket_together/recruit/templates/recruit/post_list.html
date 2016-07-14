@@ -2,20 +2,61 @@
 
 {% block content %}
 
-    <div class="row" style="margin: 30px 30px;" >
-        {% for post in posts %}
-        <div class="col-md-3 simple-post" >
-            <h2>
-                {{ post.title }}
-            </h2>
-            <p>
-                {{ post.content | linebreaks }}
-            </p>
-            <p>
-                <a class="btn" href="{% url 'recruit:post_detail' pk=post.pk %}" >View details »</a>
-            </p>
+    <div class="col-md-12">
+        <div class="col-md-10 col-md-offset-1">
+            <table class="table table-hover table-condensed" >
+                <tr>
+                    <th class="col-md-1">ID</th>
+                    <th class="col-md-4">title</th>
+                    <th class="col-md-1">author</th>
+                    <th class="col-md-3">registered date</th>
+                    <th class="col-md-3">meeting date</th>
+                </tr>
+                {% for post in posts %}
+                <tr style="cursor:hand;" onclick="location.href='{% url 'recruit:post_detail' pk=post.pk %}'">
+                    <td>{{ post.id }}</td>
+                    <td>{{ post.title }}</td>
+                    <td>{{ post.author }}</td>
+                    <td>{{ post.registered_date }}</td>
+                    <td>{{ post.meeting_date }}</td>
+                </tr>
+                {% endfor %}
+            </table>
         </div>
-        {% endfor %}
     </div>
+    <nav style="text-align:center;">
+        <ul class="pagination">
+            {% if posts.has_previous %}
+            <li>
+              <a href="{% url 'recruit:post_list' page=posts.previous_page_number %}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            {% else %}
+            <li class="enabled">
+                <span aria-hidden="true">&laquo;</span>
+            </li>
+            {% endif %}
 
+            {% for page in page_range %}
+                {% if page == posts.number %}
+                    <li class="active"><a href="{% url 'recruit:post_list' page=page %}">{{ page }}<span class="sr-only">(current)</span></a></li>
+                {% else %}
+                    <li><a href="{% url 'recruit:post_list' page=page %}">{{ page }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if posts.has_next %}
+            <li>
+              <a href="{% url 'recruit:post_list' page=posts.next_page_number %}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+            {% else %}
+            <li class="enabled">
+                <span aria-hidden="true">&raquo;</span>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
 {% endblock %}

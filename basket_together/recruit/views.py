@@ -3,12 +3,21 @@ from recruit.models import Post, Comment
 from recruit.forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http.request import QueryDict
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
-def post_list(request):
-    posts = Post.objects.all()
-    return render(request, 'recruit/post_list.html', {'posts': posts})
+def post_list(request, page=1):
+    posts = Post.objects.order_by('-registered_date')
+    paginator = Paginator(posts, 5)
+    page_range = paginator.page_range
+
+    try:
+        contacts = paginator.page(page)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        contacts = paginator.page(paginator.num_pages)
+
+    return render(request, 'recruit/post_list.html', {'posts': contacts, 'page_range': page_range})
 
 
 @login_required

@@ -24,6 +24,9 @@
                         <div class="collapse navbar-collapse masthead" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
                                 <li>
+                                    <a href="{% url 'recruit:post_list' page=1 %}">글 목록</a>
+                                </li>
+                                <li>
                                     <a href="{% url 'recruit:post_new' %}">글 작성</a>
                                 </li>
                             </ul>
