@@ -11,10 +11,16 @@
                 <a class="btn btn-primary" href="{% url 'recruit:post_remove' pk=post.pk %}" role="button" >
                     <span class="glyphicon glyphicon-remove"></span>
                 </a>
-            {% elif user.is_authenticated and not bookmark %}
-                <a class="btn btn-primary" href="{% url 'recruit:bookmark_save' pk=post.pk %}?next={{ request.path }}" role="button" >
-                    <span class="glyphicon glyphicon-paperclip"></span>
-                </a>
+            {% elif user.is_authenticated %}
+                {% if bookmark %}
+                    <a class="btn btn-primary" href="{% url 'recruit:bookmark_remove' pk=post.pk %}" role="button" >
+                        <span class="glyphicon glyphicon glyphicon-star"></span>
+                    </a>
+                {% else %}
+                    <a class="btn btn-primary" href="{% url 'recruit:bookmark_save' pk=post.pk %}?next={{ request.path }}" role="button" >
+                        <span class="glyphicon glyphicon glyphicon-star-empty"></span>
+                    </a>
+                {% endif %}
             {% endif %}
         </div>
         <h1>{{ post.title }} </h1>

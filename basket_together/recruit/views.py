@@ -115,6 +115,14 @@ def bookmark_save(request, pk):
 
 
 @login_required
+def bookmark_remove(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    bookmark = get_object_or_404(Bookmark, post=post, user=request.user)
+    bookmark.delete()
+    return redirect('recruit:post_detail', pk=pk)
+
+
+@login_required
 def bookmarks(request, page=1):
     try:
         bookmarks = Bookmark.objects.filter(user=request.user)

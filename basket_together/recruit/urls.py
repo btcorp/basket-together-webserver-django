@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^search/$', views.post_search, name='post_search'),
     url(r'^comment/(?P<pk>\d+)/remove/$', views.comment_remove, name='comment_remove'),
     url(r'^post/bookmark/(?P<pk>\d+)/$', views.bookmark_save, name='bookmark_save'),
+    url(r'^post/bookmark/(?P<pk>\d+)/remove/$', views.bookmark_remove, name='bookmark_remove'),
     url(r'^bookmarks/page-(?P<page>\d+)/$', views.bookmarks, name='bookmarks'),
 ]
