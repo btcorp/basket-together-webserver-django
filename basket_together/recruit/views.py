@@ -1,21 +1,25 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from recruit.models import Post, Comment
-from recruit.forms import PostForm, CommentForm
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
+from recruit.models import Bookmark, Comment, Post
+from recruit.forms import BookmarkForm, CommentForm, PostForm
 
 
 def post_list(request, page=1):
-    posts = Post.objects.order_by('-registered_date')
-    paginator = Paginator(posts, 5)
-    page_range = paginator.page_range
-
     try:
+        posts = Post.objects.order_by('-registered_date')
+        paginator = Paginator(posts, 5)
+        page_range = paginator.page_range
         contacts = paginator.page(page)
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         contacts = paginator.page(paginator.num_pages)
+    except ObjectDoesNotExist:
+        contacts = None
+        page_range = 1
 
     return render(request, 'recruit/post_list.html', {'posts': contacts, 'page_range': page_range})
 
@@ -37,8 +41,11 @@ def post_new(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    # comments = get_object_or_404(Comment, post_id=pk)
-    return render(request, 'recruit/post_detail.html', {'post': post})
+    try:
+        bookmark = Bookmark.objects.filter(user=request.user, post=post)
+    except ObjectDoesNotExist:
+        bookmark = None
+    return render(request, 'recruit/post_detail.html', {'post': post, 'bookmark': bookmark})
 
 
 def post_edit(request, pk):
@@ -77,7 +84,7 @@ def add_comment_to_post(request, pk):
 
 def post_search(request):
     word = request.POST['word']
-    posts = Post.objects.filter(title__contains=word) or Post.objects.filter(content__contains=word)
+    posts = Post.objects.filter(title__icontains=word) or Post.objects.filter(content__icontains=word)
     return render(request, 'recruit/post_list.html', {'posts': posts})
 
 
@@ -87,3 +94,35 @@ def comment_remove(request, pk):
     post_pk = comment.post.pk
     comment.delete()
     return redirect('recruit:post_detail', pk=post_pk)
+
+
+@login_required
+def bookmark_save(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        form = BookmarkForm(request.POST)
+        if form.is_valid():
+            bookmark = form.save(commit=False)
+            bookmark.user = request.user
+            bookmark.post = post
+            bookmark.save()
+            next_url = request.GET.get('next', '')
+            return HttpResponseRedirect(next_url)
+            # return redirect('recruit:bookmark_save' + '?next=' + next_url)
+    else:
+        form = BookmarkForm()
+    return render(request, 'recruit/bookmark_save.html', {'form': form})
+
+
+@login_required
+def bookmarks(request, page=1):
+    try:
+        bookmarks = Bookmark.objects.filter(user=request.user)
+        paginator = Paginator(bookmarks, 20)
+        page_range = paginator.page_range
+        contacts = paginator.page(page)
+    except ObjectDoesNotExist:
+        contacts = None
+        page_range = 1
+
+    return render(request, 'recruit/bookmark_list.html', {'bookmarks': contacts, 'page_range': page_range})

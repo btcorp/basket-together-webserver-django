@@ -42,10 +42,13 @@
                             <ul class="nav navbar-nav navbar-right">
                                 {% if user.is_authenticated %}
                                 <li>
+                                    <a href="{% url 'recruit:bookmarks' page=1 %}">Bookmark</a>
+                                </li>
+                                <li>
                                     <a href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'user_profile' %}?next={{ request.path }}">Profile</a>
+                                    <a href="{% url 'user_profile' %}">Profile</a>
                                 </li>
                                 {% else %}
                                 <li>

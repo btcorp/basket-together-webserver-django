@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 from datetimewidget.widgets import DateTimeWidget
 
 RECRUIT_STATUS = (
@@ -50,3 +51,13 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class Bookmark(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    post = models.ForeignKey('recruit.Post', related_name='bookmarks')
+    user = models.ForeignKey('auth.User', related_name='users')
+
+    def __str__(self):
+        return self.title

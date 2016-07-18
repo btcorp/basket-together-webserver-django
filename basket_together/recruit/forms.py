@@ -1,5 +1,5 @@
 from django import forms
-from recruit.models import Post, Comment
+from recruit.models import Bookmark, Comment, Post
 from recruit.widgets import GoogleMapWidget
 from django_summernote.widgets import SummernoteWidget
 from datetimewidget.widgets import DateTimeWidget
@@ -24,7 +24,12 @@ class PostForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
-
     class Meta:
         model = Comment
         fields = ('content', )
+
+
+class BookmarkForm(forms.ModelForm):
+    class Meta:
+        model = Bookmark
+        fields = ('title', 'description', )

@@ -4,12 +4,18 @@
 <div class="col-sm-6 col-sm-offset-3" >
     <div class="post" >
         <div class="date" >
+            {% if user.is_authenticated and user == post.author %}
                 <a class="btn btn-primary" href="{% url 'recruit:post_edit' pk=post.pk %}" role="button" >
                     <span class="glyphicon glyphicon-pencil"></span>
                 </a>
                 <a class="btn btn-primary" href="{% url 'recruit:post_remove' pk=post.pk %}" role="button" >
                     <span class="glyphicon glyphicon-remove"></span>
                 </a>
+            {% elif user.is_authenticated and not bookmark %}
+                <a class="btn btn-primary" href="{% url 'recruit:bookmark_save' pk=post.pk %}?next={{ request.path }}" role="button" >
+                    <span class="glyphicon glyphicon-paperclip"></span>
+                </a>
+            {% endif %}
         </div>
         <h1>{{ post.title }} </h1>
         <p>모임시간 - {{ post.meeting_date }}</p>
