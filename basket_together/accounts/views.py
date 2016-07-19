@@ -1,12 +1,15 @@
-from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
-from django.core.context_processors import csrf
-from django.core.urlresolvers import reverse
-from django.contrib.auth.decorators import login_required
 from accounts.forms import UserProfileForm, UserForm
 from accounts.forms import SignupForm
+from accounts.models import Friendship
 from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.core.context_processors import csrf
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_list_or_404, get_object_or_404, render, redirect
 
 
 @login_required
@@ -51,3 +54,30 @@ def signup(request):
     return render(request, 'registration/signup.html', {'form': form})
 
 
+def friend_list(request, page=1):
+    friends = list(i.to_friend for i in request.user.from_friends.all())
+    paginator = Paginator(friends, 10)
+    contacts = paginator.page(page)
+    page_range = paginator.page_range
+
+    return render(request, 'friend_list.html', {'friends': contacts, 'page_range': page_range})
+
+
+def add_friend(request, username):
+    friend = get_object_or_404(get_user_model(), username=username)
+    next_url = request.GET.get('next', '')
+    friend_list = list(i.to_friend.username for i in Friendship.objects.filter(from_friend=friend))
+
+    if request.user not in friend_list:
+        Friendship(from_friend=request.user, to_friend=friend).save()
+
+    return HttpResponseRedirect(next_url)
+
+
+def remove_friend(request, username):
+    next_url = request.GET.get('next', '')
+    friend = get_object_or_404(get_user_model(), username=username)
+    friendship = Friendship.objects.filter(from_friend=request.user, to_friend=friend)
+    friendship.delete()
+
+    return HttpResponseRedirect(next_url)

@@ -1,7 +1,8 @@
 import re
 from django.db import models
-from django.forms import ValidationError
 from django.contrib.auth.models import User
+from django.forms import ValidationError
+from django.shortcuts import get_list_or_404
 
 DEVICE_TYPE=(
     ('a', 'ANDROID'),
@@ -30,6 +31,17 @@ class Profile(models.Model):
     attend_count = models.IntegerField(blank=True, default=0)
     penalty_count = models.IntegerField(blank=True, default=0)
     user_image = models.ImageField(blank=True, upload_to='%Y/%m/%d')
+
+
+class Friendship(models.Model):
+    from_friend = models.ForeignKey(User, related_name='from_friends')
+    to_friend = models.ForeignKey(User, related_name='to_friends')
+
+    class Meta:
+        unique_together = (('from_friend', 'to_friend'), )
+
+    def __str__(self):
+        return '{}, {}'.format(self.from_friend, self.to_friend)
 
 
 User.profile = property(lambda user: Profile.objects.get_or_create(user=user)[0])

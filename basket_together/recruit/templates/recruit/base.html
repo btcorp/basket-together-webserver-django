@@ -42,6 +42,9 @@
                             <ul class="nav navbar-nav navbar-right">
                                 {% if user.is_authenticated %}
                                 <li>
+                                    <a href="{% url 'friend_list' page=1 %}">Friends manage</a>
+                                </li>
+                                <li>
                                     <a href="{% url 'recruit:bookmarks' page=1 %}">Bookmark</a>
                                 </li>
                                 <li>

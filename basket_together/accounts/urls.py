@@ -10,4 +10,7 @@ urlpatterns = [
     }, name='login'),
     url(r'^logout/', logout_then_login, name='logout'),
     url(r'^signup/$', views.signup, name='signup'),
+    url(r'^friends/page-(?P<page>\d+)/$', views.friend_list, name='friend_list'),
+    url(r'^friend/add/(?P<username>\w+)/$', views.add_friend, name='add_friend'),
+    url(r'^friend/remove/(?P<username>\w+)/$', views.remove_friend, name='remove_friend'),
 ]
