@@ -15,7 +15,7 @@ class Post(models.Model):
     content = models.TextField()
     registered_date = models.DateTimeField(default=timezone.now)
     recruit_count = models.IntegerField()
-    attend_count = models.IntegerField(default=0)
+    attend_count = models.IntegerField(default=1)
     recruit_status = models.CharField(max_length=1, default='0')   # 0:모집중, 1:모집완료
     address1 = models.CharField(max_length=100)
     address2 = models.CharField(max_length=100)
@@ -53,11 +53,9 @@ class Comment(models.Model):
         return self.text
 
 
-class Bookmark(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.TextField()
+class Participation(models.Model):
     post = models.ForeignKey('recruit.Post', related_name='bookmarks')
     user = models.ForeignKey('auth.User', related_name='users')
 
     def __str__(self):
-        return self.title
+        return self.post.title

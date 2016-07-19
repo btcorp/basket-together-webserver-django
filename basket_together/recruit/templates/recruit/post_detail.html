@@ -12,12 +12,12 @@
                     <span class="glyphicon glyphicon-remove"></span>
                 </a>
             {% elif user.is_authenticated %}
-                {% if bookmark %}
-                    <a class="btn btn-primary" href="{% url 'recruit:bookmark_remove' pk=post.pk %}" role="button" >
+                {% if participation %}
+                    <a class="btn btn-primary" href="{% url 'recruit:remove_participation' pk=post.pk %}" role="button" >
                         <span class="glyphicon glyphicon glyphicon-star"></span>
                     </a>
                 {% else %}
-                    <a class="btn btn-primary" href="{% url 'recruit:bookmark_save' pk=post.pk %}?next={{ request.path }}" role="button" >
+                    <a class="btn btn-primary" href="{% url 'recruit:add_participation' pk=post.pk %}?next={{ request.path }}" role="button" >
                         <span class="glyphicon glyphicon glyphicon-star-empty"></span>
                     </a>
                 {% endif %}

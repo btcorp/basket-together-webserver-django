@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^post/(?P<pk>\d+)/comment/$', views.add_comment_to_post, name='add_comment_to_post'),
     url(r'^search/$', views.post_search, name='post_search'),
     url(r'^comment/(?P<pk>\d+)/remove/$', views.comment_remove, name='comment_remove'),
-    url(r'^post/bookmark/(?P<pk>\d+)/$', views.bookmark_save, name='bookmark_save'),
-    url(r'^post/bookmark/(?P<pk>\d+)/remove/$', views.bookmark_remove, name='bookmark_remove'),
-    url(r'^bookmarks/page-(?P<page>\d+)/$', views.bookmarks, name='bookmarks'),
+    url(r'^post/participation/(?P<pk>\d+)/add/$', views.add_participation, name='add_participation'),
+    url(r'^post/participation/(?P<pk>\d+)/remove/$', views.remove_participation, name='remove_participation'),
+    url(r'^participations/page-(?P<page>\d+)/$', views.participations, name='participations'),
 ]

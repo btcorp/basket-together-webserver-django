@@ -7,7 +7,8 @@
             <table class="table table-hover table-condensed" >
                 <tr>
                     <th class="col-md-1">ID</th>
-                    <th class="col-md-4">title</th>
+                    <th class="col-md-3">title</th>
+                    <th class="col-md-1">status</th>
                     <th class="col-md-1">author</th>
                     <th class="col-md-3">registered date</th>
                     <th class="col-md-3">meeting date</th>
@@ -16,6 +17,7 @@
                 <tr style="cursor:hand;" onclick="location.href='{% url 'recruit:post_detail' pk=post.pk %}'">
                     <td>{{ post.id }}</td>
                     <td>{{ post.title }}</td>
+                    <td>{{ post.attend_count }}/{{ post.recruit_count }}</td>
                     <td>{{ post.author }}</td>
                     <td>{{ post.registered_date }}</td>
                     <td>{{ post.meeting_date }}</td>

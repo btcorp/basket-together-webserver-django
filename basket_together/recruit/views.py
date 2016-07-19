@@ -4,8 +4,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
-from recruit.models import Bookmark, Comment, Post
-from recruit.forms import BookmarkForm, CommentForm, PostForm
+from recruit.models import Participation, Comment, Post
+from recruit.forms import CommentForm, PostForm
 
 
 def post_list(request, page=1):
@@ -42,10 +42,10 @@ def post_new(request):
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     try:
-        bookmark = Bookmark.objects.filter(user=request.user, post=post)
+        participation = Participation.objects.filter(user=request.user, post=post)
     except ObjectDoesNotExist:
-        bookmark = None
-    return render(request, 'recruit/post_detail.html', {'post': post, 'bookmark': bookmark})
+        participation = None
+    return render(request, 'recruit/post_detail.html', {'post': post, 'participation': participation})
 
 
 def post_edit(request, pk):
@@ -97,40 +97,34 @@ def comment_remove(request, pk):
 
 
 @login_required
-def bookmark_save(request, pk):
+def add_participation(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    if request.method == 'POST':
-        form = BookmarkForm(request.POST)
-        if form.is_valid():
-            bookmark = form.save(commit=False)
-            bookmark.user = request.user
-            bookmark.post = post
-            bookmark.save()
-            next_url = request.GET.get('next', '')
-            return HttpResponseRedirect(next_url)
-            # return redirect('recruit:bookmark_save' + '?next=' + next_url)
-    else:
-        form = BookmarkForm()
-    return render(request, 'recruit/bookmark_save.html', {'form': form})
+    next_url = request.GET.get('next', '')
+    Participation.objects.create(post=post, user=request.user)
+    post.attend_count += 1
+    post.save()
+    return HttpResponseRedirect(next_url)
 
 
 @login_required
-def bookmark_remove(request, pk):
+def remove_participation(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    bookmark = get_object_or_404(Bookmark, post=post, user=request.user)
+    bookmark = get_object_or_404(Participation, post=post, user=request.user)
     bookmark.delete()
+    post.attend_count -= 1
+    post.save()
     return redirect('recruit:post_detail', pk=pk)
 
 
 @login_required
-def bookmarks(request, page=1):
+def participations(request, page=1):
     try:
-        bookmarks = Bookmark.objects.filter(user=request.user)
-        paginator = Paginator(bookmarks, 20)
+        participations = Participation.objects.filter(user=request.user)
+        paginator = Paginator(participations, 20)
         page_range = paginator.page_range
         contacts = paginator.page(page)
     except ObjectDoesNotExist:
         contacts = None
         page_range = 1
 
-    return render(request, 'recruit/bookmark_list.html', {'bookmarks': contacts, 'page_range': page_range})
+    return render(request, 'recruit/participation_list.html', {'contacts': contacts, 'page_range': page_range})

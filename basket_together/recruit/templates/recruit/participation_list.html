@@ -8,13 +8,13 @@
                 <tr>
                     <th class="col-md-2">ID</th>
                     <th class="col-md-5">title</th>
-                    <th class="col-md-5">description</th>
+                    <th class="col-md-5">author</th>
                 </tr>
-                {% for bookmark in bookmarks %}
-                <tr style="cursor:hand;" onclick="location.href='{% url 'recruit:post_detail' pk=bookmark.post_id %}'">
-                    <td>{{ bookmark.id }}</td>
-                    <td>{{ bookmark.title }}</td>
-                    <td>{{ bookmark.description }}</td>
+                {% for contact in contacts %}
+                <tr style="cursor:hand;" onclick="location.href='{% url 'recruit:post_detail' pk=contact.post_id %}'">
+                    <td>{{ contact.id }}</td>
+                    <td>{{ contact.post.title }}</td>
+                    <td>{{ contact.post.author }}</td>
                 </tr>
                 {% endfor %}
             </table>
@@ -22,9 +22,9 @@
     </div>
     <nav style="text-align:center;">
         <ul class="pagination">
-            {% if bookmarks.has_previous %}
+            {% if contacts.has_previous %}
             <li>
-              <a href="{% url 'recruit:bookmarks' page=bookmarks.previous_page_number %}" aria-label="Previous">
+              <a href="{% url 'recruit:participations' page=contacts.previous_page_number %}" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
               </a>
             </li>
@@ -35,16 +35,16 @@
             {% endif %}
 
             {% for page in page_range %}
-                {% if page == posts.number %}
-                    <li class="active"><a href="{% url 'recruit:bookmarks' page=page %}">{{ page }}<span class="sr-only">(current)</span></a></li>
+                {% if page == contacts.number %}
+                    <li class="active"><a href="{% url 'recruit:participations' page=page %}">{{ page }}<span class="sr-only">(current)</span></a></li>
                 {% else %}
-                    <li><a href="{% url 'recruit:bookmarks' page=page %}">{{ page }}</a></li>
+                    <li><a href="{% url 'recruit:participations' page=page %}">{{ page }}</a></li>
                 {% endif %}
             {% endfor %}
 
-            {% if posts.has_next %}
+            {% if contacts.has_next %}
             <li>
-              <a href="{% url 'recruit:bookmarks' page=bookmarks.next_page_number %}" aria-label="Next">
+              <a href="{% url 'recruit:participations' page=contacts.next_page_number %}" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
               </a>
             </li>
