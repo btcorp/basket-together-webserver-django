@@ -42,6 +42,13 @@ class Post(models.Model):
             return self.latlng.split(',')[1]
         return None
 
+    def attend_users(self):
+        participations = Participation.objects.filter(post=self)
+        if participations:
+            return list(i.user.username for i in participations)
+        else:
+            return []
+
 
 class Comment(models.Model):
     post = models.ForeignKey('recruit.Post', related_name='comments')

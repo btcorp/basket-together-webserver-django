@@ -13,11 +13,13 @@
                 </a>
             {% elif user.is_authenticated %}
                 {% if participation %}
-                    <a class="btn btn-primary" href="{% url 'recruit:remove_participation' pk=post.pk %}" role="button" >
+                    <a class="btn btn-primary" href="{% url 'recruit:remove_participation' pk=post.pk %}" role="button"
+                            data-toggle="tooltip" data-placement="top" title="Cancel" >
                         <span class="glyphicon glyphicon glyphicon-star"></span>
                     </a>
                 {% else %}
-                    <a class="btn btn-primary" href="{% url 'recruit:add_participation' pk=post.pk %}?next={{ request.path }}" role="button" >
+                    <a class="btn btn-primary" href="{% url 'recruit:add_participation' pk=post.pk %}?next={{ request.path }}"
+                       data-toggle="tooltip" data-placement="top" title="Attend" role="button" >
                         <span class="glyphicon glyphicon glyphicon-star-empty"></span>
                     </a>
                 {% endif %}
@@ -30,6 +32,7 @@
             {% endif %}
         </p>
         <p>모임시간 - {{ post.meeting_date }}</p>
+        <p>참여자 - {{ attend_users }}</p>
         <p>{{ post.content|safe|linebreaks }}</p>
         <div id="map" style="width: 600px; height: 300px;"></div>
     </div>

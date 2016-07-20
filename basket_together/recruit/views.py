@@ -41,11 +41,15 @@ def post_new(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    attend_users = ''
+    for user in post.attend_users():
+        attend_users += user + ','
     try:
         participation = Participation.objects.filter(user=request.user, post=post)
     except ObjectDoesNotExist:
         participation = None
-    return render(request, 'recruit/post_detail.html', {'post': post, 'participation': participation})
+    return render(request, 'recruit/post_detail.html',
+                  {'post': post, 'participation': participation, 'attend_users': attend_users[0:-1]})
 
 
 def post_edit(request, pk):
