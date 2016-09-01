@@ -121,18 +121,17 @@ WSGI_APPLICATION = 'basket_together.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'NAME': os.path.join(BASE_DIR, '../database/db_web.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, '../database/db.sqlite3'),
         'USER': 'test',
         'PASSWORD': '1234qwer'
     },
-    'api_server': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'NAME': os.path.join(BASE_DIR, '../database/db_api.sqlite3'),
-        'USER': 'test',
-        'PASSWORD': '1234qwer'
-    }
+    # 'api_server': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    #     'NAME': os.path.join(BASE_DIR, '../database/db_api.sqlite3'),
+    #     'USER': 'test',
+    #     'PASSWORD': '1234qwer'
+    # }
 }
 
 
