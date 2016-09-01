@@ -15,7 +15,7 @@ import os
 from os.path import abspath, dirname
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = dirname(dirname(dirname(abspath(__file__))))
+BASE_DIR = abspath(dirname(dirname(dirname(__file__))))
 ROOT = lambda *wargs: os.path.join(BASE_DIR, *wargs)
 
 # Quick-start development settings - unsuitable for production
@@ -122,7 +122,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'NAME': os.path.join(PROJECT_FOLDER, 'development.db'),
+        'NAME': os.path.join(PROJECT_FOLDER, '../database/db.sqlite3'),
     }
 }
 
@@ -164,9 +164,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'basket_together', 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
 
-AUTH_PROFILE_MODULE = 'user_profile.UserProfile'
+# AUTH_PROFILE_MODULE = 'user_profile.UserProfile'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
@@ -178,5 +178,5 @@ MESSAGE_TAGS = {
     message_constants.ERROR: 'danger',
 }
 
-MEDIA_ROOT = ROOT('media')
+MEDIA_ROOT = ROOT('../media')
 MEDIA_URL = '/media/'

@@ -5,7 +5,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-STATIC_ROOT = os.path.join(BASE_DIR, '..', 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
 
 # Django 내 암호화 시에 salt 값으로 사용.
