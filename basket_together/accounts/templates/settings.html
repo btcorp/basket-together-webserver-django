@@ -1,0 +1,33 @@
+{% extends 'recruit/index.html' %}
+
+{% block content %}
+    <div class="col-sm-6 col-sm-offset-3">
+        <ul id="myTab" class="nav nav-tabs" >
+            <li>
+                <a href="{% url 'user_profile' %}" role="tab" >Profile</a>
+            </li>
+            <li>
+                <a href="{% url 'friend_list' page=1 %}" >Friends</a>
+            </li>
+            <li>
+                <a href="{% url 'recruit:participations' page=1 %}" >Participations</a>
+            </li>
+        </ul>
+
+        <div>
+            {% block body %}
+            {% endblock %}
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $('#myTab li').click(function (e) {
+            $(this).toggleClass('active');
+        });
+
+        <!--$(document).ready(function() {-->
+            <!--$('#myTab li:first').tab('show');-->
+        <!--});-->
+    </script>
+{% endblock %}
+
