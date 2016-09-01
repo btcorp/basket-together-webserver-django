@@ -1,7 +1,5 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
-from datetimewidget.widgets import DateTimeWidget
 
 RECRUIT_STATUS = (
     (0, ),
@@ -30,6 +28,21 @@ class Post(models.Model):
     def registered_comments(self):
         return self.comments.filter(post=self.pk)
 
+    def as_json(self):
+        return {
+            'id': self.id,
+            'author_id': self.author.id,
+            'author_name': self.author.username,
+            'title': self.title,
+            'content': self.content,
+            'recruit_count': self.recruit_count,
+            'attend_count': self.attend_count,
+            'comments': self.comments.all(),
+            'comments_count': self.comments.all().count(),
+            'registered_date': self.registered_date,
+            'recruit_status': self.recruit_status,
+        }
+
     @property
     def lat(self):
         if self.latlng:
@@ -57,7 +70,15 @@ class Comment(models.Model):
     registered_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.text
+        return self.content
+
+    def as_json(self):
+        return {
+            'id': self.id,
+            'content': self.content,
+            'registered_date': self.registered_date,
+
+        }
 
 
 class Participation(models.Model):
