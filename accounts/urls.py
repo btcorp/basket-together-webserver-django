@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^profile/$', views.user_profile, name='user_profile'),
     url(r'^login/', login, {
         'authentication_form': LoginForm,
+        'template_name': 'registration/login.html',
     }, name='login'),
     url(r'^logout/', logout_then_login, name='logout'),
     url(r'^signup/$', views.signup, name='signup'),

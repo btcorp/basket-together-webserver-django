@@ -1,12 +1,12 @@
-from accounts.forms import UserProfileForm, UserForm
-from accounts.forms import SignupForm
+# -*- coding:utf-8 -*-
+
+from accounts.forms import SignupForm, UserProfileForm, UserForm
 from accounts.models import Friendship
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_list_or_404, get_object_or_404, render, redirect
 
@@ -53,6 +53,7 @@ def signup(request):
     return render(request, 'registration/signup.html', {'form': form})
 
 
+@login_required
 def friend_list(request, page=1):
     friends = list(i.to_friend for i in request.user.from_friends.all())
     paginator = Paginator(friends, 10)
@@ -62,6 +63,7 @@ def friend_list(request, page=1):
     return render(request, 'friend_list.html', {'friends': contacts, 'page_range': page_range})
 
 
+@login_required
 def add_friend(request, username):
     friend = get_object_or_404(get_user_model(), username=username)
     next_url = request.GET.get('next', '')
@@ -73,6 +75,7 @@ def add_friend(request, username):
     return HttpResponseRedirect(next_url)
 
 
+@login_required
 def remove_friend(request, username):
     next_url = request.GET.get('next', '')
     friend = get_object_or_404(get_user_model(), username=username)
