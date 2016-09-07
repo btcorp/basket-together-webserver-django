@@ -1,3 +1,5 @@
+# -*- coding:utf-8 -*-
+
 from django.db import models
 from django.utils import timezone
 
@@ -6,12 +8,14 @@ RECRUIT_STATUS = (
     (),
 )
 
+DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+
 
 class Post(models.Model):
     author = models.ForeignKey('auth.User')
     title = models.CharField(max_length=100)
     content = models.TextField()
-    registered_date = models.DateTimeField(default=timezone.now)
+    registered_date = models.DateTimeField(default=timezone.now().strftime(DATETIME_FORMAT))
     recruit_count = models.IntegerField()
     attend_count = models.IntegerField(default=1)
     recruit_status = models.CharField(max_length=1, default='0')   # 0:모집중, 1:모집완료
@@ -19,8 +23,8 @@ class Post(models.Model):
     address2 = models.CharField(max_length=100)
     address3 = models.CharField(max_length=100)
     comment_count = models.IntegerField(default=0)
-    latlng = models.CharField(max_length=50, blank=True)
-    meeting_date = models.DateTimeField(default=timezone.now)
+    latlng = models.CharField(max_length=50, blank=True, default='37.497921,127.027636')
+    meeting_date = models.DateTimeField(default=timezone.now().strftime(DATETIME_FORMAT))
 
     def __str__(self):
         return self.title
@@ -67,7 +71,7 @@ class Comment(models.Model):
     post = models.ForeignKey('recruit.Post', related_name='comments')
     author = models.ForeignKey('auth.User')
     content = models.TextField()
-    registered_date = models.DateTimeField(default=timezone.now)
+    registered_date = models.DateTimeField(default=timezone.now().strftime(DATETIME_FORMAT))
 
     def __str__(self):
         return self.content
