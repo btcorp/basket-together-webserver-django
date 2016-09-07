@@ -1,3 +1,5 @@
+# -*- coding:utf-8 -*-
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -45,13 +47,14 @@ def post_detail(request, pk):
     for user in post.attend_users():
         attend_users += user + ','
     try:
-        participation = Participation.objects.filter(user=request.user, post=post)
+        participation = Participation.objects.filter(post=post)
     except ObjectDoesNotExist:
         participation = None
     return render(request, 'recruit/post_detail.html',
                   {'post': post, 'participation': participation, 'attend_users': attend_users[0:-1]})
 
 
+@login_required
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
@@ -65,10 +68,11 @@ def post_edit(request, pk):
     return render(request, 'recruit/post_new.html', {'form': form})
 
 
+@login_required
 def post_remove(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.delete()
-    return redirect('recruit:post_list')
+    return redirect('recruit:post_list', page=1)
 
 
 @login_required

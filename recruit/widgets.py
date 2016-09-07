@@ -1,10 +1,12 @@
+# -*- coding:utf-8 -*-
+
 import re
 from django import forms
 from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 
 
-class GoogleMapWidget(forms.TextInput):
+class GoogleMapWidget(forms.HiddenInput):
     def render(self, name, value, attrs=None):
         self.attrs['type'] = 'hidden'
 
