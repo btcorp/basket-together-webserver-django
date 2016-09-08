@@ -76,7 +76,7 @@ REST_FRAMEWORK = {
 
 #############################  AUTH  ###################################
 
-# AUTH_USER_MODEL = 'custom_user.CustomUser'
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # AUTHENTICATION_BACKENDS = ('custom_user.backends.CustomUserAuth',)
 
