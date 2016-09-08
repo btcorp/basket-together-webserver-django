@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
 
 RECRUIT_STATUS = (
     (0, ),
@@ -12,7 +13,7 @@ DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 
 class Post(models.Model):
-    author = models.ForeignKey('auth.User')
+    author = models.ForeignKey(settings.AUTH_USER_MODEL)
     title = models.CharField(max_length=100)
     content = models.TextField()
     registered_date = models.DateTimeField(default=timezone.now().strftime(DATETIME_FORMAT))
@@ -68,8 +69,8 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    post = models.ForeignKey('recruit.Post', related_name='comments')
-    author = models.ForeignKey('auth.User')
+    post = models.ForeignKey(Post, related_name='comments')
+    author = models.ForeignKey(settings.AUTH_USER_MODEL)
     content = models.TextField()
     registered_date = models.DateTimeField(default=timezone.now().strftime(DATETIME_FORMAT))
 
@@ -86,8 +87,8 @@ class Comment(models.Model):
 
 
 class Participation(models.Model):
-    post = models.ForeignKey('recruit.Post', related_name='bookmarks')
-    user = models.ForeignKey('auth.User', related_name='users')
+    post = models.ForeignKey(Post, related_name='bookmarks')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='users')
 
     def __str__(self):
         return self.post.title
