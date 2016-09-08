@@ -1,15 +1,8 @@
 from accounts.models import Profile
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, ReadOnlyPasswordHashField, UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm, ReadOnlyPasswordHashField
 from django.utils.translation import ugettext_lazy as _
 from .models import CustomUser
-
-
-class UserForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ('email', )
 
 
 class UserProfileForm(forms.ModelForm):
@@ -18,15 +11,9 @@ class UserProfileForm(forms.ModelForm):
         fields = ('phone_number', 'device_type', 'user_image', )
 
 
-class SignupForm(UserCreationForm):
-    class Meta:
-        model = User
-        fields = ('username', 'password1', 'password2', 'email')
-
-
 class LoginForm(AuthenticationForm):
     class Meta:
-        model = User
+        model = CustomUser
         fields = ('username', 'password', )
 
 
@@ -70,7 +57,6 @@ class UserCreationForm(forms.ModelForm):
         user.set_password(self.cleaned_data["password1"])
         if commit:
             user.save()
-            user.profile = property(lambda user: Profile.objects.get_or_create(user=user)[0])
         return user
 
 

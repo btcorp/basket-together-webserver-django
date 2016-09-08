@@ -24,6 +24,7 @@ def phonenumber_validator(value):
 class PhoneNumberField(models.CharField):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('max_length', 15)
+        kwargs.setdefault('help_text', "'-' 없이 번호를 입력해주세요.")
         kwargs.setdefault('validators', [])
         kwargs['validators'].append(phonenumber_validator)
         super(PhoneNumberField, self).__init__(*args, **kwargs)

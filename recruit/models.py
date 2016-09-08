@@ -63,7 +63,7 @@ class Post(models.Model):
     def attend_users(self):
         participations = Participation.objects.filter(post=self)
         if participations:
-            return list(i.user.username for i in participations)
+            return list(i.user.email for i in participations)
         else:
             return []
 

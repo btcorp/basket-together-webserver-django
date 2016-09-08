@@ -28,7 +28,7 @@
         <h1>{{ post.title }} </h1>
         <p>작성자 - {{ post.author }}
             {% if request.user != post.author %}
-            <a href="{% url 'add_friend' username=post.author.username %}?next={{ request.path }}">[+]</a>
+            <a href="{% url 'add_friend' id=post.author.id %}?next={{ request.path }}">[+]</a>
             {% endif %}
         </p>
         <p>모임시간 - {{ post.meeting_date }}</p>
