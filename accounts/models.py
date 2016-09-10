@@ -2,10 +2,11 @@
 
 import re
 from django.conf import settings
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractUser, AbstractBaseUser, PermissionsMixin, User
+from django.contrib.auth.validators import ASCIIUsernameValidator, UnicodeUsernameValidator
 from django.db import models
 from django.forms import ValidationError
-from django.utils import timezone
+from django.utils import six, timezone
 from django.utils.translation import ugettext_lazy as _
 from .managers import CustomUserManager
 
@@ -29,7 +30,7 @@ class PhoneNumberField(models.CharField):
         kwargs['validators'].append(phonenumber_validator)
         super(PhoneNumberField, self).__init__(*args, **kwargs)
 
-
+"""
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         verbose_name='email address',
@@ -74,16 +75,21 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     @property
     def is_staff(self):
         return self.is_admin
+"""
 
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    nickname = models.CharField(max_length=20, blank=True)
     phone_number = PhoneNumberField(max_length=12, blank=True)
     device_type = models.CharField(max_length=10, choices=DEVICE_TYPE, default='ANDROID')
     join_path = models.CharField(max_length=20, default='general')
     attend_count = models.IntegerField(blank=True, default=0)
     penalty_count = models.IntegerField(blank=True, default=0)
     user_image = models.ImageField(blank=True, upload_to='%Y/%m/%d')
+
+    def __str__(self):  # __unicode__ on Python 2
+        return self.user.username
 
 
 class Friendship(models.Model):
@@ -97,5 +103,24 @@ class Friendship(models.Model):
         return '{}, {}'.format(self.from_friend, self.to_friend)
 
 
-CustomUser.profile = property(lambda user: Profile.objects.get_or_create(user=user)[0])
+class ExtendedUser(AbstractUser):
+    username_validator = UnicodeUsernameValidator() if six.PY3 else ASCIIUsernameValidator()
+
+    username = models.CharField(
+        _('Username or Email'),
+        max_length=150,
+        unique=True,
+        help_text=_('Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.'),
+        validators=[username_validator],
+        error_messages={
+            'unique': _("A user with that username already exists."),
+        },
+    )
+
+    def get_profile(self):
+        return self.profile
+
+
+# CustomUser.profile = property(lambda user: Profile.objects.get_or_create(user=user)[0])
+ExtendedUser.profile = property(lambda user: Profile.objects.get_or_create(user=user)[0])
 

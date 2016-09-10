@@ -1,22 +1,38 @@
 from accounts.models import Profile
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, ReadOnlyPasswordHashField
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm, ReadOnlyPasswordHashField, UserCreationForm
 from django.utils.translation import ugettext_lazy as _
-from .models import CustomUser
+from django.contrib.auth import get_user_model
+
+
+class SignupForm(UserCreationForm):
+
+    class Meta:
+        model = get_user_model()
+        fields = ('username', 'password1', 'password2', )
+
+
+class LoginForm(AuthenticationForm):
+    class Meta:
+        model = get_user_model()
+        fields = ('username', 'password', )
+
+
+class UserForm(forms.ModelForm):
+
+    class Meta:
+        model = get_user_model()
+        fields = ('email',)
 
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('phone_number', 'device_type', 'user_image', )
+        fields = ('nickname', 'phone_number', 'user_image',)
 
 
-class LoginForm(AuthenticationForm):
-    class Meta:
-        model = CustomUser
-        fields = ('username', 'password', )
-
-
+'''
 class UserCreationForm(forms.ModelForm):
     """
     A form that creates a user, with no privileges, from the given username and
@@ -38,7 +54,7 @@ class UserCreationForm(forms.ModelForm):
     )
 
     class Meta:
-        model = CustomUser
+        model = get_user_model()
         fields = ("email",)
 
     def clean_password2(self):
@@ -71,7 +87,7 @@ class UserChangeForm(forms.ModelForm):
     )
 
     class Meta:
-        model = CustomUser
+        model = get_user_model()
         fields = '__all__'
 
     def clean_password(self):
@@ -79,3 +95,4 @@ class UserChangeForm(forms.ModelForm):
         # This is done here, rather than on the field, because the
         # field does not have access to the initial value
         return self.initial["password"]
+'''

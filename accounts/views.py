@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from accounts.forms import UserCreationForm, UserProfileForm
+from accounts.forms import UserCreationForm, UserProfileForm, SignupForm
 from accounts.models import Friendship
 from django.conf import settings
 from django.contrib import messages
@@ -37,7 +37,7 @@ def signup(request):
     Form to register User
     """
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SignupForm(request.POST)
         # form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
@@ -45,7 +45,7 @@ def signup(request):
             return redirect(settings.LOGIN_URL + '?next=' + next_url)
 
     # form = UserCreationForm()
-    form = UserCreationForm()
+    form = SignupForm()
     return render(request, 'registration/signup.html', {'form': form})
 
 
