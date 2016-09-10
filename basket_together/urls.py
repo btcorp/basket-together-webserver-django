@@ -5,6 +5,7 @@ from django.contrib import admin
 from basket_together import views
 
 urlpatterns = [
+    url(r'', include('social.apps.django_app.urls', namespace='social')),
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index, name='index'),
     url(r'^accounts/', include('accounts.urls')),

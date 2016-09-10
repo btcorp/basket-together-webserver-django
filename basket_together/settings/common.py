@@ -54,34 +54,65 @@ INSTALLED_APPS = [
     'bootstrap3',
     # 'crispy_forms',
     'datetimewidget',
-    'debug_toolbar',
+    # 'debug_toolbar',
     'django_summernote',
+    'social.apps.django_app.default',
 
     # local apps
     'accounts',
     'recruit',
     ]
 
-"""
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    )
+# AUTH_USER_MODEL = 'accounts.CustomUser'
+AUTH_USER_MODEL = 'accounts.ExtendedUser'
+
+AUTHENTICATION_BACKENDS = (
+    'social.backends.facebook.FacebookOAuth2',
+    # 'social.backends.twitter.TwitterOAuth',
+    # 'social.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend'
+)
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+# Facebook
+SOCIAL_AUTH_FACEBOOK_KEY = '1141181879288987'   # Facebook App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = '4a9f148f3df1e68cb32654bfbe361c4c'    # Facebook App Secret Key
+
+# Google
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = ''
+
+# Twitter
+# SOCIAL_AUTH_TWITTER_KEY = ''
+# SOCIAL_AUTH_TWITTER_SECRET = ''
+
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
+
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']          # email을 가져오기 위한 설정.
+# FACEBOOK_EXTENDED_PERMISSIONS = ['email']
+
+
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+  'fields': 'id, name, email, age_range, first_name, last_name, picture, gender'
 }
-"""
 
-#############################  AUTH  ###################################
-
-AUTH_USER_MODEL = 'accounts.CustomUser'
-
-# AUTHENTICATION_BACKENDS = ('custom_user.backends.CustomUserAuth',)
-
-########################################################################
-
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    # 'social.pipeline.partial.save_status_to_session',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    'social.pipeline.social_auth.associate_by_email',
+    'social.pipeline.user.create_user',
+    'accounts.social.save_profile',
+    # 'accounts.social.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details'
+)
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -107,6 +138,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
             ],
         },
     },
@@ -153,7 +186,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
@@ -172,6 +204,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
+
+# AUTH_PROFILE_MODULE = 'user_profile.UserProfile'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+SITE_ID = 2
 STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
 
 # AUTH_PROFILE_MODULE = 'user_profile.UserProfile'
