@@ -3,20 +3,26 @@
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+import pytz
 
 RECRUIT_STATUS = (
     (0, ),
     (),
 )
 
-DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+
+def change_timezone():
+    seoul_tz = pytz.timezone('Asia/Seoul')
+    datetime_format = "%Y-%m-%d %H:%M:%S"
+    localized_time = timezone.now()
+    return seoul_tz.normalize(localized_time).strftime(datetime_format)
 
 
 class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
     title = models.CharField(max_length=100)
     content = models.TextField()
-    registered_date = models.DateTimeField(default=timezone.now().strftime(DATETIME_FORMAT))
+    registered_date = models.DateTimeField(default=change_timezone)
     recruit_count = models.IntegerField()
     attend_count = models.IntegerField(default=1)
     recruit_status = models.CharField(max_length=1, default='0')   # 0:모집중, 1:모집완료
@@ -25,7 +31,7 @@ class Post(models.Model):
     address3 = models.CharField(max_length=100)
     comment_count = models.IntegerField(default=0)
     latlng = models.CharField(max_length=50, blank=True, default='37.497921,127.027636')
-    meeting_date = models.DateTimeField(default=timezone.now().strftime(DATETIME_FORMAT))
+    meeting_date = models.DateTimeField(default=change_timezone)
 
     def __str__(self):
         return self.title
@@ -72,7 +78,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, related_name='comments')
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
     content = models.TextField()
-    registered_date = models.DateTimeField(default=timezone.now().strftime(DATETIME_FORMAT))
+    registered_date = models.DateTimeField(default=change_timezone)
 
     def __str__(self):
         return self.content
@@ -87,7 +93,7 @@ class Comment(models.Model):
 
 
 class Participation(models.Model):
-    post = models.ForeignKey(Post, related_name='bookmarks')
+    post = models.ForeignKey(Post, related_name='participations')
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='users')
 
     def __str__(self):
