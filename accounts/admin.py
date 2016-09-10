@@ -1,10 +1,11 @@
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import Group
-from .forms import UserChangeForm, UserCreationForm
-from .models import CustomUser
+from django.contrib.auth.models import Group, User
+from .models import Profile, ExtendedUser
 
 
+"""
 class CustomUserAdmin(UserAdmin):
     # The forms to add and change user instances
     form = UserChangeForm
@@ -32,8 +33,21 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ('email',)
     ordering = ('email',)
     filter_horizontal = ()
+"""
 
 
-admin.site.register(CustomUser, CustomUserAdmin)
+class ProfileInline(admin.StackedInline):
+    model = Profile
 
-admin.site.unregister(Group)
+
+class UserAdmin(admin.ModelAdmin):
+    inlines = [ProfileInline]
+
+
+# admin.site.unregister(User)
+
+# admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(ExtendedUser, UserAdmin)
+
+admin.site.register(Profile)
+# admin.site.unregister(Group)
