@@ -1,4 +1,4 @@
-django==1.9.7
+Django==1.10
 django-bootstrap3
 django-datetime-widget
 django-debug-toolbar
