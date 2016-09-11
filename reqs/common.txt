@@ -4,3 +4,4 @@ django-datetime-widget
 django-debug-toolbar
 django-summernote
 pillow
+python-social-auth==0.2.21
