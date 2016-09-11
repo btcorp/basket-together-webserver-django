@@ -3,18 +3,12 @@
 import re
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, AbstractBaseUser, PermissionsMixin, User
-from django.contrib.auth.validators import ASCIIUsernameValidator, UnicodeUsernameValidator
+from django.contrib.auth import validators
 from django.db import models
 from django.forms import ValidationError
 from django.utils import six, timezone
 from django.utils.translation import ugettext_lazy as _
 from .managers import CustomUserManager
-
-
-DEVICE_TYPE = (
-    ('a', 'ANDROID'),
-    ('i', 'IOS'),
-)
 
 
 def phonenumber_validator(value):
@@ -79,6 +73,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Profile(models.Model):
+    DEVICE_TYPE = (
+        ('a', 'ANDROID'),
+        ('i', 'IOS'),
+    )
+
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     nickname = models.CharField(max_length=20, blank=True)
     phone_number = PhoneNumberField(max_length=12, blank=True)
@@ -90,6 +89,21 @@ class Profile(models.Model):
 
     def __str__(self):  # __unicode__ on Python 2
         return self.user.username
+
+    def get_object(self):
+        return Profile.objects.get(user=self.request.user)
+
+    def as_json(self):
+        return {
+            'user_id': self.user.id,
+            'user_name': self.user.username,
+            'email': self.user.email,
+            'phone_number': self.phone_number,
+            'device_type': self.device_type,
+            'attend_count': self.attend_count,
+            'penalty_count': self.penalty_count,
+            # 'user_image': self.user_image
+        }
 
 
 class Friendship(models.Model):
@@ -104,7 +118,7 @@ class Friendship(models.Model):
 
 
 class ExtendedUser(AbstractUser):
-    username_validator = UnicodeUsernameValidator() if six.PY3 else ASCIIUsernameValidator()
+    username_validator = validators.UnicodeUsernameValidator() if six.PY3 else validators.ASCIIUsernameValidator()
 
     username = models.CharField(
         _('Username or Email'),

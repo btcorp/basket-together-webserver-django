@@ -5,11 +5,6 @@ from django.utils import timezone
 from django.conf import settings
 import pytz
 
-RECRUIT_STATUS = (
-    (0, ),
-    (),
-)
-
 
 def change_timezone():
     seoul_tz = pytz.timezone('Asia/Seoul')
@@ -19,19 +14,27 @@ def change_timezone():
 
 
 class Post(models.Model):
+    RECRUIT_STATUS = (
+        (0, '모집중'),
+        (1, '모집완료'),
+    )
+
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
     title = models.CharField(max_length=100)
     content = models.TextField()
     registered_date = models.DateTimeField(default=change_timezone)
     recruit_count = models.IntegerField()
     attend_count = models.IntegerField(default=1)
-    recruit_status = models.CharField(max_length=1, default='0')   # 0:모집중, 1:모집완료
+    recruit_status = models.IntegerField(max_length=1, choices=RECRUIT_STATUS, default='모집중')   # 0:모집중, 1:모집완료
     address1 = models.CharField(max_length=100)
     address2 = models.CharField(max_length=100)
     address3 = models.CharField(max_length=100)
     comment_count = models.IntegerField(default=0)
     latlng = models.CharField(max_length=50, blank=True, default='37.497921,127.027636')
     meeting_date = models.DateTimeField(default=change_timezone)
+
+    class Meta:
+        ordering = ('-registered_date',)
 
     def __str__(self):
         return self.title
@@ -47,6 +50,7 @@ class Post(models.Model):
             'title': self.title,
             'content': self.content,
             'recruit_count': self.recruit_count,
+            'attend_list': self.participations.all(),
             'attend_count': self.attend_count,
             'comments': self.comments.all(),
             'comments_count': self.comments.all().count(),
@@ -87,8 +91,9 @@ class Comment(models.Model):
         return {
             'id': self.id,
             'content': self.content,
+            'author_id': self.author.id,
+            'author_name': self.author.username,
             'registered_date': self.registered_date,
-
         }
 
 
@@ -96,5 +101,16 @@ class Participation(models.Model):
     post = models.ForeignKey(Post, related_name='participations')
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='users')
 
+    class Meta:
+        unique_together = ('post', 'user', )
+
     def __str__(self):
         return self.post.title
+
+    def as_json(self):
+        return {
+            'id': self.id,
+            'post_id': self.post.id,
+            'user_id': self.user.id,
+            'user_name': self.user.username,
+        }
