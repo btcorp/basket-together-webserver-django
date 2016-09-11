@@ -3,7 +3,7 @@
 import re
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, AbstractBaseUser, PermissionsMixin, User
-from django.contrib.auth import validators
+from django.contrib.auth.validators import ASCIIUsernameValidator, UnicodeUsernameValidator
 from django.db import models
 from django.forms import ValidationError
 from django.utils import six, timezone
@@ -118,7 +118,7 @@ class Friendship(models.Model):
 
 
 class ExtendedUser(AbstractUser):
-    username_validator = validators.UnicodeUsernameValidator() if six.PY3 else validators.ASCIIUsernameValidator()
+    username_validator = UnicodeUsernameValidator() if six.PY3 else ASCIIUsernameValidator()
 
     username = models.CharField(
         _('Username or Email'),
