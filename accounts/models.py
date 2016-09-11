@@ -117,7 +117,7 @@ class Friendship(models.Model):
 
 
 class ExtendedUser(AbstractUser):
-    username_validator = UnicodeUsernameValidator() if six.PY3 else ASCIIUsernameValidator()
+    # username_validator = UnicodeUsernameValidator() if six.PY3 else ASCIIUsernameValidator()
 
     username = models.CharField(
         _('Username or Email'),
