@@ -1,4 +1,8 @@
+from django.core.files.base import ContentFile
+from social.utils import slugify
+from urllib.request import urlopen
 from .models import Profile
+
 
 USER_FIELDS = ['email', ]
 
@@ -35,3 +39,12 @@ def save_profile(backend, user, response, *args, **kwargs):
 
         profile.save()
         user.save()
+
+
+def update_avatar(backend, response, user, uid, *args, **kwargs):
+    if backend.name == 'facebook':
+        url = "http://graph.facebook.com/%s/picture?type=large" % response['id']
+        avatar = urlopen(url)
+        profile = user.get_profile()
+        profile.user_image.save(slugify(user.username + " social") + '.jpg', ContentFile(avatar.read()))
+        profile.save()

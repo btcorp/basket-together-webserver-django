@@ -77,9 +77,9 @@ SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 # Facebook App ID
-SOCIAL_AUTH_FACEBOOK_KEY = '1141173975956444'
+SOCIAL_AUTH_FACEBOOK_KEY = '1141181879288987'
 # Facebook App Secret Key
-SOCIAL_AUTH_FACEBOOK_SECRET = 'd829612eb38f7d98c0434e3379ee545a'
+SOCIAL_AUTH_FACEBOOK_SECRET = '4a9f148f3df1e68cb32654bfbe361c4c'
 
 # Google
 # SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = ''
@@ -109,6 +109,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.associate_by_email',
     'social.pipeline.user.create_user',
     'accounts.social.save_profile',
+    'accounts.social.update_avatar',
     # 'accounts.social.create_user',
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
