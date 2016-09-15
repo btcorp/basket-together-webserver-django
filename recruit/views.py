@@ -34,6 +34,7 @@ def post_new(request):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
+            add_participation(request, post.id)
             messages.success(request, '포스팅이 등록되었습니다.')
             return redirect('recruit:post_detail', pk=post.pk)
     else:
