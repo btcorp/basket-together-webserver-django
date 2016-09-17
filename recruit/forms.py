@@ -15,7 +15,7 @@ dateTimeOptions = {
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'content', 'meeting_date', 'recruit_count', 'latlng')
+        fields = ('title', 'content', 'meeting_date', 'recruit_count', 'latlng', 'address1', 'address2')
         widgets = {
             'content': SummernoteWidget,
             'meeting_date': DateTimeWidget(usel10n=True, bootstrap_version=3, options=dateTimeOptions),
