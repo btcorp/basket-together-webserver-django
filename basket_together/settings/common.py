@@ -230,3 +230,66 @@ MESSAGE_TAGS = {
 
 MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'media')
 MEDIA_URL = '/media/'
+
+# Support customization via settings.
+SUMMERNOTE_CONFIG = {
+    # Using SummernoteWidget - iframe mode
+    'iframe': True,  # or set False to use SummernoteInplaceWidget - no iframe mode
+
+    # Using Summernote Air-mode
+    'airMode': False,
+
+    # Use native HTML tags (`<b>`, `<i>`, ...) instead of style attributes
+    # (Firefox, Chrome only)
+    'styleWithTags': True,
+
+    # Set text direction : 'left to right' is default.
+    'direction': 'ltr',
+
+    # Change editor size
+    'width': '100%',
+    'height': '480',
+
+    # Use proper language setting automatically (default)
+    'lang': None,
+
+    # Or, set editor language/locale forcely
+    'lang': 'ko-KR',
+
+    # Customize toolbar buttons
+    'toolbar': [
+        ['style', ['style']],
+        ['style', ['bold', 'italic', 'underline', 'clear']],
+        ['para', ['ul', 'ol', 'height']],
+        ['insert', ['link']],
+    ],
+
+    # Need authentication while uploading attachments.
+    'attachment_require_authentication': True,
+
+    # Set `upload_to` function for attachments.
+    # 'attachment_upload_to': my_custom_upload_to_func(),
+
+    # You can add custom css/js for SummernoteWidget.
+    'css': (
+    ),
+    'js': (
+    ),
+
+    # And also for SummernoteInplaceWidget.
+    # !!! Be sure to put {{ form.media }} in template before initiate summernote.
+    'css_for_inplace': (
+    ),
+    'js_for_inplace': (
+    ),
+
+    # You can disable file upload feature.
+    'disable_upload': False,
+
+    # Codemirror as codeview
+    'codemirror': {
+            # Please visit http://summernote.org/examples/#codemirror-as-codeview
+            'theme': 'monokai',
+    },
+
+}
