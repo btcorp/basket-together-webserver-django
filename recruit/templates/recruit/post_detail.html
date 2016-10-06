@@ -1,9 +1,9 @@
 {% extends 'recruit/base.html' %}
 
 {% block content %}
-<div class="col-sm-6 col-sm-offset-3" >
+<div class="col-sm-8 col-sm-offset-2" >
     <div class="post" >
-        <div class="date" >
+        <div >
             {% if user.is_authenticated and user == post.author %}
                 <a class="btn btn-primary" href="{% url 'recruit:post_edit' pk=post.pk %}" role="button" >
                     <span class="glyphicon glyphicon-pencil"></span>
@@ -12,7 +12,7 @@
                     <span class="glyphicon glyphicon-remove"></span>
                 </a>
             {% elif user.is_authenticated %}
-                {% if participation %}
+                {% if user.username in attend_users %}
                     <a class="btn btn-primary" href="{% url 'recruit:remove_participation' pk=post.pk %}" role="button"
                             data-toggle="tooltip" data-placement="top" title="Cancel" >
                         <span class="glyphicon glyphicon glyphicon-star"></span>
@@ -25,32 +25,41 @@
                 {% endif %}
             {% endif %}
         </div>
-        <h1>{{ post.title }} </h1>
-        <p>작성자 - {{ post.author }}
-            {% if request.user != post.author %}
-            <a href="{% url 'add_friend' id=post.author.id %}?next={{ request.path }}">[+]</a>
-            {% endif %}
-        </p>
-        <p>모임시간 - {{ post.meeting_date }}</p>
-        <p>참여자 - {{ attend_users }}</p>
-        <p>{{ post.content|safe|linebreaks }}</p>
-        <div id="map" style="width: 600px; height: 300px;"></div>
-    </div>
+        <div class="content">
+            <h1>{{ post.title }} </h1><br/>
+            <p><strong>작성자</strong> : {{ post.author }}
+                {% if request.user != post.author %}
+                <a href="{% url 'add_friend' id=post.author.id %}?next={{ request.path }}">[+]</a>
+                {% endif %}
+            </p>
+            <p><strong>모임시간</strong> : {{ post.meeting_date }}</p>
+            <p><strong>참여자</strong> : {{ attend_users }}</p><br/>
+            <p class="content">{{ post.content|safe|linebreaks }}</p><br/>
+            <div id="map" style="width: 550px; height: 300px;"></div>
+        </div>
+    </div><br/>
     <a class="btn btn-default" href="{% url 'recruit:add_comment_to_post' pk=post.pk %}" >Add comment</a>
     {% for comment in post.comments.all %}
-    <div class="comment">
-        <div class="date">
-            created date: {{ comment.registered_date }}
-            <a class="btn btn-default" href="{% url 'recruit:comment_remove' pk=comment.pk %}">
-                <span class="glyphicon glyphicon-remove"></span>
-            </a>
+        <div class="comment">
+            <div class="date">
+                <strong>작성 시간</strong>: {{ comment.registered_date }}
+                <a class="btn btn-default" href="{% url 'recruit:comment_remove' pk=comment.pk %}">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </a>
+            </div>
+            <p><strong>작성자</strong>: {{ comment.author }}</p>
+            <p>{{ comment.content|linebreaks }}</p>
         </div>
-        <strong>Author: {{ comment.author }}</strong>
-        <p>{{ comment.content|linebreaks }}</p>
-    </div>
     {% empty %}
         <p>No comments here yet :( </p>
     {% endfor %}
+</div>
+
+<div
+  class="fb-like"
+  data-share="true"
+  data-width="450"
+  data-show-faces="true">
 </div>
 
 <script>

@@ -14,18 +14,18 @@
         </p>
     </div>
 
-    <div class="row" style="margin: 30px 30px;" >
+    <div class="row" >
         {% for post in posts %}
         <div class="col-md-3 simple-post" >
-            <h2>
-                {{ post.title }}
-            </h2>
-            <p>
-                {{ post.content|safe|linebreaks }}
-            </p>
-            <p>
-                    <a class="btn" href="{% url 'recruit:post_detail' pk=post.pk %}" >View details »</a>
-            </p>
+            <div>
+                <h2>{{ post.title|safe|linebreaks }}</h2>
+            </div>
+            <div class="content">
+                {{ post.content|safe|linebreaks|truncatechars_html:80 }}
+            </div>
+            <div>
+                <a class="btn" href="{% url 'recruit:post_detail' pk=post.pk %}" >View details »</a>
+            </div>
         </div>
         {% endfor %}
     </div>

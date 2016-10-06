@@ -1,5 +1,5 @@
 .jumbotron {
-    margin-bottom: 0px;
+    margin-bottom: 50px;
     background-size: cover;
     background-color: transparent;
     background-image: url('../images/curry2.jpg');
@@ -21,12 +21,27 @@
 }
 
 .simple-post {
-    height: 250px;
+    height: 200px;
     border: 1px solid;
+    word-break: break-all;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 .alert-debug {
     color: #333;
     background-color: #eee;
     border-color: #ccc;
+}
+
+.post {
+    border: 1px solid;
+    padding: 15px;
+}
+
+#id_content_iframe {
+    border: 0px;
+    padding: 0;
 }
