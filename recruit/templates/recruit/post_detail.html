@@ -28,9 +28,13 @@
         <div class="content">
             <h1>{{ post.title }} </h1><br/>
             <p><strong>작성자</strong> : {{ post.author }}
-                {% if request.user != post.author %}
-                <a href="{% url 'add_friend' id=post.author.id %}?next={{ request.path }}">[+]</a>
-                {% endif %}
+                {% ifnotequal request.user post.author %}
+                    {% if not isFriend %}
+                        <a href="{% url 'add_friend' id=post.author.id %}?next={{ request.path }}">[+]</a>
+                    {% else %}
+                        <a href="{% url 'remove_friend' id=post.author.id %}?next={{ request.path }}">[-]</a>
+                    {% endif %}
+                {% endifnotequal %}
             </p>
             <p><strong>모임시간</strong> : {{ post.meeting_date }}</p>
             <p><strong>참여자</strong> : {{ attend_users }}</p><br/>
@@ -38,7 +42,7 @@
             <div id="map" style="width: 550px; height: 300px;"></div>
         </div>
     </div><br/>
-    <a class="btn btn-default" href="{% url 'recruit:add_comment_to_post' pk=post.pk %}" >Add comment</a>
+    <a class="btn btn-default" href="{% url 'recruit:add_comment_to_post' pk=post.pk %}" >댓글 등록</a>
     {% for comment in post.comments.all %}
         <div class="comment">
             <div class="date">
@@ -51,7 +55,7 @@
             <p>{{ comment.content|linebreaks }}</p>
         </div>
     {% empty %}
-        <p>No comments here yet :( </p>
+        <p>아직 댓글이 없습니다 :( </p>
     {% endfor %}
 </div>
 

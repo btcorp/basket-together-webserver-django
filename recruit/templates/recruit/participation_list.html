@@ -7,8 +7,8 @@
             <table class="table table-hover table-condensed" >
                 <tr>
                     <th class="col-md-2">ID</th>
-                    <th class="col-md-5">title</th>
-                    <th class="col-md-5">author</th>
+                    <th class="col-md-5">제목</th>
+                    <th class="col-md-5">글쓴이</th>
                 </tr>
                 {% for contact in contacts %}
                 <tr style="cursor:hand;" onclick="location.href='{% url 'recruit:post_detail' pk=contact.post_id %}'">

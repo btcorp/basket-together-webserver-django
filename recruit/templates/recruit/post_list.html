@@ -3,15 +3,15 @@
 {% block content %}
 
     <div class="col-md-12">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-10 col-md-offset-1">
             <table class="table table-hover table-condensed" >
                 <tr>
                     <th class="col-md-1">ID</th>
-                    <th class="col-md-3">title</th>
-                    <th class="col-md-1">status</th>
-                    <th class="col-md-1">author</th>
-                    <th class="col-md-3">registered date</th>
-                    <th class="col-md-3">meeting date</th>
+                    <th class="col-md-3">제목</th>
+                    <th class="col-md-1">모집현황</th>
+                    <th class="col-md-1">글쓴이</th>
+                    <th class="col-md-2">등록날짜</th>
+                    <th class="col-md-2">모임날짜</th>
                 </tr>
                 {% for post in posts %}
                 <tr style="cursor:hand;" onclick="location.href='{% url 'recruit:post_detail' pk=post.pk %}'">
@@ -19,8 +19,8 @@
                     <td>{{ post.title }}</td>
                     <td>{{ post.attend_count }}/{{ post.recruit_count }}</td>
                     <td>{{ post.author }}</td>
-                    <td>{{ post.registered_date }}</td>
-                    <td>{{ post.meeting_date }}</td>
+                    <td>{{ post.registered_date|date:'Y-m-d H:i'}}</td>
+                    <td>{{ post.meeting_date|date:'Y-m-d H:i' }}</td>
                 </tr>
                 {% endfor %}
             </table>

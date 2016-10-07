@@ -44,15 +44,23 @@ def post_new(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+
+    isFriend = True if request.user.from_friends.filter(to_friend=post.author) else False
     attend_users = ''
     for user in post.attend_users():
         attend_users += user + ', '
+
     try:
         participation = Participation.objects.filter(post=post)
     except ObjectDoesNotExist:
         participation = None
+
     return render(request, 'recruit/post_detail.html',
-                  {'post': post, 'participation': participation, 'attend_users': attend_users[0:-2]})
+                  {'post': post,
+                   'participation': participation,
+                   'attend_users': attend_users[0:-2],
+                   'isFriend': isFriend,
+                   })
 
 
 @login_required
