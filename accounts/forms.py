@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from accounts.models import Profile
 from django import forms
 from django.contrib.auth.models import User
@@ -11,6 +12,18 @@ class SignupForm(UserCreationForm):
     class Meta:
         model = get_user_model()
         fields = ('username', 'password1', 'password2', )
+
+        # 위젯 커스터마이징
+        widgets = {
+            'username': forms.TextInput(attrs={
+                'placeholder': 'Username or Email',
+            })
+        }
+
+        # 에러 메시지 커스터마이징
+        error_messages = {
+            # 'username': {'required': "You can't have an empty list item"}
+        }
 
 
 class LoginForm(AuthenticationForm):
@@ -30,6 +43,14 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ('nickname', 'phone_number', 'user_image',)
+        labels = {
+            'nickname': '닉네임',
+            'phone_number': '전화번호',
+            'user_image': '이미지',
+        }
+        help_texts = {
+            'user_image': '3MB 이하의 파일만 업데이트 가능합니다.',
+        }
 
 
 '''
