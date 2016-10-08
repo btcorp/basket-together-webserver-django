@@ -13,7 +13,7 @@ from recruit.forms import CommentForm, PostForm
 def post_list(request, page=1):
     try:
         posts = Post.objects.order_by('-registered_date')
-        paginator = Paginator(posts, 5)
+        paginator = Paginator(posts, 10)
         page_range = paginator.page_range
         contacts = paginator.page(page)
     except EmptyPage:
@@ -137,7 +137,7 @@ def remove_participation(request, pk):
 def participations(request, page=1):
     try:
         participations = Participation.objects.filter(user=request.user)
-        paginator = Paginator(participations, 20)
+        paginator = Paginator(participations, 10)
         page_range = paginator.page_range
         contacts = paginator.page(page)
     except ObjectDoesNotExist:
