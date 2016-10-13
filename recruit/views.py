@@ -44,8 +44,10 @@ def post_new(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-
-    isFriend = True if request.user.from_friends.filter(to_friend=post.author) else False
+    if(request.user.id):
+        isFriend = True if request.user.from_friends.filter(to_friend=post.author) else False
+    else:
+        isFriend = None
     attend_users = ''
     for user in post.attend_users():
         attend_users += user + ', '

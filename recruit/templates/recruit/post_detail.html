@@ -28,13 +28,13 @@
         <div class="content">
             <h1>{{ post.title }} </h1><br/>
             <p><strong>작성자</strong> : {{ post.author }}
-                {% ifnotequal request.user post.author %}
+                {% if request.user != post.author and request.user.id != None %}
                     {% if not isFriend %}
                         <a href="{% url 'add_friend' id=post.author.id %}?next={{ request.path }}">[+]</a>
                     {% else %}
                         <a href="{% url 'remove_friend' id=post.author.id %}?next={{ request.path }}">[-]</a>
                     {% endif %}
-                {% endifnotequal %}
+                {% endif %}
             </p>
             <p><strong>모임시간</strong> : {{ post.meeting_date }}</p>
             <p><strong>참여자</strong> : {{ attend_users }}</p><br/>
