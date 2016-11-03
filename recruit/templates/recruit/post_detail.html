@@ -5,36 +5,36 @@
     <div class="post" >
         <div >
             {% if user.is_authenticated and user == post.author %}
-                <a class="btn btn-primary" href="{% url 'recruit:post_edit' pk=post.pk %}" role="button" >
-                    <span class="glyphicon glyphicon-pencil"></span>
-                </a>
-                <a class="btn btn-primary" href="{% url 'recruit:post_remove' pk=post.pk %}" role="button" >
-                    <span class="glyphicon glyphicon-remove"></span>
-                </a>
-            {% elif user.is_authenticated %}
-                {% if user.username in attend_users %}
-                    <a class="btn btn-primary" href="{% url 'recruit:remove_participation' pk=post.pk %}" role="button"
-                            data-toggle="tooltip" data-placement="top" title="Cancel" >
-                        <span class="glyphicon glyphicon glyphicon-star"></span>
-                    </a>
-                {% else %}
-                    <a class="btn btn-primary" href="{% url 'recruit:add_participation' pk=post.pk %}?next={{ request.path }}"
-                       data-toggle="tooltip" data-placement="top" title="Attend" role="button" >
-                        <span class="glyphicon glyphicon glyphicon-star-empty"></span>
-                    </a>
-                {% endif %}
-            {% endif %}
+            <a class="btn btn-primary" href="{% url 'recruit:post_edit' pk=post.pk %}" role="button" >
+                <span class="glyphicon glyphicon-pencil"></span>
+            </a>
+            <a id="btnRemove" class="btn btn-primary" value="{% url 'recruit:post_remove' pk=post.pk %}" role="button" >
+                <span class="glyphicon glyphicon-remove"></span>
+            </a>
+        {% elif user.is_authenticated %}
+        {% if user.username in attend_users %}
+        <a class="btn btn-primary" href="{% url 'recruit:remove_participation' pk=post.pk %}" role="button"
+                                                                                              data-toggle="tooltip" data-placement="top" title="Cancel" >
+                                                                                              <span class="glyphicon glyphicon glyphicon-star"></span>
+        </a>
+    {% else %}
+    <a class="btn btn-primary" href="{% url 'recruit:add_participation' pk=post.pk %}?next={{ request.path }}"
+                               data-toggle="tooltip" data-placement="top" title="Attend" role="button" >
+                               <span class="glyphicon glyphicon glyphicon-star-empty"></span>
+    </a>
+    {% endif %}
+    {% endif %}
         </div>
         <div class="content">
             <h1>{{ post.title }} </h1><br/>
             <p><strong>작성자</strong> : {{ post.author }}
-                {% if request.user != post.author and request.user.id != None %}
-                    {% if not isFriend %}
-                        <a href="{% url 'add_friend' id=post.author.id %}?next={{ request.path }}">[+]</a>
-                    {% else %}
-                        <a href="{% url 'remove_friend' id=post.author.id %}?next={{ request.path }}">[-]</a>
-                    {% endif %}
-                {% endif %}
+            {% if request.user != post.author and request.user.id != None %}
+            {% if not isFriend %}
+            <a href="{% url 'add_friend' id=post.author.id %}?next={{ request.path }}">[+]</a>
+            {% else %}
+            <a href="{% url 'remove_friend' id=post.author.id %}?next={{ request.path }}">[-]</a>
+            {% endif %}
+            {% endif %}
             </p>
             <p><strong>모임시간</strong> : {{ post.meeting_date }}</p>
             <p><strong>참여자</strong> : {{ attend_users }}</p><br/>
@@ -44,42 +44,97 @@
     </div><br/>
     <a class="btn btn-default" href="{% url 'recruit:add_comment_to_post' pk=post.pk %}" >댓글 등록</a>
     {% for comment in post.comments.all %}
-        <div class="comment">
-            <div class="date">
-                <strong>작성 시간</strong>: {{ comment.registered_date }}
-                <a class="btn btn-default" href="{% url 'recruit:comment_remove' pk=comment.pk %}">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </a>
-            </div>
-            <p><strong>작성자</strong>: {{ comment.author }}</p>
-            <p>{{ comment.content|linebreaks }}</p>
+    <div class="comment">
+        <div class="date">
+            <strong>작성 시간</strong>: {{ comment.registered_date }}
+            <a class="btn btn-default" href="{% url 'recruit:comment_remove' pk=comment.pk %}">
+                <span class="glyphicon glyphicon-remove"></span>
+            </a>
         </div>
+        <p><strong>작성자</strong>: {{ comment.author }}</p>
+        <p>{{ comment.content|linebreaks }}</p>
+    </div>
     {% empty %}
-        <p>아직 댓글이 없습니다 :( </p>
+    <p>아직 댓글이 없습니다 :( </p>
     {% endfor %}
 </div>
 
 <div
-  class="fb-like"
-  data-share="true"
-  data-width="450"
-  data-show-faces="true">
+                      class="fb-like"
+                      data-share="true"
+                      data-width="450"
+                      data-show-faces="true">
 </div>
 
 <script>
 function initMap() {
-  var myLatLng = {lat: {{ post.lat }}, lng: {{ post.lng }}};
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 15,
-    center: myLatLng
-  });
-  var marker = new google.maps.Marker({
-    position: myLatLng,
-    map: map,
-    title: 'Hello World!'
-  });
+    var myLatLng = {lat: {{ post.lat }}, lng: {{ post.lng }}};
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 15,
+        center: myLatLng
+    });
+    var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+        title: 'Hello World!'
+    });
 }
+
+$('#btnRemove').click(function() {
+    deletePost();
+});
+
+function deletePost() {
+    swal({
+        title: "Are you sure?",
+        text: "You will not be able to recover this imaginary file!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel plx!",
+        closeOnConfirm: false,
+    }).then(function() {
+        swal({
+            title: "Deleted!",
+            text: "Your imaginary file has been deleted.",
+            type: "success"
+        }).then(function() {
+            window.location.replace("remove/");
+        })
+    })
+}
+
+function del() {
+    swal({
+        title: "Are you sure?",
+        text: "You will not be able to recover this imaginary file!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, delete it!",
+        closeOnConfirm: false,
+        closeOnCancel: false
+    }, function (isConfirm) {
+        if (isConfirn) {
+            $.ajax({
+                url: "remove/",
+                type: "GET",
+                success: function (data) {
+                    swal("Done!", "It was succesfully deleted!", "success");
+                },
+                error: function (data) {
+                    swal("Error deleting!", data, "error");
+                },
+                complete: function(data) {
+                    window.location.replace("remove/");
+                }
+            });
+        }
+    });
+}
+
 </script>
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-vcaQOqLJiQiOyAmCz666ksUqpZ4C_IA&callback=initMap"></script>
+                      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-vcaQOqLJiQiOyAmCz666ksUqpZ4C_IA&callback=initMap"></script>
 {% endblock %}
