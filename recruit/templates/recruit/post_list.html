@@ -28,9 +28,9 @@
     </div>
     <nav style="text-align:center;">
         <ul class="pagination">
-            {% if posts.has_previous %}
+            {% if page_obj.has_previous %}
             <li>
-              <a href="{% url 'recruit:post_list' page=posts.previous_page_number %}" aria-label="Previous">
+              <a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
               </a>
             </li>
@@ -40,17 +40,17 @@
             </li>
             {% endif %}
 
-            {% for page in page_range %}
-                {% if page == posts.number %}
-                    <li class="active"><a href="{% url 'recruit:post_list' page=page %}">{{ page }}<span class="sr-only">(current)</span></a></li>
+            {% for page in paginator.page_range %}
+                {% if page_obj.number == page %}
+                    <li class="active"><a href="?page={{ page }}">{{ page }}<span class="sr-only">(current)</span></a></li>
                 {% else %}
-                    <li><a href="{% url 'recruit:post_list' page=page %}">{{ page }}</a></li>
+                    <li><a href="?page={{ page }}">{{ page }}</a></li>
                 {% endif %}
             {% endfor %}
 
-            {% if posts.has_next %}
+            {% if page_obj.has_next %}
             <li>
-              <a href="{% url 'recruit:post_list' page=posts.next_page_number %}" aria-label="Next">
+              <a href="?page={{ page_obj.next_page_number }}" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
               </a>
             </li>

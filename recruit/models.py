@@ -1,8 +1,9 @@
 # -*- coding:utf-8 -*-
 
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
-from django.conf import settings
+from django.urls import reverse
 import pytz
 
 
@@ -81,6 +82,9 @@ class Post(models.Model):
         else:
             return []
 
+    def get_absolute_url(self):
+        return reverse('recruit:post_detail', kwargs={'pk': self.pk})
+
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, related_name='comments')
@@ -99,6 +103,9 @@ class Comment(models.Model):
             'author_name': self.author.username,
             'registered_date': self.registered_date,
         }
+
+    def get_absolute_url(self):
+        return self.post.get_absolute_url()
 
 
 class Participation(models.Model):

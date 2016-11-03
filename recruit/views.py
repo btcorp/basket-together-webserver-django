@@ -2,103 +2,104 @@
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from recruit.models import Participation, Comment, Post
 from recruit.forms import CommentForm, PostForm
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+from django.utils.decorators import method_decorator
 
 
-def post_list(request, page=1):
-    try:
-        posts = Post.objects.order_by('-registered_date')
-        paginator = Paginator(posts, 10)
-        page_range = paginator.page_range
-        contacts = paginator.page(page)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        contacts = paginator.page(paginator.num_pages)
-    except ObjectDoesNotExist:
-        contacts = None
-        page_range = 1
+class PostListView(ListView):
+    queryset = Post.objects.order_by('-registered_date')
+    template_name = 'recruit/post_list.html'
+    context_object_name = 'posts'
+    paginate_by = 10
 
-    return render(request, 'recruit/post_list.html', {'posts': contacts, 'page_range': page_range})
+    def get_context_data(self, **kwargs):
+        context = super(PostListView, self).get_context_data(**kwargs)
+        return context
 
 
-@login_required
-def post_new(request):
-    if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            add_participation(request, post.id)
-            messages.success(request, '포스팅이 등록되었습니다.')
-            return redirect('recruit:post_detail', pk=post.pk)
-    else:
-        form = PostForm()
-    return render(request, 'recruit/post_new.html', {'form': form})
+class PostCreateView(CreateView):
+    model = Post
+    template_name = 'recruit/post_new.html'
+    form_class = PostForm
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(PostCreateView, self).dispatch(request, *args, **kwargs)
+    
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.author = self.request.user
+        self.object.save()
+
+        add_participation(self.request, self.object.id)
+        messages.success(self.request, '포스팅이 등록되었습니다.')
+        return HttpResponseRedirect(self.get_success_url())
 
 
-def post_detail(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    if(request.user.id):
-        isFriend = True if request.user.from_friends.filter(to_friend=post.author) else False
-    else:
-        isFriend = None
-    attend_users = ''
-    for user in post.attend_users():
-        attend_users += user + ', '
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'recruit/post_detail.html'
+    context_object_name = 'post'
 
-    try:
+    def get_context_data(self, **kwargs):
+        context = super(PostDetailView, self).get_context_data(**kwargs)
+        user = self.request.user
+        post = self.get_object()
+
+        if user.id:
+            is_friend = True if user.from_friends.filter(to_friend=post.author) else False
+        else:
+            is_friend = None
+
         participation = Participation.objects.filter(post=post)
-    except ObjectDoesNotExist:
-        participation = None
 
-    return render(request, 'recruit/post_detail.html',
-                  {'post': post,
-                   'participation': participation,
-                   'attend_users': attend_users[0:-2],
-                   'isFriend': isFriend,
-                   })
+        attend_users = ''
+        for user in post.attend_users():
+            attend_users += user + ', '
+
+        context['isFriend'] = is_friend
+        context['participation'] = participation
+        context['attend_users'] = attend_users[:-2]
+
+        return context
 
 
-@login_required
-def post_edit(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    if request.method == 'POST':
-        form = PostForm(request.POST, instance=post)
-        post = form.save(commit=False)
-        post.author = request.user
-        post.save()
-        return redirect('recruit:post_detail', pk=pk)
-    else:
-        form = PostForm(instance=post)
-    return render(request, 'recruit/post_new.html', {'form': form})
+class PostUpdateView(UpdateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'recruit/post_new.html'
+
+
+class PostDeleteView(DeleteView):
+    model = Post
 
 
 @login_required
 def post_remove(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.delete()
-    return redirect('recruit:post_list', page=1)
+    return redirect('recruit:post_list')
 
 
-@login_required
-def add_comment_to_post(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
+class CommentCreateView(CreateView):
+    model = Comment
+    template_name = 'recruit/add_comment_to_post.html'
+    form_class = CommentForm
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(CommentCreateView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        post = get_object_or_404(Post, pk=self.kwargs['pk'])
         comment = form.save(commit=False)
-        comment.author = request.user
+        comment.author = self.request.user
         comment.post = post
-        comment.save()
-        return redirect('recruit:post_detail', pk=pk)
-    else:
-        form = CommentForm()
-    return render(request, 'recruit/add_comment_to_post.html', {'form': form})
+        return super(CommentCreateView, self).form_valid(form)
 
 
 def post_search(request):
@@ -135,15 +136,11 @@ def remove_participation(request, pk):
     return redirect('recruit:post_detail', pk=pk)
 
 
-@login_required
-def participations(request, page=1):
-    try:
-        participations = Participation.objects.filter(user=request.user)
-        paginator = Paginator(participations, 10)
-        page_range = paginator.page_range
-        contacts = paginator.page(page)
-    except ObjectDoesNotExist:
-        contacts = None
-        page_range = 1
+class ParticipationListView(ListView):
 
-    return render(request, 'recruit/participation_list.html', {'contacts': contacts, 'page_range': page_range})
+    template_name = 'recruit/participation_list.html'
+    context_object_name = 'participations'
+    paginate_by = 3
+
+    def get_queryset(self):
+        return Participation.objects.filter(user=self.request.user)

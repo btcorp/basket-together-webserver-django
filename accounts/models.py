@@ -133,6 +133,9 @@ class ExtendedUser(AbstractUser):
     def get_profile(self):
         return self.profile
 
+    def get_object(self):
+        return self
+
 
 # CustomUser.profile = property(lambda user: Profile.objects.get_or_create(user=user)[0])
 ExtendedUser.profile = property(lambda user: Profile.objects.get_or_create(user=user)[0])

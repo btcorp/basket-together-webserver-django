@@ -10,11 +10,11 @@
                     <th class="col-md-5">제목</th>
                     <th class="col-md-5">글쓴이</th>
                 </tr>
-                {% for contact in contacts %}
-                <tr style="cursor:hand;" onclick="location.href='{% url 'recruit:post_detail' pk=contact.post_id %}'">
-                    <td>{{ contact.id }}</td>
-                    <td>{{ contact.post.title }}</td>
-                    <td>{{ contact.post.author }}</td>
+                {% for participation in participations %}
+                <tr style="cursor:hand;" onclick="location.href='{% url 'recruit:post_detail' pk=participation.post_id %}'">
+                    <td>{{ participation.id }}</td>
+                    <td>{{ participation.post.title }}</td>
+                    <td>{{ participation.post.author }}</td>
                 </tr>
                 {% endfor %}
             </table>
@@ -22,9 +22,9 @@
     </div>
     <nav style="text-align:center;">
         <ul class="pagination">
-            {% if contacts.has_previous %}
+            {% if page_obj.has_previous %}
             <li>
-              <a href="{% url 'recruit:participations' page=contacts.previous_page_number %}" aria-label="Previous">
+              <a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
               </a>
             </li>
@@ -34,17 +34,17 @@
             </li>
             {% endif %}
 
-            {% for page in page_range %}
-                {% if page == contacts.number %}
-                    <li class="active"><a href="{% url 'recruit:participations' page=page %}">{{ page }}<span class="sr-only">(current)</span></a></li>
+            {% for page in paginator.page_range %}
+                {% if page == page_obj.number %}
+                    <li class="active"><a href="?page={{ page }}">{{ page }}<span class="sr-only">(current)</span></a></li>
                 {% else %}
-                    <li><a href="{% url 'recruit:participations' page=page %}">{{ page }}</a></li>
+                    <li><a href="?page={{ page }}">{{ page }}</a></li>
                 {% endif %}
             {% endfor %}
 
-            {% if contacts.has_next %}
+            {% if page_obj.has_next %}
             <li>
-              <a href="{% url 'recruit:participations' page=contacts.next_page_number %}" aria-label="Next">
+              <a href="?page={{ page_obj.next_page_number }}" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
               </a>
             </li>
