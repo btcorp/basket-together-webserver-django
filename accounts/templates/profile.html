@@ -1,15 +1,16 @@
 {% extends 'settings.html' %}
 {% load bootstrap3 %}
+{% load i18n %}
 
 {% block body %}
     <div class="col-md-12">
-        <h1>프로필</h1>
+        <h1>{% trans 'Profile' %}</h1>
         {% if profileForm.instance.user_image %}
             <img src="{{ profileForm.instance.user_image.url }}" style="max-width: 300px;" />
         {% endif %}
         <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
             {% bootstrap_form profileForm %}
-            <input type="SUBMIT" value="Update" class="btn btn-primary" />
+            <input type="SUBMIT" value="{% trans 'update' %}" class="btn btn-primary" />
         </form>
     </div>
 {% endblock %}

@@ -1,5 +1,6 @@
 {% extends 'recruit/index.html' %}
 {% load bootstrap3 %}
+{% load i18n %}
 
 {% block content  %}
 
@@ -7,9 +8,9 @@
         <form id="login" method="POST" action="">
             {% csrf_token %}
             {% bootstrap_form form %}
-            <input type="submit" value="login" class="btn btn-primary" />
+            <input type="submit" value="{% trans 'login' %}" class="btn btn-primary" />
             <input type="hidden" name="next" value="{{ next }}" />
         </form>
-        <a href="{% url 'social:begin' 'facebook' %}?next='/' ">Login with Facebook</a>
+        <a href="{% url 'social:begin' 'facebook' %}?next='/' ">{% trans 'Login with Facebook' %}</a>
     </div>
 {% endblock %}

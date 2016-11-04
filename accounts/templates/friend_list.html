@@ -1,4 +1,5 @@
 {% extends 'settings.html' %}
+{% load i18n %}
 
 {% block body %}
 
@@ -6,8 +7,8 @@
         <div class="col-md-12" >
             <table class="table table-hover table-condensed" >
                 <tr>
-                    <th class="col-md-5">username</th>
-                    <th class="col-md-5">email</th>
+                    <th class="col-md-5">{% trans 'username' %}</th>
+                    <th class="col-md-5">{% trans 'email' %}</th>
                     <th class="col-md-1"></th>
                 </tr>
                 {% for friend in friends %}

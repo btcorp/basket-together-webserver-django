@@ -1,4 +1,6 @@
 {% load staticfiles %}
+{% load i18n %}
+
 <html>
     <head>
         <title>Basket Together</title>
@@ -29,10 +31,10 @@
                         <div class="collapse navbar-collapse masthead" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
                                 <li>
-                                    <a href="{% url 'recruit:post_list' %}">글 목록</a>
+                                    <a href="{% url 'recruit:post_list' %}">{% trans 'post list' %}</a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'recruit:post_new' %}">글 작성</a>
+                                    <a href="{% url 'recruit:post_new' %}">{% trans 'new posting' %}</a>
                                 </li>
                             </ul>
                             <form class="navbar-form navbar-left" role="search" action="/recruit/search/" method="post">
@@ -41,23 +43,23 @@
                                     <input name="word" type="text" class="form-control" />
                                 </div>
                                 <button type="submit" class="btn btn-default">
-                                    Search
+                                    {% trans 'search' %}
                                 </button>
                             </form>
                             <ul class="nav navbar-nav navbar-right">
                                 {% if user.is_authenticated %}
                                 <li>
-                                    <a href="{% url 'user_profile' %}">Settings</a>
+                                    <a href="{% url 'user_profile' %}">{% trans 'settings' %}</a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
+                                    <a href="{% url 'logout' %}?next={{ request.path }}">{% trans 'logout' %}</a>
                                 </li>
                                 {% else %}
                                 <li>
-                                    <a href="{% url 'signup' %}?next={{ request.path }}">Sign up</a>
+                                    <a href="{% url 'signup' %}?next={{ request.path }}">{% trans 'sign up' %}</a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
+                                    <a href="{% url 'login' %}?next={{ request.path }}">{% trans 'login' %}</a>
                                 </li>
                                 {% endif %}
                             </ul>

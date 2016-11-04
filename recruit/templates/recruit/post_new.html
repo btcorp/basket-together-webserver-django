@@ -1,12 +1,13 @@
 {% extends 'recruit/base.html' %}
 {% load bootstrap3 %}
+{% load i18n %}
 
 {% block content %}
     <div class="col-sm-8 col-sm-offset-2" >
-        <h1>글 등록</h1>
+        <h1>{% trans 'new posting' %}</h1>
         <form method="POST" action="" >{% csrf_token %}
             {% bootstrap_form form %}
-            <button type="submit" class="save btn btn-primary" >Save</button>
+            <button type="submit" class="save btn btn-primary" >{% trans 'save' %}</button>
         </form>
     </div>
 {% endblock %}

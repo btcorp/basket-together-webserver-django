@@ -1,16 +1,17 @@
 {% extends 'recruit/index.html' %}
+{% load i18n %}
 
 {% block content %}
     <div class="col-sm-6 col-sm-offset-3">
         <ul id="myTab" class="nav nav-tabs" >
             <li>
-                <a href="{% url 'user_profile' %}" role="tab" >Profile</a>
+                <a href="{% url 'user_profile' %}" role="tab" >{% trans 'Profile' %}</a>
             </li>
             <li>
-                <a href="{% url 'friend_list' page=1 %}" >Friends</a>
+                <a href="{% url 'friend_list' page=1 %}" >{% trans 'Friend' %}</a>
             </li>
             <li>
-                <a href="{% url 'recruit:participation_list' %}" >Participations</a>
+                <a href="{% url 'recruit:participation_list' %}" >{% trans 'Participation list' %}</a>
             </li>
         </ul>
 
