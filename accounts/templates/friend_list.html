@@ -16,8 +16,9 @@
                     <td>{{ friend.username }}</td>
                     <td>{{ friend.email }}</td>
                     <td>
-                        <a class="btn btn-primary"
-                           href="{% url 'remove_friend' id=friend.id %}?next={{ request.path }}" role="button" >
+                        <a id="removeFriend" class="btn btn-primary" role="button"
+                           onclick="removeFriend('{% url 'accounts:remove_friend' id=friend.id %}?next={{ request.path }}')"
+                           value="{% url 'accounts:remove_friend' id=friend.id %}?next={{ request.path }}">
                             <span class="glyphicon glyphicon glyphicon-trash"></span>
                         </a>
                     </td>
@@ -28,9 +29,9 @@
     </div>
     <nav style="text-align:center;">
         <ul class="pagination">
-            {% if friends.has_previous %}
+            {% if page_obj.has_previous %}
             <li>
-              <a href="{% url 'friend_list' page=friends.previous_page_number %}" aria-label="Previous">
+              <a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
               </a>
             </li>
@@ -41,16 +42,16 @@
             {% endif %}
 
             {% for page in page_range %}
-                {% if page == friends.number %}
-                    <li class="active"><a href="{% url 'friend_list' page=page %}">{{ page }}<span class="sr-only">(current)</span></a></li>
+                {% if page == page_obj.number %}
+                    <li class="active"><a href="?page={{ page }}">{{ page }}<span class="sr-only">(current)</span></a></li>
                 {% else %}
-                    <li><a href="{% url 'friend_list' page=page %}">{{ page }}</a></li>
+                    <li><a href="?page={{ page }}">{{ page }}</a></li>
                 {% endif %}
             {% endfor %}
 
             {% if friends.has_next %}
             <li>
-              <a href="{% url 'friend_list' page=friends.next_page_number %}" aria-label="Next">
+              <a href="?page={{ page_obj.next_page_number }}" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
               </a>
             </li>
@@ -61,4 +62,39 @@
             {% endif %}
         </ul>
     </nav>
+
+<script>
+
+function removeFriend(request_url) {
+    swal({
+        title: "{% trans 'Do you want to remove friend' %}?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "{% trans 'Yes' %}!",
+        cancelButtonText: "{% trans 'No' %}!",
+    }).then(function() {
+        swal({
+            title: "{% trans 'Deleted' %}!",
+            type: "success"
+        }).then(function() {
+            $.ajax({
+                url: request_url,
+                type: "DELETE",
+                headers: {
+                    Accept : "text/plain; charset=utf-8",
+                    "Content-Type": "text/plain; charset=utf-8"
+                },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function(data) {
+                    window.location.reload();
+                },
+            })
+        })
+    })
+}
+
+</script>
 {% endblock %}

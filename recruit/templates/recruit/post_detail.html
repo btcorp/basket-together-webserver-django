@@ -9,31 +9,35 @@
             <a class="btn btn-primary" href="{% url 'recruit:post_edit' pk=post.pk %}" role="button" >
                 <span class="glyphicon glyphicon-pencil"></span>
             </a>
-            <a id="btnRemove" class="btn btn-primary" value="{% url 'recruit:post_remove' pk=post.pk %}" role="button" >
+            <a id="btnRemove" class="btn btn-primary" onclick="removePost()" role="button" >
                 <span class="glyphicon glyphicon-remove"></span>
             </a>
-        {% elif user.is_authenticated %}
-        {% if user.username in attend_users %}
-        <a class="btn btn-primary" href="{% url 'recruit:remove_participation' pk=post.pk %}" role="button"
-           data-toggle="tooltip" data-placement="top" title="Cancel" >
-          <span class="glyphicon glyphicon glyphicon-star"></span>
-        </a>
-    {% else %}
-    <a class="btn btn-primary" href="{% url 'recruit:add_participation' pk=post.pk %}?next={{ request.path }}"
-       data-toggle="tooltip" data-placement="top" title="Attend" role="button" >
-       <span class="glyphicon glyphicon glyphicon-star-empty"></span>
-    </a>
-    {% endif %}
-    {% endif %}
+            {% elif user.is_authenticated %}
+                {% if user.username in attend_users %}
+                <a class="btn btn-primary" href="{% url 'recruit:remove_participation' pk=post.pk %}" role="button"
+                   data-toggle="tooltip" data-placement="top" title="Cancel" >
+                  <span class="glyphicon glyphicon glyphicon-star"></span>
+                </a>
+                {% else %}
+                <a class="btn btn-primary" href="{% url 'recruit:add_participation' pk=post.pk %}?next={{ request.path }}"
+                   data-toggle="tooltip" data-placement="top" title="Attend" role="button" >
+                   <span class="glyphicon glyphicon glyphicon-star-empty"></span>
+                </a>
+                {% endif %}
+            {% endif %}
         </div>
         <div class="content">
             <h1>{{ post.title }} </h1><br/>
             <p><strong>{% trans 'author' %}</strong> : {{ post.author }}
             {% if request.user != post.author and request.user.id != None %}
             {% if not isFriend %}
-            <a href="{% url 'add_friend' id=post.author.id %}?next={{ request.path }}">[+]</a>
+            <a id="addFriend" class="btn-sm btn-primary" onclick="addFriend()" >
+                {% trans 'add friend' %}
+            </a>
             {% else %}
-            <a href="{% url 'remove_friend' id=post.author.id %}?next={{ request.path }}">[-]</a>
+            <a id="removeFriend" class="btn-sm btn-primary" onclick="removeFriend()" >
+                {% trans 'remove friend' %}
+            </a>
             {% endif %}
             {% endif %}
             </p>
@@ -48,9 +52,11 @@
     <div class="comment">
         <div class="date">
             <strong>{% trans 'registration date' %}</strong>: {{ comment.registered_date }}
-            <a class="btn btn-default" href="{% url 'recruit:comment_remove' pk=comment.pk %}">
-                <span class="glyphicon glyphicon-remove"></span>
-            </a>
+            {% if user.is_authenticated and user == comment.author %}
+                <a class="btn btn-default" href="{% url 'recruit:comment_remove' pk=comment.pk %}">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </a>
+            {% endif %}
         </div>
         <p><strong>{% trans 'author' %}</strong>: {{ comment.author }}</p>
         <p>{{ comment.content|linebreaks }}</p>
@@ -61,10 +67,10 @@
 </div>
 
 <div
-                      class="fb-like"
-                      data-share="true"
-                      data-width="450"
-                      data-show-faces="true">
+  class="fb-like"
+  data-share="true"
+  data-width="450"
+  data-show-faces="true">
 </div>
 
 <script>
@@ -81,30 +87,83 @@ function initMap() {
     });
 }
 
-$('#btnRemove').click(function() {
-    deletePost();
-});
 
-function deletePost() {
+function removePost() {
     swal({
         title: "{% trans 'Are you sure you want to delete it' %}?",
-        <!--text: "You will not be able to recover this imaginary file!",-->
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
-        confirmButtonText: "{% trans 'Yes, delete it' %}!",
-        cancelButtonText: "{% trans 'No, cancel plx' %}!",
-        closeOnConfirm: false,
+        confirmButtonText: "{% trans 'Yes' %}!",
+        cancelButtonText: "{% trans 'No' %}!",
     }).then(function() {
         swal({
-            title: "Deleted!",
-            text: "Your imaginary file has been deleted.",
+            title: "{% trans 'Deleted' %}!",
             type: "success"
         }).then(function() {
             window.location.replace("remove/");
         })
     })
 }
+
+function addFriend() {
+    swal({
+        title: "{% trans 'Do you want to add friend' %}?",
+        type: "info",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "{% trans 'Yes' %}!",
+        cancelButtonText: "{% trans 'No' %}!",
+    }).then(function() {
+        swal({
+            title: "{% trans 'Added' %}!",
+            type: "success"
+        }).then(function() {
+            $.ajax({
+                url: "{% url 'accounts:add_friend' id=post.author.id %}?next={{ request.path }}",
+                type: 'POST',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function(data) {
+                    window.location.reload();
+                }
+            })
+        })
+    })
+}
+
+function removeFriend() {
+    swal({
+        title: "{% trans 'Do you want to remove friend' %}?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "{% trans 'Yes' %}!",
+        cancelButtonText: "{% trans 'No' %}!",
+    }).then(function() {
+        swal({
+            title: "{% trans 'Deleted' %}!",
+            type: "success"
+        }).then(function() {
+            $.ajax({
+                url: "{% url 'accounts:remove_friend' id=post.author.id %}?next={{ request.path }}",
+                type: "DELETE",
+                headers: {
+                    Accept : "text/plain; charset=utf-8",
+                    "Content-Type": "text/plain; charset=utf-8"
+                },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function(data) {
+                    window.location.reload();
+                },
+            })
+        })
+    })
+}
+
 
 </script>
 <script async defer

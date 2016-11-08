@@ -6,6 +6,8 @@ from django.contrib.auth.models import AbstractUser, AbstractBaseUser, Permissio
 from django.contrib.auth.validators import ASCIIUsernameValidator, UnicodeUsernameValidator
 from django.db import models
 from django.forms import ValidationError
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from django.utils import six, timezone
 from django.utils.translation import ugettext_lazy as _
 
@@ -90,7 +92,10 @@ class Profile(models.Model):
         return self.user.username
 
     def get_object(self):
-        return Profile.objects.get(user=self.request.user)
+        return get_object_or_404(Profile, user=self.user)
+
+    def get_absolute_url(self):
+        return reverse('accounts:profile')
 
     def as_json(self):
         return {

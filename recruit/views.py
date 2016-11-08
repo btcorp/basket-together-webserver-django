@@ -2,12 +2,14 @@
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
-from recruit.models import Participation, Comment, Post
-from recruit.forms import CommentForm, PostForm
-from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
 from django.utils.decorators import method_decorator
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
+
+from recruit.forms import CommentForm, PostForm
+from recruit.models import Participation, Comment, Post
 
 
 class PostListView(ListView):
@@ -54,9 +56,7 @@ class PostDetailView(DetailView):
             is_friend = True if user.from_friends.filter(to_friend=post.author) else False
         else:
             is_friend = None
-
         participation = Participation.objects.filter(post=post)
-
         attend_users = ''
         for user in post.attend_users():
             attend_users += user + ', '
@@ -64,7 +64,6 @@ class PostDetailView(DetailView):
         context['isFriend'] = is_friend
         context['participation'] = participation
         context['attend_users'] = attend_users[:-2]
-
         return context
 
 
@@ -72,10 +71,6 @@ class PostUpdateView(UpdateView):
     model = Post
     form_class = PostForm
     template_name = 'recruit/post_new.html'
-
-
-class PostDeleteView(DeleteView):
-    model = Post
 
 
 @login_required
@@ -92,7 +87,7 @@ class CommentCreateView(CreateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(CommentCreateView, self).dispatch(*args, **kwargs)
+        return super(CommentCreateView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         post = get_object_or_404(Post, pk=self.kwargs['pk'])
@@ -104,7 +99,11 @@ class CommentCreateView(CreateView):
 
 def post_search(request):
     word = request.POST['word']
-    posts = Post.objects.filter(title__icontains=word) or Post.objects.filter(content__icontains=word)
+    posts = Post.objects.filter(
+        Q(title__icontains=word) |
+        Q(content__icontains=word) |
+        Q(author__username__icontains=word)
+    )
     return render(request, 'recruit/post_list.html', {'posts': posts})
 
 
@@ -140,7 +139,11 @@ class ParticipationListView(ListView):
 
     template_name = 'recruit/participation_list.html'
     context_object_name = 'participations'
-    paginate_by = 3
+    paginate_by = 10
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ParticipationListView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         return Participation.objects.filter(user=self.request.user)

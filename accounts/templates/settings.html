@@ -5,10 +5,10 @@
     <div class="col-sm-6 col-sm-offset-3">
         <ul id="myTab" class="nav nav-tabs" >
             <li>
-                <a href="{% url 'user_profile' %}" role="tab" >{% trans 'Profile' %}</a>
+                <a href="{% url 'accounts:profile' %}" role="tab" >{% trans 'Profile' %}</a>
             </li>
             <li>
-                <a href="{% url 'friend_list' page=1 %}" >{% trans 'Friend' %}</a>
+                <a href="{% url 'accounts:friend_list' %}" >{% trans 'Friend' %}</a>
             </li>
             <li>
                 <a href="{% url 'recruit:participation_list' %}" >{% trans 'Participation list' %}</a>

@@ -1,81 +1,88 @@
 # -*- coding:utf-8 -*-
 
-from accounts.forms import UserCreationForm, UserProfileForm, SignupForm
-from accounts.models import Friendship
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
-from django.http import HttpResponseRedirect
-from django.shortcuts import get_list_or_404, get_object_or_404, render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
+from django.views.generic import ListView, UpdateView, View, CreateView
+
+from accounts.forms import UserProfileForm, SignupForm
+from accounts.models import Friendship, Profile
 
 
-@login_required
-def user_profile(request):
-    """
-    Form to update User profile
-    """
-    if request.method == 'POST':
-        profileForm = UserProfileForm(request.POST, request.FILES, instance=request.user.profile)
-        if profileForm.is_valid():
-            profileForm.save()
-            messages.success(request, '{} 님의 정보가 업데이트되었습니다.'.format(request.user))
-            return redirect('index')
-    else:
-        profileForm = UserProfileForm(instance=request.user.profile)
+class SignupView(CreateView):
+    model = get_user_model()
+    template_name = 'registration/signup.html'
+    form_class = SignupForm
 
-    args = {}
-    # args.update(csrf(request))
-    args['profileForm'] = profileForm
-    return render(request, 'profile.html', args)
-    # return render_to_response('profile.html', args)
+    def get_success_url(self):
+        next_url = self.request.GET.get('next', '')
+        return settings.LOGIN_URL + '?next=' + next_url
+
+    def form_valid(self, form):
+        self.object= form.save()
+        Profile.objects.create(user=self.object)
+        return super(SignupView, self).form_valid(form)
 
 
-def signup(request):
-    """
-    Form to register User
-    """
-    if request.method == 'POST':
-        form = SignupForm(request.POST)
-        # form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            next_url = request.GET.get('next', '')
-            return redirect(settings.LOGIN_URL + '?next=' + next_url)
+class ProfileUpdateView(UpdateView):
+    model = Profile
+    form_class = UserProfileForm
+    template_name = 'profile.html'
 
-    # form = UserCreationForm()
-    form = SignupForm()
-    return render(request, 'registration/signup.html', {'form': form})
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(ProfileUpdateView, self).dispatch(request, *args, **kwargs)
 
+    def get_object(self, queryset=None):
+        return get_object_or_404(Profile, user=self.request.user)
 
-@login_required
-def friend_list(request, page=1):
-    friends = list(i.to_friend for i in request.user.from_friends.all())
-    paginator = Paginator(friends, 10)
-    contacts = paginator.page(page)
-    page_range = paginator.page_range
-
-    return render(request, 'friend_list.html', {'friends': contacts, 'page_range': page_range})
+    def form_valid(self, form):
+        print(form.__class__)
+        messages.success(self.request, '프로필이 업데이트 되었습니다.')
+        return super(ProfileUpdateView, self).form_valid(form)
 
 
-@login_required
-def add_friend(request, id):
-    friend = get_object_or_404(get_user_model(), id=id)
-    next_url = request.GET.get('next', '')
-    friend_list = list(i.to_friend.username for i in Friendship.objects.filter(from_friend=friend))
+class FriendListView(ListView):
+    model = Friendship
+    template_name = 'friend_list.html'
+    paginate_by = 10
+    context_object_name = 'friends'
 
-    if request.user not in friend_list:
-        Friendship(from_friend=request.user, to_friend=friend).save()
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(FriendListView, self).dispatch(request, *args, **kwargs)
 
-    return HttpResponseRedirect(next_url)
+    def get_queryset(self):
+        friends = Friendship.objects.filter(from_friend=self.request.user)
+        return [fs.to_friend for fs in friends]
 
 
-@login_required
-def remove_friend(request, id):
-    next_url = request.GET.get('next', '')
-    friend = get_object_or_404(get_user_model(), id=id)
-    friendship = Friendship.objects.filter(from_friend=request.user, to_friend=friend)
-    friendship.delete()
+# 친구 추가/삭제에 대한 클래스
+class FriendHandlingView(View):
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(FriendHandlingView, self).dispatch(request, *args, **kwargs)
 
-    return HttpResponseRedirect(next_url)
+    def get(self, request, *args, **kwargs):
+        next_url = request.GET.get('next', '')
+        if request.is_ajax():                   # ajax 요청 여부 확인
+            return HttpResponse(next_url)
+        else:
+            return HttpResponseRedirect(next_url)
+
+    def post(self, request, *args, **kwargs):
+        friend = get_object_or_404(get_user_model(), id=kwargs['id'])
+        friend_list = list(i.to_friend.username for i in Friendship.objects.filter(from_friend=friend))
+        if request.user not in friend_list:
+            Friendship(from_friend=request.user, to_friend=friend).save()
+        return self.get(request, *args, **kwargs)
+    
+    def delete(self, request, *args, **kwargs):
+        friend = get_object_or_404(get_user_model(), id=kwargs['id'])
+        friendship = Friendship.objects.filter(from_friend=request.user, to_friend=friend)
+        friendship.delete()
+        return self.get(request, *args, **kwargs)
