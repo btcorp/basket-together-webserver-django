@@ -42,7 +42,7 @@
             {% endif %}
             </p>
             <p><strong>{% trans 'meeting date' %}</strong> : {{ post.meeting_date }}</p>
-            <p><strong>{% trans 'participant' %}</strong> : {{ attend_users }}</p><br/>
+            <p><strong>{% trans 'participant' %}</strong> : {{ attend_user_str }}</p><br/>
             <p class="content">{{ post.content|safe|linebreaks }}</p><br/>
             <div id="map" style="width: 550px; height: 300px;"></div>
         </div>

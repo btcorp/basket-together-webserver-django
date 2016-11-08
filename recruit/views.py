@@ -57,13 +57,14 @@ class PostDetailView(DetailView):
         else:
             is_friend = None
         participation = Participation.objects.filter(post=post)
-        attend_users = ''
+        attend_user_str = ''
         for user in post.attend_users():
-            attend_users += user + ', '
+            attend_user_str += user + ', '
 
         context['isFriend'] = is_friend
         context['participation'] = participation
-        context['attend_users'] = attend_users[:-2]
+        context['attend_user_str'] = attend_user_str[:-2]
+        context['attend_users'] = post.attend_users()
         return context
 
 
