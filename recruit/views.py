@@ -103,7 +103,9 @@ def post_search(request):
     posts = Post.objects.filter(
         Q(title__icontains=word) |
         Q(content__icontains=word) |
-        Q(author__username__icontains=word)
+        Q(author__username__icontains=word) |
+        Q(address1__icontains=word) |
+        Q(address2__icontains=word)
     )
     return render(request, 'recruit/post_list.html', {'posts': posts})
 
