@@ -12,14 +12,6 @@
     min-height: 400px;
 }
 
-.masthead {
-    background-color: #337ab7;
-}
-
-.masthead > div {
-    margin: 50px 50px;
-}
-
 .header-text {
     color: white;
 }
@@ -56,4 +48,16 @@
 #id_content_iframe {
     border: 0px;
     padding: 0;
+}
+
+.navbar-default .navbar-brand {
+    color: white !important;
+}
+
+.navbar-default .navbar-brand:hover {
+    color: black !important;
+}
+
+.navbar-fixed-top {
+    background: #337ab7;
 }
