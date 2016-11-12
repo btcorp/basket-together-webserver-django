@@ -42,6 +42,8 @@
             {% endif %}
             </p>
             <p><strong>{% trans 'meeting date' %}</strong> : {{ post.meeting_date }}</p>
+            <p><strong>{% trans 'adress' %}</strong> : {{ post.address1 }}</p>
+            <p><strong>{% trans 'detail adress' %}</strong> : {{ post.address2 }}</p>
             <p><strong>{% trans 'participant' %}</strong> : {{ attend_user_str }}</p><br/>
             <p class="content">{{ post.content|safe|linebreaks }}</p><br/>
             <div id="map" style="width: 550px; height: 300px;"></div>
@@ -74,20 +76,6 @@
 </div>
 
 <script>
-function initMap() {
-    var myLatLng = {lat: {{ post.lat }}, lng: {{ post.lng }}};
-    var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 15,
-        center: myLatLng
-    });
-    var marker = new google.maps.Marker({
-        position: myLatLng,
-        map: map,
-        title: 'Hello World!'
-    });
-}
-
-
 function removePost() {
     swal({
         title: "{% trans 'Are you sure you want to delete it' %}?",
@@ -164,7 +152,18 @@ function removeFriend() {
     })
 }
 
-
+function initMap() {
+    var myLatLng = {lat: {{ post.lat }}, lng: {{ post.lng }}};
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 15,
+        center: myLatLng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+    var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+    });
+}
 </script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-vcaQOqLJiQiOyAmCz666ksUqpZ4C_IA&callback=initMap">
