@@ -1,11 +1,11 @@
 # -*- coding:utf-8 -*-
 
+from braces.views import LoginRequiredMixin
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
-from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
 from recruit.forms import CommentForm, PostForm
@@ -18,20 +18,12 @@ class PostListView(ListView):
     context_object_name = 'posts'
     paginate_by = 10
 
-    def get_context_data(self, **kwargs):
-        context = super(PostListView, self).get_context_data(**kwargs)
-        return context
 
-
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     template_name = 'recruit/post_new.html'
     form_class = PostForm
 
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(PostCreateView, self).dispatch(request, *args, **kwargs)
-    
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.author = self.request.user
@@ -68,7 +60,7 @@ class PostDetailView(DetailView):
         return context
 
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = 'recruit/post_new.html'
@@ -81,14 +73,10 @@ def post_remove(request, pk):
     return redirect('recruit:post_list')
 
 
-class CommentCreateView(CreateView):
+class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     template_name = 'recruit/add_comment_to_post.html'
     form_class = CommentForm
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(CommentCreateView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         post = get_object_or_404(Post, pk=self.kwargs['pk'])
@@ -138,15 +126,11 @@ def remove_participation(request, pk):
     return redirect('recruit:post_detail', pk=pk)
 
 
-class ParticipationListView(ListView):
+class ParticipationListView(LoginRequiredMixin, ListView):
 
     template_name = 'recruit/participation_list.html'
     context_object_name = 'participations'
     paginate_by = 10
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(ParticipationListView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         return Participation.objects.filter(user=self.request.user)

@@ -1,12 +1,11 @@
 # -*- coding:utf-8 -*-
 
+from braces.views import LoginRequiredMixin
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.utils.decorators import method_decorator
 from django.views.generic import ListView, UpdateView, View, CreateView
 
 from accounts.forms import UserProfileForm, SignupForm
@@ -28,14 +27,10 @@ class SignupView(CreateView):
         return super(SignupView, self).form_valid(form)
 
 
-class ProfileUpdateView(UpdateView):
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = Profile
     form_class = UserProfileForm
     template_name = 'profile.html'
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(ProfileUpdateView, self).dispatch(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
         return get_object_or_404(Profile, user=self.request.user)
@@ -46,15 +41,11 @@ class ProfileUpdateView(UpdateView):
         return super(ProfileUpdateView, self).form_valid(form)
 
 
-class FriendListView(ListView):
+class FriendListView(LoginRequiredMixin, ListView):
     model = Friendship
     template_name = 'friend_list.html'
     paginate_by = 10
     context_object_name = 'friends'
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(FriendListView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         friends = Friendship.objects.filter(from_friend=self.request.user)
@@ -62,11 +53,7 @@ class FriendListView(ListView):
 
 
 # 친구 추가/삭제에 대한 클래스
-class FriendHandlingView(View):
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(FriendHandlingView, self).dispatch(request, *args, **kwargs)
-
+class FriendHandlingView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         next_url = request.GET.get('next', '')
         if request.is_ajax():                   # ajax 요청 여부 확인
