@@ -1,7 +1,9 @@
 Django==1.10
 django-bootstrap3
+django-braces
 django-datetime-widget
 django-debug-toolbar
+django-disqus
 django-summernote
 pillow
 python-social-auth==0.2.21
