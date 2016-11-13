@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-08 16:13+0900\n"
+"POT-Creation-Date: 2016-11-13 13:59+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,27 +51,27 @@ msgid "email"
 msgstr "이메일"
 
 #: accounts/templates/friend_list.html:70
-#: recruit/templates/recruit/post_detail.html:138
+#: recruit/templates/recruit/post_detail.html:126
 msgid "Do you want to remove friend"
 msgstr "친구를 삭제하시겠습니까"
 
 #: accounts/templates/friend_list.html:74
-#: recruit/templates/recruit/post_detail.html:97
-#: recruit/templates/recruit/post_detail.html:115
-#: recruit/templates/recruit/post_detail.html:142
+#: recruit/templates/recruit/post_detail.html:85
+#: recruit/templates/recruit/post_detail.html:103
+#: recruit/templates/recruit/post_detail.html:130
 msgid "Yes"
 msgstr "네"
 
 #: accounts/templates/friend_list.html:75
-#: recruit/templates/recruit/post_detail.html:98
-#: recruit/templates/recruit/post_detail.html:116
-#: recruit/templates/recruit/post_detail.html:143
+#: recruit/templates/recruit/post_detail.html:86
+#: recruit/templates/recruit/post_detail.html:104
+#: recruit/templates/recruit/post_detail.html:131
 msgid "No"
 msgstr "아니요"
 
 #: accounts/templates/friend_list.html:78
-#: recruit/templates/recruit/post_detail.html:101
-#: recruit/templates/recruit/post_detail.html:146
+#: recruit/templates/recruit/post_detail.html:89
+#: recruit/templates/recruit/post_detail.html:134
 msgid "Deleted"
 msgstr "삭제되었습니다"
 
@@ -84,7 +84,7 @@ msgid "update"
 msgstr "업데이트"
 
 #: accounts/templates/registration/login.html:11
-#: recruit/templates/recruit/base.html:65
+#: recruit/templates/recruit/base.html:64
 msgid "login"
 msgstr "로그인"
 
@@ -93,7 +93,7 @@ msgid "Login with Facebook"
 msgstr "페이스북으로 로그인"
 
 #: accounts/templates/registration/signup.html:10
-#: recruit/templates/recruit/base.html:62
+#: recruit/templates/recruit/base.html:61
 #: recruit/templates/recruit/index.html:11
 msgid "sign up"
 msgstr "회원가입"
@@ -106,35 +106,68 @@ msgstr "친구"
 msgid "Participation list"
 msgstr "참여목록"
 
-#: recruit/templates/recruit/base.html:37
-msgid "post list"
-msgstr "글목록"
-
-#: recruit/templates/recruit/base.html:40
-#: recruit/templates/recruit/post_new.html:7
-msgid "new posting"
-msgstr "글작성"
-
-#: recruit/templates/recruit/base.html:49
-msgid "search"
-msgstr "검색"
-
-#: recruit/templates/recruit/base.html:55
-msgid "settings"
-msgstr "설정"
-
-#: recruit/templates/recruit/base.html:58
-msgid "logout"
-msgstr "로그아웃"
-
-#: recruit/templates/recruit/participation_list.html:11
+#: recruit/forms.py:20 recruit/templates/recruit/participation_list.html:11
 #: recruit/templates/recruit/post_list.html:11
 msgid "title"
 msgstr "제목"
 
+#: recruit/forms.py:21
+msgid "content"
+msgstr "내용"
+
+#: recruit/forms.py:22 recruit/templates/recruit/index.html:24
+#: recruit/templates/recruit/post_detail.html:44
+#: recruit/templates/recruit/post_list.html:15
+msgid "meeting date"
+msgstr "모임날짜"
+
+#: recruit/forms.py:23
+msgid "recruit count"
+msgstr "모집인원"
+
+#: recruit/forms.py:24 recruit/templates/recruit/post_detail.html:45
+msgid "address"
+msgstr "모임장소"
+
+#: recruit/forms.py:25 recruit/templates/recruit/post_detail.html:46
+msgid "detail address"
+msgstr "상세위치"
+
+#: recruit/templates/recruit/base.html:36
+msgid "post list"
+msgstr "글목록"
+
+#: recruit/templates/recruit/base.html:39
+#: recruit/templates/recruit/post_new.html:7
+msgid "new posting"
+msgstr "글작성"
+
+#: recruit/templates/recruit/base.html:48
+msgid "search"
+msgstr "검색"
+
+#: recruit/templates/recruit/base.html:54
+msgid "settings"
+msgstr "설정"
+
+#: recruit/templates/recruit/base.html:57
+msgid "logout"
+msgstr "로그아웃"
+
+#: recruit/templates/recruit/index.html:23
+#: recruit/templates/recruit/post_list.html:12
+msgid "status"
+msgstr "현황"
+
+#: recruit/templates/recruit/index.html:25
+#, fuzzy
+#| msgid "meeting date"
+msgid "meeting place"
+msgstr "모임날짜"
+
 #: recruit/templates/recruit/participation_list.html:12
 #: recruit/templates/recruit/post_detail.html:31
-#: recruit/templates/recruit/post_detail.html:61
+#: recruit/templates/recruit/post_detail.html:63
 #: recruit/templates/recruit/post_list.html:13
 msgid "author"
 msgstr "작성자"
@@ -147,43 +180,34 @@ msgstr "친구추가"
 msgid "remove friend"
 msgstr "친구삭제"
 
-#: recruit/templates/recruit/post_detail.html:44
-#: recruit/templates/recruit/post_list.html:15
-msgid "meeting date"
-msgstr "모임날짜"
-
-#: recruit/templates/recruit/post_detail.html:45
+#: recruit/templates/recruit/post_detail.html:47
 msgid "participant"
 msgstr "참여자"
 
-#: recruit/templates/recruit/post_detail.html:50
+#: recruit/templates/recruit/post_detail.html:52
 msgid "add comment"
 msgstr "댓글등록"
 
-#: recruit/templates/recruit/post_detail.html:54
+#: recruit/templates/recruit/post_detail.html:56
 #: recruit/templates/recruit/post_list.html:14
 msgid "registration date"
 msgstr "등록일자"
 
-#: recruit/templates/recruit/post_detail.html:65
+#: recruit/templates/recruit/post_detail.html:67
 msgid "No comments yet"
 msgstr "아직 댓글이 없습니다."
 
-#: recruit/templates/recruit/post_detail.html:93
+#: recruit/templates/recruit/post_detail.html:81
 msgid "Are you sure you want to delete it"
 msgstr "정말 삭제 하시겠습니까"
 
-#: recruit/templates/recruit/post_detail.html:111
+#: recruit/templates/recruit/post_detail.html:99
 msgid "Do you want to add friend"
 msgstr "친구를 추가하시겠습니까"
 
-#: recruit/templates/recruit/post_detail.html:119
+#: recruit/templates/recruit/post_detail.html:107
 msgid "Added"
 msgstr "추가되었습니다"
-
-#: recruit/templates/recruit/post_list.html:12
-msgid "status"
-msgstr "현황"
 
 #: recruit/templates/recruit/post_new.html:10
 msgid "save"

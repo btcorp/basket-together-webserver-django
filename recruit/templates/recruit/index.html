@@ -20,8 +20,9 @@
                     <h2>{{ post.title|safe|linebreaks|truncatechars_html:20 }}</h2>
                 </div>
                 <div class="status">
-                    <strong>모집현황</strong>: {{ post.attend_count }}/{{ post.recruit_count }}<br/>
-                    <strong>모임날짜</strong>: {{ post.meeting_date|date:"Y-m-d H:i, l" }}
+                    <strong>{% trans 'status' %}</strong>: {{ post.attend_count }}/{{ post.recruit_count }}<br/>
+                    <strong>{% trans 'meeting date' %}</strong>: {{ post.meeting_date|date:"Y-m-d H:i, l" }}<br/>
+                    <strong>{% trans 'meeting place' %}</strong>: {{ post.get_meeting_region }}
                 </div>
             </div>
         </div>

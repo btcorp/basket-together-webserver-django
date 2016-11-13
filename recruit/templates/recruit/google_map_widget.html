@@ -15,6 +15,7 @@ function initMap() {
     });
     var geocoder = new google.maps.Geocoder();
     var infowindow = new google.maps.InfoWindow;
+    geocodeAddress(geocoder, map, infowindow);
 
     map.addListener('click', function(e) {
         marker.setPosition(e.latLng);

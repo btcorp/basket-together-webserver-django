@@ -3,7 +3,7 @@ from recruit.models import Comment, Post
 from recruit.widgets import GoogleMapWidget
 from django_summernote.widgets import SummernoteWidget
 from datetimewidget.widgets import DateTimeWidget
-
+from django.utils.translation import ugettext_lazy as _
 
 dateTimeOptions = {
     'format': 'yyyy-mm-dd P HH:ii',
@@ -17,12 +17,12 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ('title', 'content', 'meeting_date', 'recruit_count', 'latlng', 'address1', 'address2')
         labels = {
-            'title': '제목',
-            'content': '내용',
-            'meeting_date': '모임날짜',
-            'recruit_count': '모집인원',
-            'address1': '주소',
-            'address2': '상세주소'
+            'title': _('title'),
+            'content': _('content'),
+            'meeting_date': _('meeting date'),
+            'recruit_count': _('recruit count'),
+            'address1': _('address'),
+            'address2': _('detail address'),
         }
         help_texts = {
 
@@ -34,6 +34,7 @@ class PostForm(forms.ModelForm):
             'content': SummernoteWidget,
             'meeting_date': DateTimeWidget(usel10n=True, bootstrap_version=3, options=dateTimeOptions),
             'latlng': GoogleMapWidget,
+            'address1': forms.TextInput(attrs={'readonly': True})
         }
 
 

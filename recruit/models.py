@@ -85,6 +85,9 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('recruit:post_detail', kwargs={'pk': self.pk})
 
+    def get_meeting_region(self):
+        return ' '.join(self.address1.split()[1:3])
+
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, related_name='comments')
