@@ -15,7 +15,6 @@ function initMap() {
     });
     var geocoder = new google.maps.Geocoder();
     var infowindow = new google.maps.InfoWindow;
-    geocodeAddress(geocoder, map, infowindow);
 
     map.addListener('click', function(e) {
         marker.setPosition(e.latLng);
@@ -25,7 +24,6 @@ function initMap() {
     });
 
 }
-
 
 function geocodeAddress(geocoder, resultsMap, infowindow) {
     var input = document.getElementById("{{ id }}").value;
@@ -37,10 +35,7 @@ function geocodeAddress(geocoder, resultsMap, infowindow) {
                 infowindow.setContent(results[2].formatted_address);
                 infowindow.open(map, marker);
                 var addr = document.getElementById("id_address1");
-                if (addr.value == ''){
-                    addr.value = results[2].formatted_address;
-                }
-                console.log(results);
+                addr.value = results[2].formatted_address;
             } else {
                 window.alert('No results found');
             }
