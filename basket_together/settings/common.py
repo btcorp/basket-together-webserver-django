@@ -49,9 +49,11 @@ INSTALLED_APPS = [
     # 'allauth',
     # 'allauth.account',
     # 'rest_auth.registration',
+    'braces',
 
     # third apps
     'bootstrap3',
+    'disqus',
     # 'crispy_forms',
     'datetimewidget',
     # 'debug_toolbar',
@@ -219,8 +221,6 @@ LOGOUT_REDIRECT_URL = '/'
 
 SITE_ID = 2
 
-# AUTH_PROFILE_MODULE = 'user_profile.UserProfile'
-
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
@@ -296,3 +296,7 @@ SUMMERNOTE_CONFIG = {
     },
 
 }
+
+# disqus configuration
+DISQUS_API_KEY = 'FOOBARFOOBARFOOBARFOOBARFOOBARF'
+DISQUS_WEBSITE_SHORTNAME = 'foobar'
