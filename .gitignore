@@ -8,5 +8,4 @@ myvenv
 ngrok
 *.db
 media
-static
 database
