@@ -3,15 +3,26 @@
 <script>
 var marker;
 
-function initMap() {
-    var position = { lat: {{ base_lat }}, lng: {{ base_lng }} };
+function initLocation() {
+    if("geolocation" in navigator) {
+        navigator.geolocation.watchPosition(initMap);
+    }
+    else{
+        initMap({{ base_lat }}, {{ base_lng }});
+    }
+}
+
+function initMap(position) {
+    var location = { lat: position.coords.latitude, lng: position.coords.longitude };
+    document.getElementById("{{ id }}").value = location.lat+","+location.lng;
+
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 15,
-        center: position
+        center: location
     });
     marker = new google.maps.Marker({
         map: map,
-        position: position
+        position: location
     });
     var geocoder = new google.maps.Geocoder();
     var infowindow = new google.maps.InfoWindow;
@@ -46,4 +57,4 @@ function geocodeAddress(geocoder, resultsMap, infowindow) {
     });
 }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKiwb25tqNpQMxcSQzjjnOwL3Omn6X-l8&callback=initMap"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKiwb25tqNpQMxcSQzjjnOwL3Omn6X-l8&callback=initLocation"></script>
