@@ -61,3 +61,8 @@
 .navbar-fixed-top {
     background: #337ab7;
 }
+
+#map {
+    width: 600px;
+    height: 400px;
+}

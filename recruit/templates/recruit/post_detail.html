@@ -46,26 +46,14 @@
             <p><strong>{% trans 'detail address' %}</strong> : {{ post.address2 }}</p>
             <p><strong>{% trans 'participant' %}</strong> : {{ attend_user_str }}</p><br/>
             <p class="content">{{ post.content|safe|linebreaks }}</p><br/>
-            <div id="map" style="width: 550px; height: 300px;"></div>
+            <div id="map"></div>
         </div>
-    </div><br/>
-    <a class="btn btn-default" href="{% url 'recruit:add_comment_to_post' pk=post.pk %}" >{% trans 'add comment' %}</a>
-    {% for comment in post.comments.all %}
-    <div class="comment">
-        <div class="date">
-            <strong>{% trans 'registration date' %}</strong>: {{ comment.registered_date }}
-            {% if user.is_authenticated and user == comment.author %}
-                <a class="btn btn-default" href="{% url 'recruit:comment_remove' pk=comment.pk %}">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </a>
-            {% endif %}
-        </div>
-        <p><strong>{% trans 'author' %}</strong>: {{ comment.author }}</p>
-        <p>{{ comment.content|linebreaks }}</p>
     </div>
-    {% empty %}
-    <p>{% trans 'No comments yet' %}:( </p>
-    {% endfor %}
+    <br/>
+    <div>
+        {% load disqus_tags %}
+        {% disqus_show_comments %}
+    </div>
 </div>
 
 <div
@@ -166,6 +154,6 @@ function initMap() {
 }
 </script>
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-vcaQOqLJiQiOyAmCz666ksUqpZ4C_IA&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKiwb25tqNpQMxcSQzjjnOwL3Omn6X-l8&callback=initMap">
 </script>
 {% endblock %}

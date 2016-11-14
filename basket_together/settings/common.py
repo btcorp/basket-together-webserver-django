@@ -224,8 +224,6 @@ SITE_ID = 2
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-SITE_ID = 2
-
 # change message level: error to danger
 MESSAGE_TAGS = {
     message_constants.ERROR: 'danger',
@@ -298,5 +296,5 @@ SUMMERNOTE_CONFIG = {
 }
 
 # disqus configuration
-DISQUS_API_KEY = 'FOOBARFOOBARFOOBARFOOBARFOOBARF'
-DISQUS_WEBSITE_SHORTNAME = 'foobar'
+# DISQUS_API_KEY = 'FOOBARFOOBARFOOBARFOOBARFOOBARF'
+DISQUS_WEBSITE_SHORTNAME = 'baskettogether'
