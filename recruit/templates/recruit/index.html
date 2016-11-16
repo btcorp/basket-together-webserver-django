@@ -22,7 +22,7 @@
                 <div class="status">
                     <strong>{% trans 'status' %}</strong>: {{ post.attend_count }}/{{ post.recruit_count }}<br/>
                     <strong>{% trans 'meeting date' %}</strong>: {{ post.meeting_date|date:"Y-m-d H:i, l" }}<br/>
-                    <strong>{% trans 'meeting place' %}</strong>: {{ post.get_meeting_region }}
+                    <strong>{% trans 'address' %}</strong>: {{ post.address1 }}
                 </div>
             </div>
         </div>

@@ -1,42 +1,88 @@
-<div id="map" style="width: 600px; height: 400px;"></div>
+<div id="container" >
+    <div id="map-canvas" ></div>
+    <input id="map-search" class="controls" type="text" placeholder="search box" size="50">
+</div>
 
 <script>
 var marker;
+var map;
+var inputLatLng = document.getElementById("{{ id }}");
 
 function initMap() {
-    var position = { lat: {{ base_lat }}, lng: {{ base_lng }} };
-    var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 15,
-        center: position
-    });
-    marker = new google.maps.Marker({
-        map: map,
-        position: position
-    });
     var geocoder = new google.maps.Geocoder();
     var infowindow = new google.maps.InfoWindow;
-    geocodeAddress(geocoder, map, infowindow);
+    var searchBox = new google.maps.places.SearchBox(document.getElementById('map-search'));
+    var position;
 
+    // create 및 update에 대한 지도 표기방식 처리
+    if(inputLatLng.value){
+        var latlngStr = inputLatLng.value.split(',', 2);
+        position = { lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1]) };
+        setMapAndMarker(position, 17, position);
+    }
+    else{
+        position = { lat: {{ base_lat }}, lng: {{ base_lng }} };
+        setMapAndMarker(position, 7);
+    }
+
+    // 주소 검색시 이벤트
+    google.maps.event.addListener(searchBox, 'places_changed', function(){
+        var places = searchBox.getPlaces();
+        console.log(places[0]);
+
+        var bounds = new google.maps.LatLngBounds();
+        console.log(bounds);
+
+        // 검색 결과가 없을 경우
+        if(places.length == 0){
+            return 0;
+        }
+
+        var latLng = places[0].geometry.location.toString();
+        latLng = latLng.substring(1, latLng.length-1);
+
+        inputLatLng.value = latLng;
+        geocodeAddress(geocoder);
+
+        var i, place;
+
+        // 검색 결과가 다수일 경우
+        for(i=0; place=places[i]; i++){
+            p = place.geometry.location;
+            console.log(p);
+
+            bounds.extend(place.geometry.location);
+            marker.setPosition(place.geometry.location);
+        }
+
+        map.fitBounds(bounds);
+        map.setZoom(17);
+    });
+
+    // searchBox에서 엔터키 누르면 'places_changed' 이벤트가 발생함
+    searchBox.addListener('onkeypress', function(event){
+        if(event.keyCode == 13){
+            searchBox.dispatchEvent('places_changed');
+        }
+    });
+
+    // 지도 클릭시 이벤트
     map.addListener('click', function(e) {
         marker.setPosition(e.latLng);
         var latlng = e.latLng.lat() + "," + e.latLng.lng();
-        document.getElementById("{{ id }}").value = latlng;
-        geocodeAddress(geocoder, map, infowindow);
+        inputLatLng.value = latlng;
+        geocodeAddress(geocoder);
     });
-
 }
 
-function geocodeAddress(geocoder, resultsMap, infowindow) {
-    var input = document.getElementById("{{ id }}").value;
-    var latlngStr = input.split(',', 2);
+function geocodeAddress(geocoder) {
+    var latlngStr = inputLatLng.value.split(',', 2);
     var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
     geocoder.geocode({'location': latlng}, function(results, status) {
         if (status === google.maps.GeocoderStatus.OK) {
             if (results[2]) {
-                infowindow.setContent(results[2].formatted_address);
-                infowindow.open(map, marker);
                 var addr = document.getElementById("id_address1");
-                addr.value = results[2].formatted_address;
+                addr.value = results[results.length-2].address_components[0].short_name;
             } else {
                 window.alert('No results found');
             }
@@ -45,5 +91,17 @@ function geocodeAddress(geocoder, resultsMap, infowindow) {
         }
     });
 }
+
+function setMapAndMarker(position, zoom, markerPosition=null){
+    map = new google.maps.Map(document.getElementById('map-canvas'), {
+        zoom: zoom,
+        center: position
+    });
+    marker = new google.maps.Marker({
+        map: map,
+        position: markerPosition
+    });
+}
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-vcaQOqLJiQiOyAmCz666ksUqpZ4C_IA&callback=initMap"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKiwb25tqNpQMxcSQzjjnOwL3Omn6X-l8
+    &callback=initMap&libraries=places"></script>
