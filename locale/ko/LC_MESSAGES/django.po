@@ -127,7 +127,7 @@ msgstr "모집인원"
 
 #: recruit/forms.py:24 recruit/templates/recruit/post_detail.html:45
 msgid "address"
-msgstr "모임장소"
+msgstr "지역"
 
 #: recruit/forms.py:25 recruit/templates/recruit/post_detail.html:46
 msgid "detail address"
@@ -160,10 +160,8 @@ msgid "status"
 msgstr "현황"
 
 #: recruit/templates/recruit/index.html:25
-#, fuzzy
-#| msgid "meeting date"
 msgid "meeting place"
-msgstr "모임날짜"
+msgstr "모임장소"
 
 #: recruit/templates/recruit/participation_list.html:12
 #: recruit/templates/recruit/post_detail.html:31
