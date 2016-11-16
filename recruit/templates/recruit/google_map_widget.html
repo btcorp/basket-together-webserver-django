@@ -22,7 +22,7 @@ function initMap() {
     }
     else{
         position = { lat: {{ base_lat }}, lng: {{ base_lng }} };
-        setMapAndMarker(position, 7);
+        setMapAndMarker(position, 7, null);
     }
 
     // 주소 검색시 이벤트
@@ -92,7 +92,7 @@ function geocodeAddress(geocoder) {
     });
 }
 
-function setMapAndMarker(position, zoom, markerPosition=null){
+function setMapAndMarker(position, zoom, markerPosition){
     map = new google.maps.Map(document.getElementById('map-canvas'), {
         zoom: zoom,
         center: position
