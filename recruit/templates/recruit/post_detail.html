@@ -155,7 +155,7 @@ function removeFriend() {
 function initMap() {
     var myLatLng = {lat: {{ post.lat }}, lng: {{ post.lng }}};
     var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 15,
+        zoom: 17,
         center: myLatLng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
@@ -166,6 +166,6 @@ function initMap() {
 }
 </script>
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-vcaQOqLJiQiOyAmCz666ksUqpZ4C_IA&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKiwb25tqNpQMxcSQzjjnOwL3Omn6X-l8&callback=initMap">
 </script>
 {% endblock %}

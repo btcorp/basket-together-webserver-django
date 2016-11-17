@@ -30,7 +30,7 @@ class Post(models.Model):
     address1 = models.CharField(max_length=200, blank=True)
     address2 = models.CharField(max_length=200, blank=True)
     comment_count = models.IntegerField(default=0)
-    latlng = models.CharField(max_length=50, blank=True, default='37.497921,127.027636')
+    latlng = models.CharField(max_length=50, blank=True)
     meeting_date = models.DateTimeField(default=change_timezone)
 
     class Meta:
@@ -84,9 +84,6 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('recruit:post_detail', kwargs={'pk': self.pk})
-
-    def get_meeting_region(self):
-        return ' '.join(self.address1.split()[1:3])
 
 
 class Comment(models.Model):

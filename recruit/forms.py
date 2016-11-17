@@ -34,7 +34,7 @@ class PostForm(forms.ModelForm):
             'content': SummernoteWidget,
             'meeting_date': DateTimeWidget(usel10n=True, bootstrap_version=3, options=dateTimeOptions),
             'latlng': GoogleMapWidget,
-            'address1': forms.TextInput(attrs={'readonly': True})
+            'address1': forms.HiddenInput(attrs={'readonly': True})
         }
 
 
