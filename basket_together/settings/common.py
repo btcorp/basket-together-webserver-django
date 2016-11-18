@@ -13,6 +13,15 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 from django.contrib.messages import constants as message_constants
 import os
 from os.path import abspath, dirname
+from django.core.exceptions import ImproperlyConfigured
+
+
+def get_env_variable(var_name):
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = 'Set the {} environment variable'.format(var_name)
+        raise ImproperlyConfigured(error_msg)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = abspath(dirname(dirname(dirname(__file__))))
@@ -297,6 +306,8 @@ SUMMERNOTE_CONFIG = {
 
 }
 
-# disqus configuration
-# DISQUS_API_KEY = 'FOOBARFOOBARFOOBARFOOBARFOOBARF'
-DISQUS_WEBSITE_SHORTNAME = 'baskettogether'
+DISQUS_WEBSITE_SHORTNAME = get_env_variable('DISQUS_WEBSITE_SHORTNAME')
+
+GOOGLE_MAP_API_KEY = get_env_variable('GOOGLE_MAP_API_KEY')
+
+GOOGLE_ANALYTICS_TRACKING_ID = get_env_variable('GOOGLE_ANALYTICS_TRACKING_ID')

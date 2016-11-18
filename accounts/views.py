@@ -4,12 +4,15 @@ from braces.views import LoginRequiredMixin
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.contrib.auth.views import login
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, UpdateView, View, CreateView
 
+from accounts.forms import LoginForm
 from accounts.forms import UserProfileForm, SignupForm
 from accounts.models import Friendship, Profile
+from basket_together.settings import dev, prod
 
 
 class SignupView(CreateView):
@@ -25,6 +28,24 @@ class SignupView(CreateView):
         self.object= form.save()
         Profile.objects.create(user=self.object)
         return super(SignupView, self).form_valid(form)
+
+
+# dev/prod 환경에 따른 facebook key 설정
+def LoginView(request):
+    local_host  = request.META['HTTP_HOST']
+    if local_host == '127.0.0.1:8000' or local_host == 'localhost:8000':
+        settings = dev
+    else:
+        settings = prod
+
+    context = {
+        'authentication_form': LoginForm,
+        'template_name': 'registration/login.html',
+        'extra_context': {
+            'SOCIAL_AUTH_FACEBOOK_KEY': settings.SOCIAL_AUTH_FACEBOOK_KEY,
+        },
+    }
+    return login(request, **context)
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
