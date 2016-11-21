@@ -1,3 +1,5 @@
+{% load secretkey_tags %}
+
 <div id="container" >
     <div id="map-canvas" ></div>
     <input id="map-search" class="controls" type="text" placeholder="search box" size="50">
@@ -103,5 +105,5 @@ function setMapAndMarker(position, zoom, markerPosition){
     });
 }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKiwb25tqNpQMxcSQzjjnOwL3Omn6X-l8
+<script src="https://maps.googleapis.com/maps/api/js?key={% SECRET_KEY 'GOOGLE_MAP_API_KEY' %}
     &callback=initMap&libraries=places"></script>

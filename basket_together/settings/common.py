@@ -10,9 +10,23 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
-from django.contrib.messages import constants as message_constants
+import json
 import os
 from os.path import abspath, dirname
+
+from django.contrib.messages import constants as message_constants
+from django.core.exceptions import ImproperlyConfigured
+
+with open('secret_key.json') as f:
+    secret_keys = json.loads(f.read())
+
+
+def get_secret_key(key_name, secret_keys=secret_keys):
+    try:
+        return secret_keys[key_name]
+    except KeyError:
+        error_msg = 'Set the {} environment variable'.format(key_name)
+        raise ImproperlyConfigured(error_msg)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = abspath(dirname(dirname(dirname(__file__))))
@@ -297,6 +311,8 @@ SUMMERNOTE_CONFIG = {
 
 }
 
-# disqus configuration
-# DISQUS_API_KEY = 'FOOBARFOOBARFOOBARFOOBARFOOBARF'
-DISQUS_WEBSITE_SHORTNAME = 'baskettogether'
+# secret keys
+DISQUS_WEBSITE_SHORTNAME = get_secret_key('DISQUS_WEBSITE_SHORTNAME')
+
+GOOGLE_MAP_API_KEY = get_secret_key('GOOGLE_MAP_API_KEY')
+GOOGLE_ANALYTICS_TRACKING_ID = get_secret_key('GOOGLE_ANALYTICS_TRACKING_ID')

@@ -1,5 +1,6 @@
 {% extends 'recruit/base.html' %}
 {% load i18n %}
+{% load secretkey_tags %}
 
 {% block content %}
 <div class="col-sm-8 col-sm-offset-2" >
@@ -166,6 +167,6 @@ function initMap() {
 }
 </script>
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKiwb25tqNpQMxcSQzjjnOwL3Omn6X-l8&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key={% SECRET_KEY 'GOOGLE_MAP_API_KEY' %}&callback=initMap">
 </script>
 {% endblock %}
