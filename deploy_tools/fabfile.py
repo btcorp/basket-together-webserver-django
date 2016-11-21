@@ -47,14 +47,8 @@ def _get_latest_source(source_folder):
 def _update_settings(source_folder, site_name):
     print('==========================Set settings.py file=========================================================')
     settings_path = source_folder + '/' + PROJECT_NAME + '/settings/common.py'
-    sed(settings_path, "DEBUG = True", "DEBUG = False")
-    sed(
-        settings_path,
-        'ALLOWED_HOSTS = .+$',
-        'ALLOWED_HOSTS = ["{0}"]'.format('*')
-    )
-
     secret_key_file = source_folder + '/' + PROJECT_NAME + '/secret_key.py'
+
     if not exists(secret_key_file):
         chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
         key = ''.join(random.SystemRandom().choice(chars) for _ in range(50))
