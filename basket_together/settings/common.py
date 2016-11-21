@@ -5,7 +5,12 @@ from os.path import abspath, dirname
 from django.contrib.messages import constants as message_constants
 from django.core.exceptions import ImproperlyConfigured
 
-with open('secret_key.json') as f:
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = abspath(dirname(dirname(dirname(__file__))))
+ROOT = lambda *wargs: os.path.join(BASE_DIR, *wargs)
+
+with open(os.path.join(BASE_DIR, 'secret_key.json')) as f:
     secret_keys = json.loads(f.read())
 
 
@@ -15,10 +20,6 @@ def get_secret_key(key_name, secret_keys=secret_keys):
     except KeyError:
         error_msg = 'Set the {} environment variable'.format(key_name)
         raise ImproperlyConfigured(error_msg)
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = abspath(dirname(dirname(dirname(__file__))))
-ROOT = lambda *wargs: os.path.join(BASE_DIR, *wargs)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
