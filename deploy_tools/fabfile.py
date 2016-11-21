@@ -1,6 +1,8 @@
-from fabric.contrib.files import append, exists, sed
-from fabric.api import env, local, run
 import random
+import subprocess
+
+from fabric.api import env, local, run
+from fabric.contrib.files import append, exists, sed
 
 env.use_ssh_config = True
 REPO_URL = 'https://github.com/btcorp/basket-together-webserver-django.git'   # git repo url setting
@@ -9,7 +11,7 @@ SERVER_TYPE = 'web_server'
 
 
 def deploy():
-    site_folder = '/home/{0}/sites/{1}'.format(env.user, PROJECT_NAME)
+    site_folder = '/home/ubuntu/home/{0}/sites/{1}'.format(env.user, PROJECT_NAME)
     source_folder = site_folder + '/' + SERVER_TYPE
 
     _create_directory_structure_if_necessary(site_folder)
@@ -20,6 +22,7 @@ def deploy():
     _chown_database_to_ubuntu(source_folder)
     _update_database(source_folder)
     _chown_database_to_wwwdata(source_folder)
+    _copy_secret_key(site_folder)
 
 
 def _create_directory_structure_if_necessary(site_folder):
@@ -50,16 +53,6 @@ def _update_settings(source_folder, site_name):
         'ALLOWED_HOSTS = .+$',
         'ALLOWED_HOSTS = ["{0}"]'.format('*')
     )
-    # sed(
-    #     settings_path,
-    #     "SOCIAL_AUTH_FACEBOOK_KEY = .+$",
-    #     "SOCIAL_AUTH_FACEBOOK_KEY = '1141173975956444' "
-    # )
-    # sed(
-    #     settings_path,
-    #     "SOCIAL_AUTH_FACEBOOK_SECRET = .+$",
-    #     "SOCIAL_AUTH_FACEBOOK_SECRET = 'd829612eb38f7d98c0434e3379ee545a' "
-    # )
 
     secret_key_file = source_folder + '/' + PROJECT_NAME + '/secret_key.py'
     if not exists(secret_key_file):
@@ -95,3 +88,9 @@ def _update_database(source_folder):
 def _chown_database_to_wwwdata(source_folder):
     print('==========================chown database directory & file============================================')
     run('cd {0}/../ && sudo chown -R www-data:www-data database'.format(source_folder))
+
+
+def _copy_secret_key(site_folder):
+    print('==========================set secret_key.json=========================================================')
+    pem_path = '/Users/Jin-TaeWoo/.ssh/basket_together.pem'
+    subprocess.call('scp -i '+pem_path+' ../secret_key.json ubuntu@52.78.69.17:'+site_folder, shell=True)
