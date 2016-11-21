@@ -15,7 +15,7 @@
                     <th class="col-md-2">{% trans 'meeting date' %}</th>
                 </tr>
                 {% for post in posts %}
-                <tr style="cursor:hand;" onclick="location.href='{% url 'recruit:post_detail' pk=post.pk %}'">
+                <tr style="cursor:pointer;" onclick="location.href='{% url 'recruit:post_detail' pk=post.pk %}'">
                     <td>{{ post.id }}</td>
                     <td>{{ post.title }}</td>
                     <td>{{ post.attend_count }}/{{ post.recruit_count }}</td>
