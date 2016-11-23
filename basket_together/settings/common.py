@@ -11,12 +11,15 @@ BASE_DIR = abspath(dirname(dirname(dirname(__file__))))
 ROOT = lambda *wargs: os.path.join(BASE_DIR, *wargs)
 
 with open(os.path.join(BASE_DIR, 'secret_key.json')) as f:
-    secret_keys = json.loads(f.read())
+    json_data = json.loads(f.read())
+    secret_keys = json_data['SECRET_KEYS']
+    dev_databases = json_data['DEV_DATABASES']
+    prod_databases = json_data['PROD_DATABASES']
 
 
-def get_secret_key(key_name, secret_keys=secret_keys):
+def get_json_data(key_name, data_dic):
     try:
-        return secret_keys[key_name]
+        return data_dic[key_name]
     except KeyError:
         error_msg = 'Set the {} environment variable'.format(key_name)
         raise ImproperlyConfigured(error_msg)
@@ -155,21 +158,14 @@ WSGI_APPLICATION = 'basket_together.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, '../database/db.sqlite3'),
-        'USER': 'test',
-        'PASSWORD': '1234qwer'
-    },
-    # 'api_server': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    #     'NAME': os.path.join(BASE_DIR, '../database/db_api.sqlite3'),
-    #     'USER': 'test',
-    #     'PASSWORD': '1234qwer'
-    # }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, '../database/db.sqlite3'),
+#         'USER': 'test',
+#         'PASSWORD': '1234qwer'
+#     },
+# }
 
 
 # Password validation
@@ -301,6 +297,6 @@ SUMMERNOTE_CONFIG = {
 }
 
 # secret keys
-DISQUS_WEBSITE_SHORTNAME = get_secret_key('DISQUS_WEBSITE_SHORTNAME')
-GOOGLE_MAP_API_KEY = get_secret_key('GOOGLE_MAP_API_KEY')
-GOOGLE_ANALYTICS_TRACKING_ID = get_secret_key('GOOGLE_ANALYTICS_TRACKING_ID')
+DISQUS_WEBSITE_SHORTNAME = get_json_data('DISQUS_WEBSITE_SHORTNAME', secret_keys)
+GOOGLE_MAP_API_KEY = get_json_data('GOOGLE_MAP_API_KEY', secret_keys)
+GOOGLE_ANALYTICS_TRACKING_ID = get_json_data('GOOGLE_ANALYTICS_TRACKING_ID', secret_keys)
