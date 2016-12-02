@@ -25,17 +25,10 @@ class LoginForm(AuthenticationForm):
         fields = ('username', 'password', )
 
 
-class UserForm(forms.ModelForm):
-
-    class Meta:
-        model = get_user_model()
-        fields = ('email',)
-
-
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('nickname', 'phone_number', 'user_image',)
+        fields = ('email', 'nickname', 'phone_number', 'user_image',)
         labels = {
             'nickname': _('nickname'),
             'phone_number': _('phone_number'),

@@ -80,6 +80,7 @@ class Profile(models.Model):
     )
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    email = models.EmailField(_('email address'), blank=True)
     nickname = models.CharField(max_length=20, blank=True)
     phone_number = PhoneNumberField(max_length=12, blank=True)
     device_type = models.CharField(max_length=10, choices=DEVICE_TYPE, default='a')
@@ -101,7 +102,7 @@ class Profile(models.Model):
         return {
             'user_id': self.user.id,
             'user_name': self.user.username,
-            'email': self.user.email,
+            'email': self.email,
             'phone_number': self.phone_number,
             'device_type': self.device_type,
             'attend_count': self.attend_count,
@@ -142,6 +143,5 @@ class ExtendedUser(AbstractUser):
         return self
 
 
-# CustomUser.profile = property(lambda user: Profile.objects.get_or_create(user=user)[0])
 ExtendedUser.profile = property(lambda user: Profile.objects.get_or_create(user=user)[0])
 

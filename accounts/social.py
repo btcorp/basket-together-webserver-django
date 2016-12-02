@@ -31,9 +31,9 @@ def save_profile(backend, user, response, *args, **kwargs):
         if profile is None:
             profile = Profile(user_id=user.id)
 
-        user.email = response.get('email')
         user.first_name = response.get('first_name')
         user.last_name = response.get('first_name')
+        profile.email = response.get('email')
         profile.nickname = response.get('name')
         profile.join_path = 'facebook'
 
