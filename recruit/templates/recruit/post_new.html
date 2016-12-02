@@ -3,14 +3,13 @@
 {% load i18n %}
 
 {% block content %}
-    <div class="col-sm-8 col-sm-offset-2" onkeydown="return captureReturnKey(event)">
-        <h1>{% trans 'new posting' %}</h1>
-        <form method="POST" action="#" >{% csrf_token %}
-            {% bootstrap_form form %}
-            <button type="submit" class="save btn btn-primary" >{% trans 'save' %}</button>
-        </form>
-    </div>
-
+<div class="col-xs-12 col-sm-12 col-md-12" onkeydown="return captureReturnKey(event)">
+	<h1>{% trans 'new posting' %}</h1>
+	<form method="POST" action="#">{% csrf_token %}
+		{% bootstrap_form form %}
+		<button type="submit" class="save btn btn-primary">{% trans 'save' %}</button>
+	</form>
+</div>
 <script>
     // inputBox에서 엔터키 작동시 submit되는 현상을 막기 위한 코드
     function captureReturnKey(event) {

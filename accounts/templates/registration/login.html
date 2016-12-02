@@ -1,17 +1,17 @@
-{% extends 'recruit/index.html' %}
+{% extends 'recruit/base.html' %}
 {% load bootstrap3 %}
 {% load i18n %}
 
 {% block content  %}
 
-<div class="col-md-6 col-md-offset-3" >
-    <form id="login" method="POST" action="">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        <input type="submit" value="{% trans 'login' %}" class="btn btn-primary" />
-        <input type="hidden" name="next" value="{{ next }}" />
-    </form>
-    <a href="{% url 'social:begin' 'facebook' %}?next='/' ">{% trans 'Login with Facebook' %}</a>
+<div class="col-md-6 col-md-offset-3">
+	<form id="login" method="POST" action="">
+		{% csrf_token %}
+		{% bootstrap_form form %}
+		<input type="submit" value="{% trans 'login' %}" class="btn btn-primary"/>
+		<input type="hidden" name="next" value="{{ next }}"/>
+	</form>
+	<a href="{% url 'social:begin' 'facebook' %}?next='/' ">{% trans 'Login with Facebook' %}</a>
 </div>
 
 <script>
@@ -31,5 +31,6 @@
         js.src = "//connect.facebook.net/en_US/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
+
 </script>
 {% endblock %}

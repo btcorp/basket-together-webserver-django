@@ -1,32 +1,35 @@
 {% extends 'recruit/base.html' %}      # template 이하 경로로 설정.
 {% load i18n %}
 
+{% block bt-header %}
+<div class="col-md-12 jumbotron">
+	<h2>
+		<strong>Basket Together!!</strong>
+	</h2>
+	<p>
+		<a class="btn btn-primary btn-large" href="{% url 'accounts:login' %}">{% trans 'login' %}!!</a>
+	</p>
+</div>
+{% endblock%}
+
 {% block content %}
 
-    <div class="col-md-12 jumbotron" >
-        <h2>
-            <strong>Basket Together!!</strong>
-        </h2>
-        <p>
-            <a class="btn btn-primary btn-large" href="{% url 'accounts:signup' %}">{% trans 'sign up' %}!!</a>
-        </p>
-    </div>
-
-    <div class="row" >
-        {% for post in posts %}
-        <div class="simple-post" onclick="location.href='{% url 'recruit:post_detail' pk=post.pk %}'" >
-            <div class="content">
-                <div class="title">
-                    <h2>{{ post.title|safe|linebreaks|truncatechars_html:20 }}</h2>
-                </div>
-                <div class="status">
-                    <strong>{% trans 'status' %}</strong>: {{ post.attend_count }}/{{ post.recruit_count }}<br/>
-                    <strong>{% trans 'meeting date' %}</strong>: {{ post.meeting_date|date:"Y-m-d H:i, l" }}<br/>
-                    <strong>{% trans 'address' %}</strong>: {{ post.address1 }}
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
+<label><strong>최근 포스팅</strong></label>
+<div class="row">
+	{% for post in posts %}
+	<div class="simple-post" onclick="location.href='{% url 'recruit:post_detail' pk=post.pk %}'">
+		<div class="content">
+			<div class="title">
+				<h2><strong>{{ post.title|safe|linebreaks|truncatechars_html:10 }}</strong></h2>
+			</div>
+			<div class="status">
+				{% trans 'status' %}: {{ post.attend_count }}/{{ post.recruit_count }}<br/>
+				{% trans 'meeting date' %}: {{ post.meeting_date|date:"Y-m-d H:i, l" }}<br/>
+				{% trans 'address' %}: {{ post.address1 }}
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
 
 {% endblock %}

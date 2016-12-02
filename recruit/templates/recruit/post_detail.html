@@ -3,77 +3,78 @@
 {% load secretkey_tags %}
 
 {% block content %}
-<div class="col-sm-8 col-sm-offset-2" >
-    <div class="post" >
-        <div >
-            {% if user.is_authenticated and user == post.author %}
-            <a class="btn btn-primary" href="{% url 'recruit:post_edit' pk=post.pk %}" role="button" >
-                <span class="glyphicon glyphicon-pencil"></span>
-            </a>
-            <a id="btnRemove" class="btn btn-primary" onclick="removePost()" role="button" >
-                <span class="glyphicon glyphicon-remove"></span>
-            </a>
-            {% elif user.is_authenticated %}
-                {% if user.username in attend_users %}
-                <a class="btn btn-primary" href="{% url 'recruit:remove_participation' pk=post.pk %}" role="button"
-                   data-toggle="tooltip" data-placement="top" title="Cancel" >
-                  <span class="glyphicon glyphicon glyphicon-star"></span>
-                </a>
-                {% else %}
-                <a class="btn btn-primary" href="{% url 'recruit:add_participation' pk=post.pk %}?next={{ request.path }}"
-                   data-toggle="tooltip" data-placement="top" title="Attend" role="button" >
-                   <span class="glyphicon glyphicon glyphicon-star-empty"></span>
-                </a>
-                {% endif %}
-            {% endif %}
-        </div>
-        <div class="content">
-            <h1>{{ post.title }} </h1><br/>
-            <p><strong>{% trans 'author' %}</strong> : {{ post.author }}
-            {% if request.user != post.author and request.user.id != None %}
-            {% if not isFriend %}
-            <a id="addFriend" class="btn-sm btn-primary" onclick="addFriend()" >
-                {% trans 'add friend' %}
-            </a>
-            {% else %}
-            <a id="removeFriend" class="btn-sm btn-primary" onclick="removeFriend()" >
-                {% trans 'remove friend' %}
-            </a>
-            {% endif %}
-            {% endif %}
-            </p>
-            <p><strong>{% trans 'meeting date' %}</strong> : {{ post.meeting_date }}</p>
-            <p><strong>{% trans 'address' %}</strong> : {{ post.address1 }}</p>
-            <p><strong>{% trans 'detail address' %}</strong> : {{ post.address2 }}</p>
-            <p><strong>{% trans 'participant' %}</strong> : {{ attend_user_str }}</p><br/>
-            <p class="content">{{ post.content|safe|linebreaks }}</p><br/>
-            <div id="map" style="width: 550px; height: 300px;"></div>
-        </div>
-    </div><br/>
-    <a class="btn btn-default" href="{% url 'recruit:add_comment_to_post' pk=post.pk %}" >{% trans 'add comment' %}</a>
-    {% for comment in post.comments.all %}
-    <div class="comment">
-        <div class="date">
-            <strong>{% trans 'registration date' %}</strong>: {{ comment.registered_date }}
-            {% if user.is_authenticated and user == comment.author %}
-                <a class="btn btn-default" href="{% url 'recruit:comment_remove' pk=comment.pk %}">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </a>
-            {% endif %}
-        </div>
-        <p><strong>{% trans 'author' %}</strong>: {{ comment.author }}</p>
-        <p>{{ comment.content|linebreaks }}</p>
-    </div>
-    {% empty %}
-    <p>{% trans 'No comments yet' %}:( </p>
-    {% endfor %}
+<div id="post-container">
+	<div class="post">
+		<div>
+			{% if user.is_authenticated and user == post.author %}
+			<a class="btn btn-primary" href="{% url 'recruit:post_edit' pk=post.pk %}" role="button">
+				<span class="glyphicon glyphicon-pencil"></span>
+			</a>
+			<a id="btnRemove" class="btn btn-primary" onclick="removePost()" role="button">
+				<span class="glyphicon glyphicon-remove"></span>
+			</a>
+			{% elif user.is_authenticated %}
+			{% if user.username in attend_users %}
+			<a class="btn btn-primary" href="{% url 'recruit:remove_participation' pk=post.pk %}" role="button"
+			   data-toggle="tooltip" data-placement="top" title="Cancel">
+				<span class="glyphicon glyphicon glyphicon-star"></span>
+			</a>
+			{% else %}
+			<a class="btn btn-primary" href="{% url 'recruit:add_participation' pk=post.pk %}?next={{ request.path }}"
+			   data-toggle="tooltip" data-placement="top" title="Attend" role="button">
+				<span class="glyphicon glyphicon glyphicon-star-empty"></span>
+			</a>
+			{% endif %}
+			{% endif %}
+		</div>
+		<div class="content">
+			<h1>{{ post.title }} </h1><br/>
+			<p><strong>{% trans 'author' %}</strong> : {{ post.author }}
+				{% if request.user != post.author and request.user.id != None %}
+				{% if not isFriend %}
+				<a id="addFriend" class="btn-sm btn-primary" onclick="addFriend()">
+					{% trans 'add friend' %}
+				</a>
+				{% else %}
+				<a id="removeFriend" class="btn-sm btn-primary" onclick="removeFriend()">
+					{% trans 'remove friend' %}
+				</a>
+				{% endif %}
+				{% endif %}
+			</p>
+			<p><strong>{% trans 'meeting date' %}</strong> : {{ post.meeting_date }}</p>
+			<p><strong>{% trans 'address' %}</strong> : {{ post.address1 }}</p>
+			<p><strong>{% trans 'detail address' %}</strong> : {{ post.address2 }}</p>
+			<p><strong>{% trans 'participant' %}</strong> : {{ attend_user_str }}</p><br/>
+			<p class="content">{{ post.content|safe|linebreaks }}</p><br/>
+			<div id="map"></div>
+		</div>
+	</div>
+	<br/>
+	<a class="btn btn-default" href="{% url 'recruit:add_comment_to_post' pk=post.pk %}">{% trans 'add comment' %}</a>
+	{% for comment in post.comments.all %}
+	<div class="comment">
+		<div class="date">
+			<strong>{% trans 'registration date' %}</strong>: {{ comment.registered_date }}
+			{% if user.is_authenticated and user == comment.author %}
+			<a class="btn btn-default" href="{% url 'recruit:comment_remove' pk=comment.pk %}">
+				<span class="glyphicon glyphicon-remove"></span>
+			</a>
+			{% endif %}
+		</div>
+		<p><strong>{% trans 'author' %}</strong>: {{ comment.author }}</p>
+		<p>{{ comment.content|linebreaks }}</p>
+	</div>
+	{% empty %}
+	<p>{% trans 'No comments yet' %}:( </p>
+	{% endfor %}
 </div>
 
 <div
-  class="fb-like"
-  data-share="true"
-  data-width="450"
-  data-show-faces="true">
+		class="fb-like"
+		data-share="true"
+		data-width="450"
+		data-show-faces="true">
 </div>
 
 <script>
@@ -165,6 +166,7 @@ function initMap() {
         map: map,
     });
 }
+
 </script>
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key={% SECRET_KEY 'GOOGLE_MAP_API_KEY' %}&callback=initMap">

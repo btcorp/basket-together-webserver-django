@@ -1,34 +1,37 @@
-{% extends 'recruit/index.html' %}
+{% extends 'recruit/base.html' %}
 {% load i18n %}
 
 {% block content %}
-    <div class="col-sm-6 col-sm-offset-3">
-        <ul id="myTab" class="nav nav-tabs" >
-            <li>
-                <a href="{% url 'accounts:profile' %}" role="tab" >{% trans 'Profile' %}</a>
-            </li>
-            <li>
-                <a href="{% url 'accounts:friend_list' %}" >{% trans 'Friend' %}</a>
-            </li>
-            <li>
-                <a href="{% url 'recruit:participation_list' %}" >{% trans 'Participation list' %}</a>
-            </li>
-        </ul>
+<div class="col-xs-12 col-sm-12 col-md-12">
+	<ul id="myTab" class="nav nav-tabs" role="tablist">
+		<li role="presentation">
+			<a href="{% url 'accounts:profile' %}" role="tab" aria-expanded="true" aria-controls="profile">
+				{% trans 'Profile' %}
+			</a>
+		</li>
+		<li role="presentation">
+			<a href="{% url 'accounts:friend_list' %}" role="tab" aria-expanded="false"
+			   aria-controls="friends">
+				{% trans 'Friend' %}
+			</a>
+		</li>
+		<li role="presentation">
+			<a href="{% url 'recruit:participation_list' %}" role="tab" aria-expanded="false"
+			   aria-controls="participations">
+				{% trans 'Participation list' %}
+			</a>
+		</li>
+	</ul>
 
-        <div>
-            {% block body %}
-            {% endblock %}
-        </div>
-    </div>
+	<div>
+		{% block body %}
+		{% endblock %}
+	</div>
+</div>
 
-    <script type="text/javascript">
-        $('#myTab li').click(function (e) {
-            $(this).toggleClass('active');
-        });
+<script type="text/javascript">
 
-        <!--$(document).ready(function() {-->
-            <!--$('#myTab li:first').tab('show');-->
-        <!--});-->
-    </script>
+
+</script>
 {% endblock %}
 

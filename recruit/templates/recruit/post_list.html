@@ -3,63 +3,63 @@
 
 {% block content %}
 
-    <div class="col-md-12">
-        <div class="col-md-10 col-md-offset-1">
-            <table class="table table-hover table-condensed" >
-                <tr>
-                    <th class="col-md-1">ID</th>
-                    <th class="col-md-3">{% trans 'title' %}</th>
-                    <th class="col-md-1">{% trans 'status' %}</th>
-                    <th class="col-md-1">{% trans 'author' %}</th>
-                    <th class="col-md-2">{% trans 'registration date' %}</th>
-                    <th class="col-md-2">{% trans 'meeting date' %}</th>
-                </tr>
-                {% for post in posts %}
-                <tr style="cursor:pointer;" onclick="location.href='{% url 'recruit:post_detail' pk=post.pk %}'">
-                    <td>{{ post.id }}</td>
-                    <td>{{ post.title }}</td>
-                    <td>{{ post.attend_count }}/{{ post.recruit_count }}</td>
-                    <td>{{ post.author }}</td>
-                    <td>{{ post.registered_date|date:'Y-m-d H:i'}}</td>
-                    <td>{{ post.meeting_date|date:'Y-m-d H:i' }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-    </div>
-    <nav style="text-align:center;">
-        <ul class="pagination">
-            {% if page_obj.has_previous %}
-            <li>
-              <a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-            {% else %}
-            <li class="enabled">
-                <span aria-hidden="true">&laquo;</span>
-            </li>
-            {% endif %}
+<div id="post-list" class="col-md-12">
+	<div class="col-xs-12 col-sm-12 col-md-12">
+		<table class="table table-hover table-condensed">
+			<tr>
+				<th class="col-md-1">ID</th>
+				<th class="col-md-3">{% trans 'title' %}</th>
+				<th class="col-md-1">{% trans 'status' %}</th>
+				<th class="col-md-1">{% trans 'author' %}</th>
+				<th class="col-md-2">{% trans 'registration date' %}</th>
+				<th class="col-md-2">{% trans 'meeting date' %}</th>
+			</tr>
+			{% for post in posts %}
+			<tr class="row-data" onclick="location.href='{% url 'recruit:post_detail' pk=post.pk %}'">
+				<td>{{ post.id }}</td>
+				<td>{{ post.title }}</td>
+				<td>{{ post.attend_count }}/{{ post.recruit_count }}</td>
+				<td>{{ post.author }}</td>
+				<td>{{ post.registered_date|date:'Y-m-d H:i'}}</td>
+				<td>{{ post.meeting_date|date:'Y-m-d H:i' }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>
+<nav>
+	<ul class="pagination">
+		{% if page_obj.has_previous %}
+		<li>
+			<a href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+				<span aria-hidden="true">&laquo;</span>
+			</a>
+		</li>
+		{% else %}
+		<li class="enabled">
+			<span aria-hidden="true">&laquo;</span>
+		</li>
+		{% endif %}
 
-            {% for page in paginator.page_range %}
-                {% if page_obj.number == page %}
-                    <li class="active"><a href="?page={{ page }}">{{ page }}<span class="sr-only">(current)</span></a></li>
-                {% else %}
-                    <li><a href="?page={{ page }}">{{ page }}</a></li>
-                {% endif %}
-            {% endfor %}
+		{% for page in paginator.page_range %}
+		{% if page_obj.number == page %}
+		<li class="active"><a href="?page={{ page }}">{{ page }}<span class="sr-only">(current)</span></a></li>
+		{% else %}
+		<li><a href="?page={{ page }}">{{ page }}</a></li>
+		{% endif %}
+		{% endfor %}
 
-            {% if page_obj.has_next %}
-            <li>
-              <a href="?page={{ page_obj.next_page_number }}" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-            {% else %}
-            <li class="enabled">
-                <span aria-hidden="true">&raquo;</span>
-            </li>
-            {% endif %}
-        </ul>
-    </nav>
+		{% if page_obj.has_next %}
+		<li>
+			<a href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+				<span aria-hidden="true">&raquo;</span>
+			</a>
+		</li>
+		{% else %}
+		<li class="enabled">
+			<span aria-hidden="true">&raquo;</span>
+		</li>
+		{% endif %}
+	</ul>
+</nav>
 {% endblock %}
