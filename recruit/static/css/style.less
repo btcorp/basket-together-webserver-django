@@ -260,6 +260,7 @@ nav {
         .set-padding();
     }
     .navbar-form {
+        width: 100%;
         .set-padding(0, 10px);
         border-top: 0;
         border-bottom: 0;
@@ -288,11 +289,14 @@ nav {
     }
     #myNavbar {
         float: left;
-        width: 300px;
 
         .form-group {
-            height: 0;
+            display: inline-block;
             margin: 0;
+
+            btn{
+                float: left;
+            }
         }
     }
     #map {
@@ -352,10 +356,9 @@ nav {
         .set-padding();
     }
     #myNavbar {
-        width: 0;
+        display: inline-block;
     }
     .navbar-form {
-        width: 280px;
         .set-padding(0, 10px);
         border-top: 0;
         border-bottom: 0;

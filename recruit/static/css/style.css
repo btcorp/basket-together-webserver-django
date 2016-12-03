@@ -241,6 +241,7 @@ nav {
     padding-bottom: 0px;
   }
   .navbar-form {
+    width: 100%;
     padding-left: 0;
     padding-right: 0;
     padding-top: 10px;
@@ -271,11 +272,13 @@ nav {
   }
   #myNavbar {
     float: left;
-    width: 300px;
   }
   #myNavbar .form-group {
-    height: 0;
+    display: inline-block;
     margin: 0;
+  }
+  #myNavbar .form-group btn {
+    float: left;
   }
   #map {
     width: 500px !important;
@@ -345,10 +348,9 @@ nav {
     padding-bottom: 0px;
   }
   #myNavbar {
-    width: 0;
+    display: inline-block;
   }
   .navbar-form {
-    width: 280px;
     padding-left: 0;
     padding-right: 0;
     padding-top: 10px;
