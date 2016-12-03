@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 
+import os
 import re
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, AbstractBaseUser, PermissionsMixin, User
@@ -73,6 +74,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 """
 
 
+def user_image_directory_path(instance, filename):
+    media_path = 'user_{0}/profile/{1}'.format(instance.user.id, filename)
+    full_path = os.path.join(settings.MEDIA_ROOT, media_path)
+    if os.path.exists(full_path):
+        os.remove(full_path)
+    return media_path
+
+
 class Profile(models.Model):
     DEVICE_TYPE = (
         ('a', 'ANDROID'),
@@ -87,7 +96,7 @@ class Profile(models.Model):
     join_path = models.CharField(max_length=20, default='general')
     attend_count = models.IntegerField(blank=True, default=0)
     penalty_count = models.IntegerField(blank=True, default=0)
-    user_image = models.ImageField(blank=True, upload_to='%Y/%m/%d')
+    user_image = models.ImageField(blank=True, upload_to=user_image_directory_path)
 
     def __str__(self):  # __unicode__ on Python 2
         return self.user.username
