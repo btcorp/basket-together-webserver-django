@@ -14,22 +14,24 @@
 
 {% block content %}
 
-<label><strong>최근 포스팅</strong></label>
-<div class="row">
-	{% for post in posts %}
-	<div class="simple-post" onclick="location.href='{% url 'recruit:post_detail' pk=post.pk %}'">
-		<div class="content">
-			<div class="title">
-				<h2><strong>{{ post.title|safe|linebreaks|truncatechars_html:10 }}</strong></h2>
-			</div>
-			<div class="status">
-				{% trans 'status' %}: {{ post.attend_count }}/{{ post.recruit_count }}<br/>
-				{% trans 'meeting date' %}: {{ post.meeting_date|date:"Y-m-d H:i, l" }}<br/>
-				{% trans 'address' %}: {{ post.address1 }}
+<div id="index-posts">
+	<label><strong>최근 포스팅</strong></label>
+	<div class="row">
+		{% for post in posts %}
+		<div class="simple-post" onclick="location.href='{% url 'recruit:post_detail' pk=post.pk %}'">
+			<div class="content">
+				<div class="title">
+					<h2><strong>{{ post.title|safe|linebreaks|truncatechars_html:10 }}</strong></h2>
+				</div>
+				<div class="status">
+					{% trans 'status' %}: {{ post.attend_count }}/{{ post.recruit_count }}<br/>
+					{% trans 'meeting date' %}: {{ post.meeting_date|date:"m-d" }}<br/>
+					{% trans 'address' %}: {{ post.address1 }}
+				</div>
 			</div>
 		</div>
+		{% endfor %}
 	</div>
-	{% endfor %}
 </div>
 
 {% endblock %}

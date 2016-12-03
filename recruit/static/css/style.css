@@ -63,8 +63,15 @@ nav {
   width: 500px;
 }
 #symbol {
-  padding-left: 0;
-  padding-right: 0;
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+#symbol img {
+  margin-top: 5px;
+  background-size: cover;
+  height: 40px;
 }
 #menu-button {
   display: none;
@@ -96,7 +103,12 @@ nav {
   margin: 0 10px;
 }
 .simple-post .status {
-  bottom: 30px;
+  bottom: 15px;
+  line-height: normal;
+  position: absolute;
+}
+.simple-post .content {
+  width: 90%;
 }
 .post {
   padding: 15px;
@@ -186,6 +198,12 @@ nav {
   * {
     font-size: 12px;
   }
+  #bt-header {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
   #bt-sidebar {
     height: 100%;
     width: 0;
@@ -202,6 +220,12 @@ nav {
   #bt-sidebar p {
     font-size: 15px;
   }
+  #bt-content {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
   #mask {
     position: absolute;
     left: 0;
@@ -210,9 +234,17 @@ nav {
     background-color: #000;
     display: none;
   }
+  .container-frame {
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
   .navbar-form {
     padding-left: 0;
     padding-right: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
     border-top: 0;
     border-bottom: 0;
     margin: 0;
@@ -230,11 +262,12 @@ nav {
   }
   #symbol {
     float: left;
-    width: 170px;
+    width: 100px;
     font-size: 13px;
   }
   .simple-post {
     width: 21.4%;
+    height: 110px;
   }
   #myNavbar {
     float: left;
@@ -254,11 +287,23 @@ nav {
   #login-container {
     border: none;
   }
+  #index-posts {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
 }
 /*===================================== media query(480px) ================================================*/
 @media screen and (max-width: 480px) {
   * {
     font-size: 10px;
+  }
+  #bt-header {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 15px;
+    padding-bottom: 15px;
   }
   .jumbotron {
     background-size: 100% 100%;
@@ -279,6 +324,12 @@ nav {
   #bt-sidebar p {
     font-size: 15px;
   }
+  #bt-content {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
   #mask {
     position: absolute;
     left: 0;
@@ -287,6 +338,12 @@ nav {
     background-color: #000;
     display: none;
   }
+  .container-frame {
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
   #myNavbar {
     width: 0;
   }
@@ -294,6 +351,8 @@ nav {
     width: 280px;
     padding-left: 0;
     padding-right: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
     border-top: 0;
     border-bottom: 0;
     margin-top: 0;
@@ -315,12 +374,15 @@ nav {
     vertical-align: middle;
   }
   #post-list {
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
   }
   .simple-post {
     width: 30%;
     margin: 5px;
+    height: 100px;
   }
   #map {
     width: 280px !important;
@@ -328,5 +390,19 @@ nav {
   }
   #login-container {
     border: none;
+  }
+  #index-posts {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+/*===================================== media query(320px) ================================================*/
+@media screen and (max-width: 320px) {
+  .simple-post {
+    width: 29%;
+    margin: 5px;
+    height: 100px;
   }
 }
