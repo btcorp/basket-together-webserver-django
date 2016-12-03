@@ -275,10 +275,8 @@ nav {
   }
   #myNavbar .form-group {
     display: inline-block;
+    vertical-align: middle;
     margin: 0;
-  }
-  #myNavbar .form-group btn {
-    float: left;
   }
   #map {
     width: 500px !important;
