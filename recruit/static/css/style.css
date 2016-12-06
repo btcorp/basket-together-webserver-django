@@ -29,6 +29,12 @@ hr {
   background-color: #000;
   display: none;
 }
+.more {
+  border: 1px solid #c4c4c3;
+  border-radius: 20px 20px;
+  float: right;
+  cursor: pointer;
+}
 /*===================================== HEADER ================================================*/
 #bt-header {
   margin-top: 50px;
@@ -43,6 +49,9 @@ hr {
   min-height: 250px;
   margin-bottom: 0px;
   max-width: 100%;
+}
+.jumbotron strong {
+  font-size: 30px;
 }
 nav {
   text-align: center;
@@ -75,6 +84,16 @@ nav {
 }
 #menu-button {
   display: none;
+}
+.index-header {
+  width: 100%;
+  display: inline-block;
+}
+.index-header label {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 /*===================================== CONTENT ================================================*/
 #bt-content {
@@ -224,6 +243,9 @@ nav {
   #bt-sidebar p {
     font-size: 15px;
   }
+  .jumbotron strong {
+    font-size: 25px;
+  }
   #bt-content {
     padding-left: 0;
     padding-right: 0;
@@ -312,6 +334,9 @@ nav {
   }
   .jumbotron {
     background-size: 100% 100%;
+  }
+  .jumbotron strong {
+    font-size: 20px;
   }
   #bt-sidebar {
     height: 100%;

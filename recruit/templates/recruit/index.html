@@ -15,7 +15,12 @@
 {% block content %}
 
 <div id="index-posts">
-	<label><strong>최근 포스팅</strong></label>
+	<div class="index-header">
+		<label><strong>{% trans 'recent poting' %}</strong></label>
+		<a href="{% url 'recruit:post_list' %}">
+			<label class="more" ><strong>{% trans 'more' %} >></strong></label>
+		</a>
+	</div>
 	<div class="row">
 		{% for post in posts %}
 		<div class="simple-post" onclick="location.href='{% url 'recruit:post_detail' pk=post.pk %}'">

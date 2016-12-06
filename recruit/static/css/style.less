@@ -46,6 +46,12 @@ hr {
     padding-top: @val2;
     padding-bottom: @val2;
 }
+.more {
+    border: 1px solid @container-line-color;
+    border-radius: 20px 20px;
+    float: right;
+    cursor: pointer;
+}
 
 /*===================================== HEADER ================================================*/
 #bt-header {
@@ -61,6 +67,10 @@ hr {
     min-height: 250px;
     margin-bottom: 0px;
     max-width: 100%;
+
+    strong {
+        font-size: 30px;
+    }
 }
 nav {
     text-align:center;
@@ -94,7 +104,14 @@ nav {
 #menu-button {
     display: none;
 }
+.index-header {
+    width: 100%;
+    display: inline-block;
 
+    label {
+        .set-padding(10px, 5px);
+    }
+}
 
 /*===================================== CONTENT ================================================*/
 #bt-content {
@@ -251,6 +268,11 @@ nav {
             font-size: 15px;
         }
     }
+    .jumbotron {
+        strong {
+            font-size: 25px;
+        }
+    }
     #bt-content {
         .set-padding(0, 10px);
     }
@@ -327,6 +349,10 @@ nav {
     }
     .jumbotron {
         background-size: 100% 100%;
+
+        strong {
+            font-size: 20px;
+        }
     }
     #bt-sidebar {
         height: 100%;
