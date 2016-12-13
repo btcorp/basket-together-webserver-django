@@ -13,8 +13,8 @@
 		<input type="hidden" name="next" value="{{ next }}"/>
 	</form>
 	<div id="facebook-login">
-		<a  href="{% url 'social:begin' 'facebook' %}?next='/' ">
-			<img src="{% static 'images/facebook_login_min.png' %}">
+		<a href="{% url 'social:begin' 'facebook' %}?next='/' " class="btn btn-primary">
+			{% trans 'Login with Facebook' %}
 		</a>
 	</div>
 </div>
