@@ -32,7 +32,7 @@ msgstr "이미지"
 
 #: accounts/models.py:92
 msgid "email address"
-msgstr "상세위치"
+msgstr "이메일"
 
 #: accounts/models.py:138
 msgid "Username or Email"
