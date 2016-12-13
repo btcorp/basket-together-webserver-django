@@ -82,9 +82,11 @@ function geocodeAddress(geocoder) {
     var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
     geocoder.geocode({'location': latlng}, function(results, status) {
         if (status === google.maps.GeocoderStatus.OK) {
-            if (results[2]) {
+            value = results[results.length-3]
+            if (value) {
                 var addr = document.getElementById("id_address1");
-                addr.value = results[results.length-2].address_components[0].short_name;
+                addr.value = value.formatted_address.slice(5);
+                console.log(value.formatted_address.slice(5));
             } else {
                 window.alert('No results found');
             }
