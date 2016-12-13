@@ -4,6 +4,7 @@ from braces.views import LoginRequiredMixin
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
@@ -17,6 +18,15 @@ class PostListView(ListView):
     template_name = 'recruit/post_list.html'
     context_object_name = 'posts'
     paginate_by = 10
+
+    def get_queryset(self):
+        region = self.request.GET.get('region')
+        if region:
+            queryset = self.queryset
+            if isinstance(queryset, QuerySet):
+                queryset = queryset.filter(address1__icontains=region)
+                return queryset
+        return super(PostListView, self).get_queryset()
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):

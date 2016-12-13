@@ -25,13 +25,14 @@
 		{% for post in posts %}
 		<div class="simple-post" onclick="location.href='{% url 'recruit:post_detail' pk=post.pk %}'">
 			<div class="content">
+				<div class="region">{{ post.get_region_short_name }}</div>
 				<div class="title">
-					<h2><strong>{{ post.title|safe|linebreaks|truncatechars_html:10 }}</strong></h2>
+					{{ post.title|safe|linebreaks|truncatechars_html:15 }}
 				</div>
+				<hr/>
 				<div class="status">
 					{% trans 'status' %}: {{ post.attend_count }}/{{ post.recruit_count }}<br/>
-					{% trans 'meeting date' %}: {{ post.meeting_date|date:"m-d" }}<br/>
-					{% trans 'address' %}: {{ post.address1 }}
+					{% trans 'meeting date' %}: {{ post.meeting_date|date:"m-d, l" }}<br/>
 				</div>
 			</div>
 		</div>

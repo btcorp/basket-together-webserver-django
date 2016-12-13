@@ -42,6 +42,15 @@ class Post(models.Model):
     def registered_comments(self):
         return self.comments.filter(post=self.pk)
 
+    @property
+    def get_region_short_name(self):
+        region = self.address1.split(' ')[0]
+        if len(region) == 4:
+            region_short_name = region[0]+region[2]
+            return region_short_name
+        else:
+            return region[0:2]
+
     def as_json(self):
         return {
             'id': self.id,

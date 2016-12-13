@@ -1,14 +1,16 @@
 @import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
 
-@brand-primary: darken(#428bca, 6.5%); // #337ab7
+//@brand-primary: darken(#428bca, 6.5%); // #337ab7
+@brand-primary: #0b6db7;
 @brand-success: #5cb85c;
 @brand-info:    #5bc0de;
 @brand-warning: #f0ad4e;
 @brand-danger:  #d9534f;
 
-@base-back-color: #F5F5F5;
+@base-back-color: #DDE7E7;
 @container-line-color: #C4C4C3;
 @container-back-color: #FFFAFA;
+
 
 * {
     box-sizing: border-box;
@@ -24,10 +26,7 @@
     border: 1px solid @container-line-color;
     background: @base-back-color;
 }
-hr {
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
+
 .alert-debug {
     color: #333;
     background-color: #eee;
@@ -51,6 +50,14 @@ hr {
     border-radius: 20px 20px;
     float: right;
     cursor: pointer;
+}
+hr {
+    margin: 0 5px;
+    border-top: 1px solid darken(#eee, 10%);
+}
+.no-list-style {
+    list-style: none;
+    padding-left: 0;
 }
 
 /*===================================== HEADER ================================================*/
@@ -87,7 +94,7 @@ nav {
     }
 }
 .navbar-fixed-top {
-    background: #337ab7;
+    background: #0b6db7;
 }
 .navbar-form {
     width: 500px;
@@ -112,6 +119,48 @@ nav {
         .set-padding(10px, 5px);
     }
 }
+.categorys {
+    border: 1px solid @container-line-color;
+    background: @container-back-color;
+    min-height: 80px;
+    color: #959EAE;
+
+    .theme {
+        position: relative;
+        float: left;
+        padding-left: 100px;
+        margin: 10px;
+        height: auto;
+
+        .region {
+            position: absolute;
+            left: 5px;
+            top: 0;
+            margin: 6px;
+        }
+
+        li {
+            border: 1px solid @container-line-color;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            padding: 5px;
+            float: left;
+            a {
+                text-decoration:none;
+                color: #959EAE;
+            }
+            a:hover {
+                color: darken(#959EAE, 20%);
+            }
+
+        }
+
+        .theme-list {
+            left: 50px;
+            display: inline-block;
+        }
+    }
+}
 
 /*===================================== CONTENT ================================================*/
 #bt-content {
@@ -131,21 +180,34 @@ nav {
     float: left;
     width: 22.5%;
     height: 150px;
-    background-color: #E6E6E6;
+    //background-color: #E6E6E6;
     margin: 10px;
     position: relative;
     cursor: pointer;
+    border: 1px solid @container-line-color;
 
-    div {
+    > div {
         margin: 0 10px;
     }
     .status {
-        bottom: 15px;
+        bottom: 10px;
         line-height: normal;
         position: absolute;
+        color: #959EAE;
+        font-size: 12px;
     }
     .content {
         width: 90%;
+        height: 100%;
+    }
+
+    .region {
+        display: inline-block;
+        border: 1px solid @container-line-color;
+        border-radius: 20px 20px;
+        margin-top: 5px;
+        padding: 3px;
+        background: #C0D84D;
     }
 }
 .post {
@@ -157,11 +219,7 @@ nav {
     margin-bottom: 20px;
 }
 #facebook-login {
-
-    img {
-        margin-top: -5px;
-        margin-left: -10px;
-    }
+    margin-top: 10px;
 }
 
 /*===================================== SIDEBAR ================================================*/
@@ -193,7 +251,7 @@ nav {
 }
 #login-container .profile-image {
     background-size: cover;
-    border-radius: 30px 30px;
+    border-radius: 50%;
     max-width: 130px;
     max-height: 200px;
     margin-left: auto;
@@ -206,7 +264,7 @@ nav {
     min-height: 50px;
     clear: both;
     padding: 15px auto;
-    background: #337ab7;
+    background: #0b6db7;
 }
 
 
@@ -314,6 +372,10 @@ nav {
     .simple-post {
         width: 21.4%;
         height: 110px;
+
+        .status {
+            font-size: 10px;
+        }
     }
     #myNavbar {
         float: left;
@@ -416,6 +478,10 @@ nav {
         width: 30%;
         margin: 5px;
         height: 100px;
+
+        .status {
+            font-size: 7px;
+        }
     }
     #map {
         width: 280px !important;

@@ -11,11 +11,7 @@
   margin: 0px auto;
   padding: 0 auto;
   border: 1px solid #c4c4c3;
-  background: #f5f5f5;
-}
-hr {
-  margin-top: 5px;
-  margin-bottom: 5px;
+  background: #dde7e7;
 }
 .alert-debug {
   color: #333;
@@ -34,6 +30,14 @@ hr {
   border-radius: 20px 20px;
   float: right;
   cursor: pointer;
+}
+hr {
+  margin: 0 5px;
+  border-top: 1px solid #d5d5d5;
+}
+.no-list-style {
+  list-style: none;
+  padding-left: 0;
 }
 /*===================================== HEADER ================================================*/
 #bt-header {
@@ -66,7 +70,7 @@ nav {
   color: black !important;
 }
 .navbar-fixed-top {
-  background: #337ab7;
+  background: #0b6db7;
 }
 .navbar-form {
   width: 500px;
@@ -95,6 +99,43 @@ nav {
   padding-top: 5px;
   padding-bottom: 5px;
 }
+.categorys {
+  border: 1px solid #c4c4c3;
+  background: #fffafa;
+  min-height: 80px;
+  color: #959EAE;
+}
+.categorys .theme {
+  position: relative;
+  float: left;
+  padding-left: 100px;
+  margin: 10px;
+  height: auto;
+}
+.categorys .theme .region {
+  position: absolute;
+  left: 5px;
+  top: 0;
+  margin: 6px;
+}
+.categorys .theme li {
+  border: 1px solid #c4c4c3;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 5px;
+  float: left;
+}
+.categorys .theme li a {
+  text-decoration: none;
+  color: #959EAE;
+}
+.categorys .theme li a:hover {
+  color: #606a7d;
+}
+.categorys .theme .theme-list {
+  left: 50px;
+  display: inline-block;
+}
 /*===================================== CONTENT ================================================*/
 #bt-content {
   width: 100%;
@@ -113,21 +154,32 @@ nav {
   float: left;
   width: 22.5%;
   height: 150px;
-  background-color: #E6E6E6;
   margin: 10px;
   position: relative;
   cursor: pointer;
+  border: 1px solid #c4c4c3;
 }
-.simple-post div {
+.simple-post > div {
   margin: 0 10px;
 }
 .simple-post .status {
-  bottom: 15px;
+  bottom: 10px;
   line-height: normal;
   position: absolute;
+  color: #959EAE;
+  font-size: 12px;
 }
 .simple-post .content {
   width: 90%;
+  height: 100%;
+}
+.simple-post .region {
+  display: inline-block;
+  border: 1px solid #c4c4c3;
+  border-radius: 20px 20px;
+  margin-top: 5px;
+  padding: 3px;
+  background: #C0D84D;
 }
 .post {
   padding: 15px;
@@ -137,9 +189,8 @@ nav {
   max-height: 500px;
   margin-bottom: 20px;
 }
-#facebook-login img {
-  margin-top: -5px;
-  margin-left: -10px;
+#facebook-login {
+  margin-top: 10px;
 }
 /*===================================== SIDEBAR ================================================*/
 #bt-sidebar {
@@ -169,7 +220,7 @@ nav {
 }
 #login-container .profile-image {
   background-size: cover;
-  border-radius: 30px 30px;
+  border-radius: 50%;
   max-width: 130px;
   max-height: 200px;
   margin-left: auto;
@@ -181,7 +232,7 @@ nav {
   min-height: 50px;
   clear: both;
   padding: 15px auto;
-  background: #337ab7;
+  background: #0b6db7;
 }
 /*=====================================google map of posting================================================*/
 #map {
@@ -295,6 +346,9 @@ nav {
   .simple-post {
     width: 21.4%;
     height: 110px;
+  }
+  .simple-post .status {
+    font-size: 10px;
   }
   #myNavbar {
     float: left;
@@ -412,6 +466,9 @@ nav {
     width: 30%;
     margin: 5px;
     height: 100px;
+  }
+  .simple-post .status {
+    font-size: 7px;
   }
   #map {
     width: 280px !important;

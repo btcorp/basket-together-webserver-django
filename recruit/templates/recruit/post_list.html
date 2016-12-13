@@ -1,8 +1,102 @@
 {% extends 'recruit/base.html' %}      # template 이하 경로로 설정.
 {% load i18n %}
 
-{% block content %}
+{% block bt-header%}
+<div class="categorys">
+	<div id="theme" class="theme">
+		<h4 class="dt region">{% trans 'region' %}</h4>
+		<ul class="no-list-style theme-list">
+			<li>
+				<a href="?region=강원" >
+					<span>{% trans 'Gangwon' %}</span>
+				</a>
+			</li>
+			<li>
+				<a href="?region=경기" >
+					<span>{% trans 'Gyeonggi' %}</span>
+				</a>
+			</li>
+			<li>
+				<a href="?region=경남" >
+					<span>{% trans 'Gyeongnam' %}</span>
+				</a>
+			</li>
+			<li>
+				<a href="?region=경북" >
+					<span>{% trans 'Gyeongbuk' %}</span>
+				</a>
+			</li>
+			<li>
+				<a href="?region=광주" >
+					<span>{% trans 'Gwangju' %}</span>
+				</a>
+			</li>
+			<li>
+				<a href="?region=대구" >
+					<span>{% trans 'Daegu' %}</span>
+				</a>
+			</li>
+			<li>
+				<a href="?region=대전" >
+					<span>{% trans 'Daejeon' %}</span>
+				</a>
+			</li>
+			<li>
+				<a href="?region=부산" >
+					<span>{% trans 'Busan' %}</span>
+				</a>
+			</li>
+			<li>
+				<a href="?region=서울" >
+					<span>{% trans 'Seoul' %}</span>
+				</a>
+			</li>
+			<li>
+				<a href="?region=세종" >
+					<span>{% trans 'Sejong' %}</span>
+				</a>
+			</li>
+			<li>
+				<a href="?region=울산" >
+					<span>{% trans 'Ulsan' %}</span>
+				</a>
+			</li>
+			<li>
+				<a href="?region=인천" >
+					<span>{% trans 'Inchon' %}</span>
+				</a>
+			</li>
+			<li>
+				<a href="?region=전북" >
+					<span>{% trans 'Jeonbuk' %}</span>
+				</a>
+			</li>
+			<li>
+				<a href="?region=전남" >
+					<span>{% trans 'Jeonnam' %}</span>
+				</a>
+			</li>
+			<li>
+				<a href="?region=제주" >
+					<span>{% trans 'Jeju' %}</span>
+				</a>
+			</li>
+			<li>
+				<a href="?region=충남" >
+					<span>{% trans 'Chungnam' %}</span>
+				</a>
+			</li>
+			<li>
+				<a href="?region=충북" >
+					<span>{% trans 'Chungbuk' %}</span>
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+{% endblock %}
 
+{% block content %}
 <div id="post-list" class="col-md-12">
 	<div class="col-xs-12 col-sm-12 col-md-12">
 		<table class="table table-hover table-condensed">
