@@ -8,6 +8,7 @@ from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
+from django.views.generic.edit import BaseCreateView
 
 from recruit.forms import CommentForm, PostForm
 from recruit.models import Participation, Comment, Post
@@ -44,10 +45,11 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class PostDetailView(DetailView):
+class PostDetailView(DetailView, BaseCreateView):
     model = Post
     template_name = 'recruit/post_detail.html'
     context_object_name = 'post'
+    form_class = CommentForm
 
     def get_context_data(self, **kwargs):
         context = super(PostDetailView, self).get_context_data(**kwargs)
@@ -67,7 +69,18 @@ class PostDetailView(DetailView):
         context['participation'] = participation
         context['attend_user_str'] = attend_user_str[:-2]
         context['attend_users'] = post.attend_users()
+        context['form'] = self.get_form_class()
         return context
+
+    def form_valid(self, form):
+        post = get_object_or_404(Post, pk=self.kwargs['pk'])
+        comment = form.save(commit=False)
+        comment.author = self.request.user
+        comment.post = post
+        return super(BaseCreateView, self).form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+        return super(BaseCreateView, self).post(request, *args, **kwargs)
 
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
@@ -85,7 +98,6 @@ def post_remove(request, pk):
 
 class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
-    template_name = 'recruit/add_comment_to_post.html'
     form_class = CommentForm
 
     def form_valid(self, form):

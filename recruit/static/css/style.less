@@ -10,6 +10,7 @@
 @base-back-color: #DDE7E7;
 @container-line-color: #C4C4C3;
 @container-back-color: #FFFAFA;
+@gray-color: #959EAE;
 
 
 * {
@@ -123,7 +124,7 @@ nav {
     border: 1px solid @container-line-color;
     background: @container-back-color;
     min-height: 80px;
-    color: #959EAE;
+    color: @gray-color;
 
     .theme {
         position: relative;
@@ -147,10 +148,10 @@ nav {
             float: left;
             a {
                 text-decoration:none;
-                color: #959EAE;
+                color: @gray-color;
             }
             a:hover {
-                color: darken(#959EAE, 20%);
+                color: darken(@gray-color, 20%);
             }
 
         }
@@ -193,7 +194,7 @@ nav {
         bottom: 10px;
         line-height: normal;
         position: absolute;
-        color: #959EAE;
+        color: @gray-color;
         font-size: 12px;
     }
     .content {
@@ -220,6 +221,57 @@ nav {
 }
 #facebook-login {
     margin-top: 10px;
+}
+
+/*===================================== COMMENT ================================================*/
+#id_content {
+    height: 80px;
+}
+#comments {
+    padding: 15px;
+    textarea {
+        resize: none;
+    }
+}
+#comment-userImage {
+    display: inline-block;
+    float: left;
+
+    img {
+        background-size: cover;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        margin-right: 15px;
+        display: block;
+    }
+}
+#comment-user-info {
+    padding-top: 10px;
+
+    #comment-date {
+        float: left;
+        color: @gray-color;
+        font-size: 12px;
+        vertical-align: middle;
+        margin-right: 10px;
+        margin-top: 4px;
+    }
+
+    a {
+        display: inline;
+        padding: 3px 3px;
+        margin-right: 5px;
+        span {
+            font-size: 12px;
+        }
+    }
+}
+#comments {
+    #comment-content {
+        margin-top: 30px;
+        margin-left: 10px;
+    }
 }
 
 /*===================================== SIDEBAR ================================================*/

@@ -1,0 +1,29 @@
+{% load bootstrap3 %}
+{% load i18n %}
+
+<div id="comments">
+	{% for comment in post.comments.all %}
+		<div class="comment">
+			<div id="comment-userImage">
+				<img class="profile-image" src="{{ comment.author.get_profile.user_image.url }}"/>
+			</div>
+			<div id="comment-user-info">
+				<div id="comment-user">{{ comment.author }}</div>
+				<div id="comment-date">{{ comment.registered_date|date:"Y.m.d G:i" }}</div>
+				{% if user.is_authenticated and user == comment.author %}
+				<a class="btn btn-default comment-delete" href="{% url 'recruit:comment_remove' pk=comment.pk %}">
+					<span>삭제</span>
+				</a>
+				{% endif %}
+			</div>
+			<div id="comment-content">{{ comment.content|safe|linebreaks }}</div>
+			<hr/><br/>
+		</div>
+	{% empty %}
+	<p>{% trans 'No comments yet' %}:( </p>
+	{% endfor %}
+
+	{% if user.is_authenticated %}
+	{% include 'recruit/add_comment_to_post.html' %}
+	{% endif %}
+</div>

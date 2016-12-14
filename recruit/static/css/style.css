@@ -103,7 +103,7 @@ nav {
   border: 1px solid #c4c4c3;
   background: #fffafa;
   min-height: 80px;
-  color: #959EAE;
+  color: #959eae;
 }
 .categorys .theme {
   position: relative;
@@ -127,7 +127,7 @@ nav {
 }
 .categorys .theme li a {
   text-decoration: none;
-  color: #959EAE;
+  color: #959eae;
 }
 .categorys .theme li a:hover {
   color: #606a7d;
@@ -166,7 +166,7 @@ nav {
   bottom: 10px;
   line-height: normal;
   position: absolute;
-  color: #959EAE;
+  color: #959eae;
   font-size: 12px;
 }
 .simple-post .content {
@@ -191,6 +191,51 @@ nav {
 }
 #facebook-login {
   margin-top: 10px;
+}
+/*===================================== COMMENT ================================================*/
+#id_content {
+  height: 80px;
+}
+#comments {
+  padding: 15px;
+}
+#comments textarea {
+  resize: none;
+}
+#comment-userImage {
+  display: inline-block;
+  float: left;
+}
+#comment-userImage img {
+  background-size: cover;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin-right: 15px;
+  display: block;
+}
+#comment-user-info {
+  padding-top: 10px;
+}
+#comment-user-info #comment-date {
+  float: left;
+  color: #959eae;
+  font-size: 12px;
+  vertical-align: middle;
+  margin-right: 10px;
+  margin-top: 4px;
+}
+#comment-user-info a {
+  display: inline;
+  padding: 3px 3px;
+  margin-right: 5px;
+}
+#comment-user-info a span {
+  font-size: 12px;
+}
+#comments #comment-content {
+  margin-top: 30px;
+  margin-left: 10px;
 }
 /*===================================== SIDEBAR ================================================*/
 #bt-sidebar {
