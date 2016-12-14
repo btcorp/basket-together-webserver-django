@@ -1,17 +1,17 @@
 # -*- coding:utf-8 -*-
 
+import pytz
 from django.conf import settings
 from django.db import models
-from django.utils import timezone
 from django.urls import reverse
-import pytz
+from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
 
 
 def change_timezone():
-    seoul_tz = pytz.timezone('Asia/Seoul')
     datetime_format = "%Y-%m-%d %H:%M:%S"
     localized_time = timezone.now()
-    return seoul_tz.normalize(localized_time).strftime(datetime_format)
+    return localized_time.strftime(datetime_format)
 
 
 class Post(models.Model):

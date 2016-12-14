@@ -15,6 +15,7 @@ with open(os.path.join(BASE_DIR, 'secret_key.json')) as f:
     secret_keys = json_data['SECRET_KEYS']
     dev_databases = json_data['DEV_DATABASES']
     prod_databases = json_data['PROD_DATABASES']
+    fcm_server_key = json_data['FCM_SERVER_KEY']
 
 
 def get_json_data(key_name, data_dic):
@@ -99,7 +100,7 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']          # email을 가져오기 위한 �
 
 
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
-  'fields': 'id, name, email, age_range, first_name, last_name, picture, gender'
+  'fields': 'id, name, email, age_range, first_name, last_name, picture, gender, locale'
 }
 
 SOCIAL_AUTH_PIPELINE = (
@@ -110,10 +111,10 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_user',
     'social.pipeline.user.get_username',
     'social.pipeline.social_auth.associate_by_email',
+    # 'accounts.social.create_user',
     'social.pipeline.user.create_user',
     'accounts.social.save_profile',
     'accounts.social.update_avatar',
-    # 'accounts.social.create_user',
     'social.pipeline.social_auth.associate_user',
     'social.pipeline.social_auth.load_extra_data',
     'social.pipeline.user.user_details'
@@ -191,13 +192,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
@@ -300,3 +301,5 @@ SUMMERNOTE_CONFIG = {
 DISQUS_WEBSITE_SHORTNAME = get_json_data('DISQUS_WEBSITE_SHORTNAME', secret_keys)
 GOOGLE_MAP_API_KEY = get_json_data('GOOGLE_MAP_API_KEY', secret_keys)
 GOOGLE_ANALYTICS_TRACKING_ID = get_json_data('GOOGLE_ANALYTICS_TRACKING_ID', secret_keys)
+
+FCM_SERVER_KEY = fcm_server_key
