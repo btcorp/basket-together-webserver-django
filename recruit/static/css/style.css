@@ -138,9 +138,8 @@ nav {
 }
 /*===================================== CONTENT ================================================*/
 #bt-content {
-  width: 100%;
+  width: 80%;
   min-height: 400px;
-  max-width: 820px;
   padding: 20px;
   margin-bottom: 20px;
   float: left;
@@ -152,7 +151,7 @@ nav {
 }
 .simple-post {
   float: left;
-  width: 22.5%;
+  width: 22%;
   height: 150px;
   margin: 10px;
   position: relative;
@@ -270,6 +269,14 @@ nav {
   max-height: 200px;
   margin-left: auto;
   margin-right: auto;
+  display: block;
+}
+/*===================================== CHAT ================================================*/
+#msg-list-div {
+  height: 200px;
+  overflow: auto;
+}
+#chat-container {
   display: block;
 }
 /*===================================== FOOTER ================================================*/
