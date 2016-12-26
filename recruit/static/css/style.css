@@ -39,6 +39,9 @@ hr {
   list-style: none;
   padding-left: 0;
 }
+.radius-div {
+  border-radius: 5px 5px;
+}
 /*===================================== HEADER ================================================*/
 #bt-header {
   margin-top: 50px;
@@ -241,6 +244,7 @@ nav {
   float: right;
   background: #fffafa;
   padding: 0px;
+  background: #dde7e7;
 }
 #login-container {
   float: left;
@@ -275,9 +279,23 @@ nav {
 #msg-list-div {
   height: 200px;
   overflow: auto;
+  padding: 10px;
+}
+#msg-list-div ul {
+  padding-left: 0;
+  margin-bottom: 20px;
+}
+#msg-list-div li {
+  padding: 5px 5px;
+  border: none;
 }
 #chat-container {
-  display: block;
+  float: left;
+  margin-top: 15px;
+}
+#chat-body {
+  margin-bottom: 5px;
+  border: 1px solid #c4c4c3;
 }
 /*===================================== FOOTER ================================================*/
 #bt-footer {
@@ -319,8 +337,8 @@ nav {
   outline: none;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
-/*===================================== media query(768px) ================================================*/
-@media screen and (max-width: 768px) {
+/*===================================== media query(840px) ================================================*/
+@media screen and (max-width: 840px) {
   * {
     font-size: 12px;
   }
@@ -350,6 +368,7 @@ nav {
     font-size: 25px;
   }
   #bt-content {
+    width: 100%;
     padding-left: 0;
     padding-right: 0;
     padding-top: 10px;
@@ -426,9 +445,12 @@ nav {
     padding-top: 10px;
     padding-bottom: 10px;
   }
+  .categorys {
+    min-height: 100px;
+  }
 }
-/*===================================== media query(480px) ================================================*/
-@media screen and (max-width: 480px) {
+/*===================================== media query(560px) ================================================*/
+@media screen and (max-width: 560px) {
   * {
     font-size: 10px;
   }
@@ -461,6 +483,7 @@ nav {
     font-size: 15px;
   }
   #bt-content {
+    width: 100%;
     padding-left: 0;
     padding-right: 0;
     padding-top: 10px;
@@ -534,6 +557,9 @@ nav {
     padding-right: 20px;
     padding-top: 10px;
     padding-bottom: 10px;
+  }
+  .categorys {
+    min-height: 180px;
   }
 }
 /*===================================== media query(320px) ================================================*/
