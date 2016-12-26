@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap-theme.min.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'sweetalert2/dist/sweetalert2.min.css' %}">
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans|Oswald|Lobster' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+	<link rel="stylesheet" href="{% static 'css/style.css' %}?fileMtime={% FILE_M_TIME 'css/style.css' %}"/>
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
 	<script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
@@ -21,6 +21,7 @@
 	<script src="{% static 'es6-promise/dist/es6-promise.auto.min.js' %}"></script>
 	<script src="{% static 'sweetalert2/dist/sweetalert2.min.js' %}"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<!--<script src="{% static 'socket.io-client/dist/socket.io.js' %}"></script>-->
 	{{ form.media }}
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -59,13 +60,13 @@
 	</div>
 
 	<div class="col-xs-12 col-sm-12 col-md-10 col-md-offset-1 container-frame">
-		<sectoin id="bt-content">
+		<div id="bt-content" class="radius-div">
 			{% block content %}
 			{% endblock %}
-		</sectoin>
+		</div>
 
 		<div id="bt-sidebar" aria-expanded="false" class="col-xs-6 col-sm-6 col-md-2 ">
-			<div id="login-container">
+			<div id="login-container" class="radius-div">
 				{% if user.is_authenticated %}
 				{% if user.get_profile.user_image %}
 				<img class="profile-image" src="{{ user.get_profile.user_image.url }}"/>
@@ -107,8 +108,7 @@
 					</li>
 				</ul>
 			</div>
-			<div id="menu-container">
-
+			<div id="chat-container" class="radius-div">
 			</div>
 		</div>
 	</div>
