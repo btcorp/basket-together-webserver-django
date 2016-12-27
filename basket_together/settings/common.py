@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     # local apps
     'accounts',
     'recruit',
+    'chat',
     ]
 
 # AUTH_USER_MODEL = 'accounts.CustomUser'

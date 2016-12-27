@@ -21,7 +21,7 @@
 	<script src="{% static 'es6-promise/dist/es6-promise.auto.min.js' %}"></script>
 	<script src="{% static 'sweetalert2/dist/sweetalert2.min.js' %}"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<!--<script src="{% static 'socket.io-client/dist/socket.io.js' %}"></script>-->
+	<script src="{% static 'socket.io-client/dist/socket.io.js' %}"></script>
 	{{ form.media }}
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -109,6 +109,7 @@
 				</ul>
 			</div>
 			<div id="chat-container" class="radius-div">
+				{% include 'chat/chat_view.html' %}
 			</div>
 		</div>
 	</div>

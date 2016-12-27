@@ -1,10 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% load staticfiles %}
+
+<div id="chat-body" class="panel panel-default">
+	<div class="panel-heading">Chat View</div>
+	<div id="msg-list-div" class="panel-body">
+		<ul id="msg-list">
+			<!--{% include 'chat/chat_list.html' %}-->
+		</ul>
+	</div>
+</div>
+<form id="chat-form" method="post" action="#" >
+	<div id="chat-bottom" class="input-group">
+		<input id="chat-msg" name="chat-msg" type="text" class="form-control" />
+		<span class="input-group-btn">
+			<button class="btn btn-detaul">Send</button>
+		</span>
+	</div>
+
+</form>
+
+<script>
+	{% if user.is_authenticated %}
+		$('#chat-bottom *').attr('disabled', false);
+	{% else %}
+		$('#chat-bottom *').attr('disabled', true);
+	{% endif %}
+
+  $(document).ready(function(){
+    connect_socketio();
+    get_chat_data();
+  });
+
+	// socketio client
+	function connect_socketio(){
+		var socket = io.connect('http://localhost:4000');
+
+	  $('#chat-form').submit(function(){
+	    var data = {
+		    user_id: "{{ request.user.id }}",
+		    msgValue: $('#chat-msg').val()
+	    };
+	    socket.emit('send message', data);
+	    $('#chat-msg').val('');
+	    return false;
+	  });
+
+	  socket.on('receive message', function(data){
+		  json_data = eval("("+data+")");
+
+		  if(json_data.user == "{{request.user}}"){
+		    $('#msg-list').append(
+		      '<li class="list-group-item"><b style="color:red;">' + json_data.user + '</b> : ' + json_data.msg + '</li>'
+		    );
+			}
+			else{
+				$('#msg-list').append(
+		      '<li class="list-group-item">' + json_data.user + ' : ' + json_data.msg + '</li>'
+		    );
+			}
+
+			var chatlist = document.getElementById('msg-list-div');
+			chatlist.scrollTop = chatlist.scrollHeight;
+	  });
+	}
+
+	function get_chat_data(){
+		$.ajax({
+      url: "{% url 'chat:messages' %}",
+      type: "GET",
+      headers: {
+          Accept : "text/plain; charset=utf-8",
+          "Content-Type": "text/plain; charset=utf-8"
+      },
+      beforeSend: function (xhr) {
+          xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+      },
+      success: function(data) {
+          $('#msg-list').append(data);
+      },
+	  })
+	}
+
+	// using jQuery
+	function getCookie(name) {
+	    var cookieValue = null;
+	    if (document.cookie && document.cookie !== '') {
+	        var cookies = document.cookie.split(';');
+	        for (var i = 0; i < cookies.length; i++) {
+	            var cookie = jQuery.trim(cookies[i]);
+	            // Does this cookie string begin with the name we want?
+	            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+	                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+	                break;
+	            }
+	        }
+	    }
+	    return cookieValue;
+	}
+	var csrftoken = getCookie('csrftoken');
+
+</script>
+

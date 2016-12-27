@@ -23,7 +23,7 @@
 	</div>
 	<div class="row">
 		{% for post in posts %}
-		<div class="simple-post" onclick="location.href='{% url 'recruit:post_detail' pk=post.pk %}'">
+		<div class="simple-post radius-div" onclick="location.href='{% url 'recruit:post_detail' pk=post.pk %}'">
 			<div class="content">
 				<div class="region">{{ post.get_region_short_name }}</div>
 				<div class="title">
