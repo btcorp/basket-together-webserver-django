@@ -1,0 +1,29 @@
+{
+  "name": "basket_together",
+  "version": "1.0.0",
+  "description": "package manager for B.T",
+  "main": "index.js",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "express": "^4.14.0",
+    "http": "^0.0.0",
+    "jquery": "^3.1.1",
+    "socket.io": "^1.7.2",
+    "sweetalert": "^1.1.3",
+    "sweetalert2": "^6.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/btcorp/basket-together-webserver-django.git"
+  },
+  "author": "qkqnrpa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/btcorp/basket-together-webserver-django/issues"
+  },
+  "homepage": "https://github.com/btcorp/basket-together-webserver-django#readme"
+}
