@@ -10,3 +10,4 @@ ngrok
 media
 database
 secret_key.json
+node_modules
