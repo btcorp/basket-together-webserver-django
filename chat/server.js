@@ -1,6 +1,6 @@
 var http = require('http');
-var server = http.createServer().listen(4000, function(){
-  console.log('listening on *:4000');
+var server = http.createServer().listen(3000, function(){
+  console.log('listening on *:3000');
 });
 var io = require('socket.io').listen(server);
 var querystring = require('querystring');
@@ -9,7 +9,6 @@ io.on('connection',function(socket) {
     console.log('Connected to the client');
 
     socket.on('send message',function(data) {
-        console.log('Web--->Node');
         var values = querystring.stringify(data);
 
         var options = {
@@ -27,7 +26,6 @@ io.on('connection',function(socket) {
             response.setEncoding('utf8');
             response.on('data',function(data){
                 //Here return django
-                console.log('Django-->Node');
                 io.emit('receive message',data);
             });
         });

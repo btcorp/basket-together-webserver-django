@@ -18,8 +18,6 @@ def message_save(request):
         if msg or msg != '':
             chat.save()
         return JsonResponse({'msg': msg, 'user': chat.user.username})
-    else:
-        return HttpResponse('Request must be POST.')
 
 
 def get_messages(request):

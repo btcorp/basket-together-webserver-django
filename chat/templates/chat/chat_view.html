@@ -32,7 +32,7 @@
 
 	// socketio client
 	function connect_socketio(){
-		var socket = io.connect('http://localhost:4000');
+		var socket = io.connect('http://'+location.hostname+':3000');
 
 	  $('#chat-form').submit(function(){
 	    var data = {
